@@ -413,7 +413,7 @@
 		if ( ! lang.sEmptyTable && zeroRecords &&
 			defaults.sEmptyTable === "No data available in table" )
 		{
-			_fnMap( lang, lang, 'sZeroRecords', 'sEmptyTable' );
+			//_fnMap( lang, lang, 'sZeroRecords', 'sEmptyTable' );
 		}
 	
 		/* Likewise with loading records */
@@ -2112,25 +2112,25 @@
 			}
 		}
 		else
-		{
-			/* Table is empty - create a row with an empty message in it */
-			var sZero = oLang.sZeroRecords;
-			if ( oSettings.iDraw == 1 &&  _fnDataSource( oSettings ) == 'ajax' )
-			{
-				sZero = oLang.sLoadingRecords;
-			}
-			else if ( oLang.sEmptyTable && oSettings.fnRecordsTotal() === 0 )
-			{
-				sZero = oLang.sEmptyTable;
-			}
+		// {
+		// 	/* Table is empty - create a row with an empty message in it */
+		// 	var sZero = oLang.sZeroRecords;
+		// 	if ( oSettings.iDraw == 1 &&  _fnDataSource( oSettings ) == 'ajax' )
+		// 	{
+		// 		sZero = oLang.sLoadingRecords;
+		// 	}
+		// 	else if ( oLang.sEmptyTable && oSettings.fnRecordsTotal() === 0 )
+		// 	{
+		// 		//sZero = oLang.sEmptyTable;
+		// 	}
 	
-			anRows[ 0 ] = $( '<tr/>', { 'class': iStripes ? asStripeClasses[0] : '' } )
-				.append( $('<td />', {
-					'valign':  'top',
-					'colSpan': _fnVisbleColumns( oSettings ),
-					'class':   oSettings.oClasses.sRowEmpty
-				} ).html( sZero ) )[0];
-		}
+		// 	anRows[ 0 ] = $( '<tr/>', { 'class': iStripes ? asStripeClasses[0] : '' } )
+		// 		.append( $('<td />', {
+		// 			'valign':  'top',
+		// 			'colSpan': _fnVisbleColumns( oSettings ),
+		// 			'class':   oSettings.oClasses.sRowEmpty
+		// 		} ).html( sZero ) )[0];
+		// }
 	
 		/* Header and footer callbacks */
 		_fnCallbackFire( oSettings, 'aoHeaderCallback', 'header', [ $(oSettings.nTHead).children('tr')[0],
