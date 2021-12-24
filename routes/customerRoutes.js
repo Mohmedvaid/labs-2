@@ -1,37 +1,49 @@
 const router = require('express').Router()
-
-const db = require('../models/Customers')
+const customerDB = require('../models/Customers')
+const Monoose = require('mongoose')
+const imageMimeTypes = ['image/jpeg', 'image/png', 'images']
 
 router.post('/api/customer', ({ body }, res) => {
 	let customer = {
-		firstName: body.firstName,
-		lastName: body.lastName,
+		firstName: body.firstname,
+		lastName: body.lastname,
 		email: body.email,
 		address: body.address,
 		location: body.location,
+		image: body.idImage,
 	}
-	return db
-		.create(customer)
+	console.log(body)
+	return customerDB
+		.find({ email: customer.email })
+		.then((dup_key) => {
+			if (dup_key.length !== 0) throw { error: 'Duplicate email', message: 'Email already added' }
+			return
+		})
+		.then(() => new customerDB(customer))
+		.then((newCustomer) => saveImage(newCustomer, customer.image))
+		.then((newCustomer) => newCustomer.save())
 		.then((newCustomer) => res.json(newCustomer))
 		.catch((err) => {
-			console.log(err.message)
+			console.log(err)
 			return res.status(400).json(err)
 		})
 })
 
 router.get('/api/customer', (req, res) => {
-	db.find({})
+	customerDB
+		.find({})
 		.then((customer) => {
-			res.json(customer)
+			return res.json(customer)
 		})
 		.catch((err) => {
-			res.json(err)
+			res.status(400).json(err)
 		})
 })
 
 router.put('/api/customer/:id', (req, res) => {
 	let id = req.params.id
-	db.findOneAndUpdate({ _id: id }, { $push: { exercises: req.body } }, { new: true })
+	customerDB
+		.findOneAndUpdate({ _id: id }, { $push: { exercises: req.body } }, { new: true })
 		.then((dbWorkout) => {
 			console.log(dbWorkout)
 			function totalDuration() {
@@ -40,11 +52,11 @@ router.put('/api/customer/:id', (req, res) => {
 					totalDuration += exercise.duration
 					return totalDuration
 				})
-				db.findOneAndUpdate({ _id: id }, { totalDuration: totalDuration }).then(
-					(updatedWorkout) => {
+				customerDB
+					.findOneAndUpdate({ _id: id }, { totalDuration: totalDuration })
+					.then((updatedWorkout) => {
 						res.json(updatedWorkout)
-					}
-				)
+					})
 				// dbWorkout.totalDuration = totalDuration;
 				// console.log("dbWorkout Duration in the func: "+ dbWorkout.totalDuration);
 			}
@@ -58,5 +70,17 @@ router.put('/api/customer/:id', (req, res) => {
 			res.json(err)
 		})
 })
+
+function saveImage(customer, encodedImage) {
+	if (encodedImage === undefined || encodedImage === null) {
+		return
+	}
+	const image = JSON.parse(encodedImage)
+	if (image != null || imageMimeTypes.includes(image.type)) {
+	}
+	customer.image = new Buffer.from(image.data, 'base64')
+	customer.imageType = image.type
+	return customer
+}
 
 module.exports = router

@@ -12,6 +12,12 @@
 		tablet: 1024,
 		phone: 480,
 	}
+	FilePond.registerPlugin(
+		FilePondPluginImagePreview,
+		FilePondPluginImageResize,
+		FilePondPluginFileEncode
+	)
+	FilePond.parse(document.body)
 
 	// Initialize datatable showing a search box at the top right corner
 	var initTableWithSearch = function () {
@@ -58,68 +64,37 @@
 		})
 
 		// Add customers
-		$('#add-app').click(function () {
-			let firstName = $('#firstName').val()
-			let lastName = $('#lastName').val()
-			let address = $('#address').val()
-			let customerLocation = $('#customerLocation').val()
-			let email = $('#email').val()
-			let err = []
-			clearErrors()
-			if (!firstName) {
-				err.push('<div id="main-err" style="color:red;">Please enter a valid first name.</div>')
-			}
-			if (!lastName) {
-				err.push('<div id="main-err" style="color:red;">Please enter a valid last name.</div>')
-			}
-			if (!address) {
-				err.push('<div id="main-err" style="color:red;">Please enter a valid address.</div>')
-			}
-			if (!customerLocation) {
-				err.push('<div id="main-err" style="color:red;">Please enter a valid location.</div>')
-			}
-			if (!email) {
-				err.push('<div id="main-err" style="color:red;">Please enter a valid email.</div>')
-			}
-			if (err.length !== 0) {
-				err.forEach((error) => {
-					$('#errors').append(error)
+
+		$('#addCustomerForm').submit(function (e) {
+			e.preventDefault()
+			let form = $(this)
+			let url = form.attr('action')
+			let payload = form.serialize()
+			axios
+				.post('/api/customer', payload)
+				.then(({ data }) => {
+					console.log(data)
+					let td = ` <tr>
+		              <td class="v-align-middle semi-bold">
+		                <p>${data.firstName}</p>
+		              </td>
+		              <td class="v-align-middle">
+		                <p>${data.lastName}</p>
+		              </td>
+		              <td class="v-align-middle">
+		                <p>${data.email}</p>
+		              </td>
+		              <td class="v-align-middle">
+		                <p>${data.address}</p>
+		              </td>
+		             <td class="v-align-middle">
+		                <p>${data.location}</p>
+		              </td>
+		            </tr>`
+					$('tbody').append(td)
 				})
-				return
-			} else {
-				let payload = {
-					firstName,
-					lastName,
-					address,
-					email,
-					location: customerLocation,
-				}
-				axios
-					.post('/api/customer', payload)
-					.then((newCustomer) => {
-						console.log(newCustomer)
-						let td = ` <tr>
-                      <td class="v-align-middle semi-bold">
-                        <p>${newCustomer.firstName}</p>
-                      </td>
-                      <td class="v-align-middle">
-                        <p>${newCustomer.lastName}</p>
-                      </td>
-                      <td class="v-align-middle">
-                        <p>${newCustomer.email}</p>
-                      </td>
-                      <td class="v-align-middle">
-                        <p>${newCustomer.address}</p>
-                      </td>
-                     <td class="v-align-middle">
-                        <p>${newCustomer.location}</p>
-                      </td>
-                    </tr>`
-						$('tbody').append(td)
-					})
-					.then(() => $('#addNewAppModal').modal('hide'))
-					.catch(handleError)
-			}
+				.then(() => $('#addNewAppModal').modal('hide'))
+				.catch(handleError)
 		})
 	}
 
@@ -210,6 +185,9 @@
                       </td>
                      <td class="v-align-middle">
                         <p>${customer.location}</p>
+                      </td>
+					  <td class="v-align-middle">
+                        <img src="${customer.image}">
                       </td>
                     </tr>`
 				})

@@ -23,6 +23,12 @@
     <link href="assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- File pond  -->
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+
+    <!-- <link type="text/css" rel="stylesheet" href="assets/plugins/dropzone/css/dropzone.css"> -->
+    <!-- File uploads -->
     <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
     <!-- Please remove the file below for production: Contains demo classes -->
     <link class="main-stylesheet" href="assets/css/style.css" rel="stylesheet" type="text/css" />
@@ -544,50 +550,54 @@
                 </div>
                 <div class="modal-body">
                   <p id="errors" class="small-text"></p>
-                  <form role="form">
+                  <form id="addCustomerForm"role="form" action="/api/customer" method="POST">
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group form-group-default">
-                          <label>First Name</label>
-                          <input id="firstName" type="text" class="form-control" placeholder="John">
+                          <label for="firstname"> First Name</label>
+                          <input required name="firstname" id="firstName" type="text" class="form-control" placeholder="John">
                         </div>
                       </div>
                         <div class="col-sm-6">
                           <div class="form-group form-group-default">
-                            <label>Last Name</label>
-                            <input id="lastName" type="text" class="form-control" placeholder="Smith">
+                            <label for="lastname">Last Name</label>
+                            <input required name="lastname" id="lastName" type="text" class="form-control" placeholder="Smith">
                           </div>
                         </div>
                     </div>
                     <div class="row">
                       <div class="col-sm-12">
                         <div class="form-group form-group-default">
-                          <label>Email</label>
-                          <input id="email" type="text" class="form-control" placeholder="johnsmith@gmail.com">
+                          <label for="email">Email</label>
+                          <input required name="email" id="email" type="text" class="form-control" placeholder="johnsmith@gmail.com">
                         </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-sm-12">
                         <div class="form-group form-group-default">
-                          <label>Address</label>
-                          <input id="address" type="text" class="form-control" placeholder="2600 S River rd, Des Plaines, IL 60018">
+                          <label for="address">Address</label>
+                          <input required name="address" id="address" type="text" class="form-control" placeholder="2600 S River rd, Des Plaines, IL 60018">
                         </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-sm-12">
                         <div class="form-group form-group-default">
-                          <label>Location</label>
-                          <input id="customerLocation" type="text" class="form-control" placeholder="Skokie, Chicago, etc">
+                          <label for="location">Location</label>
+                          <input required name="location" id="customerLocation" type="text" class="form-control" placeholder="Skokie, Chicago, etc">
                         </div>
                       </div>
+                    </div>
+                    <div>
+                      <label for="idImage"></label>
+                      <input type="file" name="idImage" class="filepond">
+                    </div >
+                    <div class="modal-footer">
+                      <button aria-label="" id="add-app" class="btn btn-primary  btn-cons" type="submit">Add</button>
+                      <button aria-label="" type="button" class="btn btn-cons" data-dismiss="modal">Close</button>
                     </div>
                   </form>
-                </div>
-                <div class="modal-footer">
-                  <button aria-label="" id="add-app" type="button" class="btn btn-primary  btn-cons">Add</button>
-                  <button aria-label="" type="button" class="btn btn-cons" data-dismiss="modal">Close</button>
                 </div>
               </div>
               <!-- /.modal-content -->
@@ -642,6 +652,7 @@
                       <th>Email</th>
                       <th>Address</th>
                       <th>Testing Location</th>
+                      <th>ID Picture</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1856,6 +1867,7 @@
     <!-- Axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
     <!--  A polyfill for browsers that don't support ligatures: remove liga.js if not needed-->
     <script src="assets/plugins/liga.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
@@ -1877,6 +1889,13 @@
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
     <!-- END VENDOR JS -->
+  <!-- File pond js -->
+  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+  <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+  
     <!-- BEGIN CORE TEMPLATE JS -->
     <script src="pages/js/pages.js"></script>
     <!-- END CORE TEMPLATE JS -->

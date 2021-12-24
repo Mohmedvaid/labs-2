@@ -8,6 +8,8 @@ const { requireAuth, checkUser } = require('./middleware/authMiddleware')
 require('dotenv').config()
 const bodyParser = require('body-parser')
 
+
+
 const app = express()
 const PORT = process.env.PORT || 3000
 
@@ -17,7 +19,7 @@ app.use(bodyParser.json())
 app.use(express.static('views/html'))
 app.use(express.json())
 app.use(cookieParser())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 
 // database connection
 mongoose
