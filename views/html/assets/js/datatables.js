@@ -187,9 +187,13 @@
                         <p>${customer.location}</p>
                       </td>
 					  <td class="v-align-middle">
-						<a href="${customer.image}" data-lightbox="${customer.image}" data-title="My caption">
+					  ${
+							customer.image
+								? `<a href="${customer.image}" data-lightbox="${customer.image}" data-title="My caption">
 							<img style="width:100%" src="${customer.image}">
-						</a>
+						</a>`
+								: '<p>No ID Found</p>'
+						}
                       </td>
                     </tr>`
 				})
