@@ -187,7 +187,9 @@
                         <p>${customer.location}</p>
                       </td>
 					  <td class="v-align-middle">
-                        <img src="${customer.image}">
+						<a href="${customer.image}" data-lightbox="${customer.image}" data-title="My caption">
+							<img style="width:100%" src="${customer.image}">
+						</a>
                       </td>
                     </tr>`
 				})
