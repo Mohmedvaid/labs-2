@@ -18,5 +18,8 @@ router.get('/', (req, res) => {
 router.get('/dashboard', requireAuth, (req, res) => {
 	res.sendFile(path.join(__dirname, '../views/html/dashboard.html'))
 })
+router.get('/customers', requireAuth, (req, res) => {
+	res.sendFile(path.join(__dirname, '../views/html/customers.html'))
+})
 
 module.exports = router
