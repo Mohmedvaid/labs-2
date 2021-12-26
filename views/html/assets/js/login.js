@@ -17,7 +17,8 @@ $(document).ready(function () {
 				password: _password,
 			})
 			.then((res) => {
-				localStorage.setItem('token', res.data.token)
+				console.log('RES DATA=====>>>', res.data)
+				localStorage.setItem('location', res.data.location)
 				location.assign('/dashboard')
 			})
 			.catch(handleError)

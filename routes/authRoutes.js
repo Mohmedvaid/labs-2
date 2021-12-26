@@ -16,7 +16,6 @@ router.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, '../views/html/home.html'))
 })
 router.get('/dashboard', requireAuth, (req, res) => {
-	console.log(req)
 	res.sendFile(path.join(__dirname, '../views/html/dashboard.html'))
 })
 
