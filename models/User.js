@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
 	},
 	location: {
 		type: String,
-		enum: ['Chicago', 'Super', 'Skokie'],
+		enum: ['Chicago', 'All', 'Skokie'],
 		required: [true, 'Please select a location'],
 	},
 })

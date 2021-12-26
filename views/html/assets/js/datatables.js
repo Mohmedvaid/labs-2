@@ -76,7 +76,6 @@
 		$('#addCustomerForm').submit(function (e) {
 			e.preventDefault()
 			let form = $(this)
-			let url = form.attr('action')
 			let payload = form.serialize()
 			showNewCustomerSpinner()
 			axios
@@ -199,8 +198,10 @@
 		axios
 			.get('/api/customer')
 			.then((res) => {
-				res.data.forEach((customer) => {
-					temp += ` <tr>
+				console.log(res.data)
+				if (res.data.length > 0) {
+					return res.data.forEach((customer) => {
+						temp += ` <tr>
                       <td class="v-align-middle semi-bold">
                         <p>${customer.firstName}</p>
                       </td>
@@ -225,8 +226,14 @@
 								: '<p>No ID Found</p>'
 						}
                       </td>
+					 <td class="v-align-middle">
+                        <p>${customer.result ? customer.result : '<p>Pending</p>'}</p>
+                      </td>
                     </tr>`
-				})
+					})
+				}
+				temp = `<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">No data available in table</td></tr>`
+				return
 			})
 			.then(() => $('tbody').append(temp))
 			.then(() => hideNewCustomerSpinner())

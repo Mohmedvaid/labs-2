@@ -29,13 +29,24 @@ router.post('/api/customer', ({ body }, res) => {
 })
 
 router.get('/api/customer', (req, res) => {
+	let location = req.cookies.location
+	if (location === undefined) {
+		return res.status(401).json({ error: 'Unauthorized' })
+	}
+	if (location.toLowerCase() === 'all') {
+		location = {}
+	} else {
+		location = { location: location.toLowerCase() }
+	}
 	customerDB
-		.find({})
+		.find(location)
 		.then((customer) => {
+			console.log(customer)
 			return res.json(customer)
 		})
 		.catch((err) => {
-			res.status(400).json(err)
+			console.log(err)
+			return res.status(400).json(err)
 		})
 })
 
