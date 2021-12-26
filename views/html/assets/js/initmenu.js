@@ -1,10 +1,10 @@
 $(document).ready(function () {
 	let cookieLocation = localStorage.getItem('location')
-    console.log(cookieLocation)
+	console.log(cookieLocation)
 	let uploadOption = `
         <li class="">
             <a href="upload.html" class="detailed">
-              <span class="title">Upload Results</span>
+              <span class="title">Upload</span>
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">upload</i></span>
           </li>`
