@@ -12,7 +12,6 @@ router.post('/api/customer', ({ body }, res) => {
 		location: body.location,
 		image: body.idImage,
 	}
-	console.log(body)
 	return customerDB
 		.find({ email: customer.email })
 		.then((dup_key) => {
