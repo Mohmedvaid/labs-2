@@ -18,6 +18,14 @@
 		FilePondPluginFileEncode
 	)
 	FilePond.parse(document.body)
+	// Customer Spinner
+	hideNewCustomerSpinner()
+	function showNewCustomerSpinner() {
+		$(`#addCustomerSpinner`).show()
+	}
+	function hideNewCustomerSpinner() {
+		$(`#addCustomerSpinner`).css('display', 'none')
+	}
 
 	// Initialize datatable showing a search box at the top right corner
 	var initTableWithSearch = function () {
@@ -70,6 +78,7 @@
 			let form = $(this)
 			let url = form.attr('action')
 			let payload = form.serialize()
+			showNewCustomerSpinner()
 			axios
 				.post('/api/customer', payload)
 				.then(({ data }) => {
@@ -90,16 +99,36 @@
 		             <td class="v-align-middle">
 		                <p>${data.location}</p>
 		              </td>
+					  					  <td class="v-align-middle">
+					  ${
+							data.image
+								? `<a href="${data.image}" data-lightbox="${data.image}" data-title="My caption">
+							<img style="width:100%" src="${data.image}">
+						</a>`
+								: '<p>No ID Found</p>'
+						}
+                      </td>
 		            </tr>`
 					$('tbody').append(td)
 				})
+				.then(() => hideNewCustomerSpinner())
 				.then(() => $('#addNewAppModal').modal('hide'))
 				.catch(handleError)
 		})
 	}
 
 	function handleError(err) {
-		$(`#errors`).append(`<div id="main-err" style="color:red;">${err.response.data.message}</div>`)
+		clearErrors()
+		console.log(err)
+		if (err.response.data.message) {
+			$(`#errors`).append(
+				`<div id="main-err" style="color:red;">${err.response.data.message}</div>`
+			)
+		} else {
+			$(`#errors`).append(
+				`<div id="main-err" style="color:red;">Hmmm, somethingn went wrong...</div>`
+			)
+		}
 	}
 
 	// Initialize datatable showing export options
@@ -166,6 +195,7 @@
 
 	function initTableData() {
 		let temp = ''
+		showNewCustomerSpinner()
 		axios
 			.get('/api/customer')
 			.then((res) => {
@@ -199,6 +229,7 @@
 				})
 			})
 			.then(() => $('tbody').append(temp))
+			.then(() => hideNewCustomerSpinner())
 	}
 
 	function clearErrors() {

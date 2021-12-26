@@ -158,6 +158,11 @@
                   </button>
                   <h4 class="p-b-5"><span class="semi-bold">New</span> Customer</h4>
                 </div>
+                <!-- Progress spinner -->
+                <!-- <div id="addCustomerSpinner"class="progress-circle-indeterminate" style="display:none !important; position: absolute; left: 45%; top: 35%; z-index: 999;"></div> -->
+                <div id="addCustomerSpinner" class="spinner-border" role="status" style="position: absolute; left: 45%; top: 35%; z-index: 999;">
+                  <span class="sr-only">Loading...</span>
+                </div>
                 <div class="modal-body">
                   <p id="errors" class="small-text"></p>
                   <form id="addCustomerForm"role="form" action="/api/customer" method="POST">
@@ -1516,5 +1521,6 @@
     <script src="assets/js/datatables.js" type="text/javascript"></script>
     <script src="assets/js/scripts.js" type="text/javascript"></script>    
     <!-- END PAGE LEVEL JS -->
+    
   </body>
 </html>
