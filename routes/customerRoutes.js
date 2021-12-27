@@ -49,6 +49,19 @@ router.get('/api/customer', (req, res) => {
 			return res.status(400).json(err)
 		})
 })
+router.get('/api/customer/:id', (req, res) => {
+	//let location = req.cookies.location
+	customerDB
+		.findOne({ _id: req.params.id })
+		.then((customer) => {
+			console.log(customer)
+			return res.json(customer)
+		})
+		.catch((err) => {
+			console.log(err)
+			return res.status(400).json(err)
+		})
+})
 
 router.put('/api/customer/:id', (req, res) => {
 	let id = req.params.id
