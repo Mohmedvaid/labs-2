@@ -1,7 +1,7 @@
 {
-  "name": "Lab Testing CMS",
+  "name": "testing-lab-cms",
   "version": "1.0.0",
-  "description": " A simeple CMS for lab testing",
+  "description": "",
   "main": "app.js",
   "dependencies": {
     "bcrypt": "^5.0.0",

@@ -32,8 +32,8 @@
     <!-- <link type="text/css" rel="stylesheet" href="assets/plugins/dropzone/css/dropzone.css"> -->
     <!-- File uploads -->
     <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
-    <!-- Please remove the file below for production: Contains demo classes -->
-    <link class="main-stylesheet" href="assets/css/style.css" rel="stylesheet" type="text/css" />
+    <!-- Custom page styles -->
+    <link class="main-stylesheet" href="assets/css/customers.css" rel="stylesheet" type="text/css" />
   </head>
   <body class="fixed-header ">
     <!-- BEGIN SIDEBPANEL-->
@@ -199,7 +199,7 @@
                     <div class="row">
                       <div class="col-sm-12">
                         <div class="form-group form-group-default">
-                          <label for="location">Location</label>
+                          <label for="location">Testing Location</label>
                           <input required name="location" id="customerLocation" type="text" class="form-control" placeholder="Skokie, Chicago, etc">
                         </div>
                       </div>
@@ -214,12 +214,11 @@
                         </div>
                       </div>
                                         <!-- Signature -->
-                                          <!-- Content -->
                                           <div class="container">
                                             <div class="row">
                                               <div class="col-md-12">
-                                                <h1>E-Signature</h1>
-                                                <p>Sign in the canvas below and save your signature as an image!</p>
+                                                <p class="fs-16">E-Signature</p>
+                                                <p>Sign in the canvas below.</p>
                                               </div>
                                             </div>
                                             <div class="row">
@@ -231,24 +230,28 @@
                                             </div>
                                             <div class="row">
                                               <div class="col-md-12">
-                                                <button class="btn btn-primary" id="sig-submitBtn">Submit Signature</button>
+                                                <button class="btn btn-primary" id="sig-submitBtn">Save Signature</button>
                                                 <button class="btn btn-default" id="sig-clearBtn">Clear Signature</button>
                                               </div>
                                             </div>
                                             <br />
                                             <div class="row">
                                               <div class="col-md-12">
-                                                <img style="width: 100%;" id="sig-image" src="/assets/img/signature-sample.jpeg" alt="Your signature will go here!" />
+                                                <img style="width: 75%;" id="sig-image" src="/assets/img/signature-sample.jpeg" alt="Your signature will go here!" />
                                               </div>
                                             </div>
                                           </div>
+                        <div class="hide">
+                          <label for="customerSignature">Date of Birth</label>
+                          <input id="sig-dataUrl" required name="customerSignature" id="customerSignature" type="text" class="form-control" placeholder="">
+                        </div>
 
                     <div>
-                      <label for="idImage"></label>
+                      <label for="idImage">Upload ID Picture</label>
                       <input type="file" name="idImage" class="filepond">
                     </div >
                     <div class="modal-footer">
-                      <button aria-label="" id="add-app" class="btn btn-primary  btn-cons" type="submit">Add</button>
+                      <button aria-label="" id="add-app" class="btn btn-primary  btn-cons" type="submit">Save Customer</button>
                       <button aria-label="" type="button" class="btn btn-cons" data-dismiss="modal">Close</button>
                     </div>
                   </form>
@@ -274,11 +277,12 @@
                   <div class="modal-body">
                     <div class="card-body">
                       <div class="table-responsive">
-                        <table class="table table-hover table-condensed table-detailed" id="detailedTable">
+                        <!-- customer details table -->
+                        <table id="detailedTable" class="table table-hover demo-table-search table-responsive-block">
                           <thead>
                             <tr>
-                              <th style="width:25%">Field</th>
-                              <th style="width:25%">Data</th>
+                              <th>Field</th>
+                              <th>Data</th>
                             </tr>
                           </thead>
                           <tbody id="customerDetailTable">
@@ -333,6 +337,7 @@
                 </div>
                 <div class="clearfix"></div>
               </div>
+              <!-- All customers table -->
               <div class="card-body">
                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
                   <thead>
