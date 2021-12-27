@@ -12,7 +12,7 @@
 		tablet: 1024,
 		phone: 480,
 	}
-	let customerSignature = '';
+	let customerSignature = ''
 	FilePond.registerPlugin(
 		FilePondPluginImagePreview,
 		FilePondPluginImageResize,
@@ -78,12 +78,19 @@
 			e.preventDefault()
 			let form = $(this)
 			let payload = form.serialize()
-			showNewCustomerSpinner()
-			axios
-				.post('/api/customer', payload)
-				.then(({ data }) => {
-					console.log(data)
-					let td = ` <tr>
+			clearErrors()
+			console.log(customerSignature)
+			if (!customerSignature) {
+				$(`#errors`).append('<p style="color:red">Signature Required</p>')
+				$('#addNewAppModal').animate({ scrollTop: 0 }, 'slow')
+				return
+			} else {
+				showNewCustomerSpinner()
+				axios
+					.post('/api/customer', payload)
+					.then(({ data }) => {
+						console.log(data)
+						let td = ` <tr>
 		              <td class="v-align-middle semi-bold">
 		                <p>${data.firstName}</p>
 		              </td>
@@ -109,11 +116,12 @@
 						}
                       </td>
 		            </tr>`
-					$('tbody').append(td)
-				})
-				.then(() => hideNewCustomerSpinner())
-				.then(() => $('#addNewAppModal').modal('hide'))
-				.catch(handleError)
+						$('tbody').append(td)
+					})
+					.then(() => hideNewCustomerSpinner())
+					.then(() => $('#addNewAppModal').modal('hide'))
+					.catch(handleError)
+			}
 		})
 	}
 

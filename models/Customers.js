@@ -41,6 +41,10 @@ const customerSchema = new mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
+		signature: {
+			type: String,
+			required: [true, 'Please enter a signature'],
+		},
 	},
 	{
 		toJSON: {
