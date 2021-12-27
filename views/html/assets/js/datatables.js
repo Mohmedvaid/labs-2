@@ -98,7 +98,7 @@
 					  					  <td class="v-align-middle">
 					  ${
               data.image
-                ? `<a href="${data.image}" data-lightbox="${data.image}" data-title="My caption">
+                ? `<a href="${data.image}" data-lightbox="${data.image}">
 									<img style="width:100%" src="${data.image}">
 								</a>`
                 : '<p>No ID Found</p>'
@@ -216,7 +216,7 @@
 					  <td class="v-align-middle">
 					  ${
               customer.image
-                ? `<a href="${customer.image}" data-lightbox="${customer.image}" data-title="My caption">
+                ? `<a href="${customer.image}" data-lightbox="${customer.image}">
 							<img style="width:100%" src="${customer.image}">
 						</a>`
                 : '<p>No ID Found</p>'
@@ -263,7 +263,7 @@
 				<td class="v-align-middle">
 							  ${
                   property.toLowerCase() === 'image' || property.toLowerCase() === 'customersignature'
-                    ? `<a href="${customer[property]}" data-lightbox="${customer[property]}" data-title="My caption">
+                    ? `<a href="${customer[property]}" data-lightbox="${customer[property]}">
 							<img style="width:100%" src="${customer[property]}">
 						</a>`
                     : customer[property]
