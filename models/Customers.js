@@ -49,11 +49,6 @@ const customerSchema = new mongoose.Schema(
 	}
 )
 
-customerSchema.virtual('idImagePath').get(function () {
-	if (this.image != null && this.imageType != null) {
-		return `data:${this.imageType};charset=utf-8;base64,${this.image.toString('base64')}`
-	}
-})
 function convertBufferToBase64(buffer) {
 	if (buffer != null && this.imageType != null) {
 		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`

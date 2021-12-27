@@ -102,8 +102,8 @@
 					  ${
 							data.image
 								? `<a href="${data.image}" data-lightbox="${data.image}" data-title="My caption">
-							<img style="width:100%" src="${data.image}">
-						</a>`
+									<img style="width:100%" src="${data.image}">
+								</a>`
 								: '<p>No ID Found</p>'
 						}
                       </td>
@@ -201,7 +201,7 @@
 				console.log(res.data)
 				if (res.data.length > 0) {
 					return res.data.forEach((customer) => {
-						temp += ` <tr>
+						temp += ` <tr id="${customer._id}">
                       <td class="v-align-middle semi-bold">
                         <p>${customer.firstName}</p>
                       </td>
@@ -235,12 +235,62 @@
 				temp = `<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">No data available in table</td></tr>`
 				return
 			})
-			.then(() => $('tbody').append(temp))
+			.then(() => $('#allCustomers').append(temp))
 			.then(() => hideNewCustomerSpinner())
 	}
 
 	function clearErrors() {
 		$(`#errors`).empty()
+	}
+	$(document).on('click', '#tableWithSearch > tbody > tr', function () {
+		axios
+			.get(`/api/customer/${$(this).attr('id')}`)
+			.then((res) => showCustomerInfoModal(res.data))
+			.catch((err) => {
+				console.log(err)
+			})
+	})
+
+	function showCustomerInfoModal(customer) {
+		console.log(customer)
+		let newObj = cleanMongooseObject(customer)
+		generateCustomerDetailTable(newObj)
+		$(`#customerInfoBtn`).click()
+	}
+	function generateCustomerDetailTable(customer) {
+		let tr = ''
+		for (const property in customer) {
+			const updatedProp = property.replace(/([A-Z])/g, ' $1')
+			const finalResult = updatedProp.charAt(0).toUpperCase() + updatedProp.slice(1)
+			tr += `
+			<tr>
+				<td class="v-align-middle semi-bold">${finalResult}</td>
+				<td class="v-align-middle">
+							  ${
+									property.toLocaleLowerCase() === 'image'
+										? `<a href="${customer[property]}" data-lightbox="${customer[property]}" data-title="My caption">
+							<img style="width:100%" src="${customer[property]}">
+						</a>`
+										: customer[property]
+								}</td>
+			</tr>`
+		}
+		$('#customerDetailTable').empty().append(tr)
+	}
+	function cleanMongooseObject(obj) {
+		for (const property in obj) {
+			if (
+				property === '_id' ||
+				property === '__v' ||
+				property === 'createdAt' ||
+				property === 'updatedAt' ||
+				property === 'id' ||
+				property === 'imageType'
+			) {
+				delete obj[property]
+			}
+		}
+		return obj
 	}
 	initTableWithSearch()
 	initTableWithDynamicRows()
