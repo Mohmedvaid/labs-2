@@ -82,7 +82,6 @@
 			axios
 				.post('/api/customer', payload)
 				.then(({ data }) => {
-					console.log(data)
 					let td = ` <tr>
 		              <td class="v-align-middle semi-bold">
 		                <p>${data.firstName}</p>
@@ -199,7 +198,6 @@
 		axios
 			.get('/api/customer')
 			.then((res) => {
-				console.log(res.data)
 				if (res.data.length > 0) {
 					return res.data.forEach((customer) => {
 						temp += ` <tr id="${customer._id}">
@@ -253,7 +251,6 @@
 	})
 
 	function showCustomerInfoModal(customer) {
-		console.log(customer)
 		let newObj = cleanMongooseObject(customer)
 		generateCustomerDetailTable(newObj)
 		$(`#customerInfoBtn`).click()

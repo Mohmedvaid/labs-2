@@ -23,7 +23,6 @@ $(document).ready(function () {
 				headers: { 'Content-Type': 'application/json' },
 			})
 			const data = await res.json()
-			console.log(data)
 			if (data.errors) {
 				clearErrors()
 				if (data.errors.email)
@@ -34,7 +33,6 @@ $(document).ready(function () {
 					$(`#error`).append(`<div id="main-err" style="color:red;">${data.errors.location}<div>`)
 			}
 			if (data.user) {
-				console.log(data)
 				localStorage.setItem('location', data.location)
 				location.assign('/dashboard')
 			}

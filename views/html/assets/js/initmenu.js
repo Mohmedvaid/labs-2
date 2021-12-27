@@ -1,6 +1,5 @@
 $(document).ready(function () {
 	let cookieLocation = localStorage.getItem('location')
-	console.log(cookieLocation)
 	let uploadOption = `
         <li class="">
             <a href="upload.html" class="detailed">

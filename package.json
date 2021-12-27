@@ -1,7 +1,7 @@
 {
-  "name": "node-express-jwt-auth",
+  "name": "Lab Testing CMS",
   "version": "1.0.0",
-  "description": "",
+  "description": " A simeple CMS for lab testing",
   "main": "app.js",
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -24,7 +24,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "watch": "nodemon server.js",
-    "seed": "node seeders/seed.js"
+    "seed": "node seeders/seed.js",
+    "build": "webpack",
+    "dev": "webpack serve"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "html-loader": "^3.0.1",
+    "nodemon": "^2.0.15",
+    "webpack": "^5.65.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }

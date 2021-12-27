@@ -41,7 +41,6 @@ router.get('/api/customer', (req, res) => {
 	customerDB
 		.find(location)
 		.then((customer) => {
-			console.log(customer)
 			return res.json(customer)
 		})
 		.catch((err) => {
@@ -54,7 +53,6 @@ router.get('/api/customer/:id', (req, res) => {
 	customerDB
 		.findOne({ _id: req.params.id })
 		.then((customer) => {
-			console.log(customer)
 			return res.json(customer)
 		})
 		.catch((err) => {
