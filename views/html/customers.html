@@ -204,6 +204,45 @@
                         </div>
                       </div>
                     </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group form-group-default">
+                            <label for="dob">Date of Birth</label>
+                            <input required name="dob" id="dob" type="text" class="form-control"
+                              placeholder="MM/DD/YYYY">
+                          </div>
+                        </div>
+                      </div>
+                                        <!-- Signature -->
+                                          <!-- Content -->
+                                          <div class="container">
+                                            <div class="row">
+                                              <div class="col-md-12">
+                                                <h1>E-Signature</h1>
+                                                <p>Sign in the canvas below and save your signature as an image!</p>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-12">
+                                                <canvas id="sig-canvas" style="width: 100%; height: 130px;">
+                                                  Get a better browser, bro.
+                                                </canvas>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-12">
+                                                <button class="btn btn-primary" id="sig-submitBtn">Submit Signature</button>
+                                                <button class="btn btn-default" id="sig-clearBtn">Clear Signature</button>
+                                              </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                              <div class="col-md-12">
+                                                <img style="width: 100%;" id="sig-image" src="/assets/img/signature-sample.jpeg" alt="Your signature will go here!" />
+                                              </div>
+                                            </div>
+                                          </div>
+
                     <div>
                       <label for="idImage"></label>
                       <input type="file" name="idImage" class="filepond">
