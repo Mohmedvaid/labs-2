@@ -22,4 +22,7 @@ router.get('/customers', requireAuth, (req, res) => {
 	res.sendFile(path.join(__dirname, '../views/html/customers.html'))
 })
 
+router.get('/edit-customers', requireAuth, (req, res) => {
+	res.sendFile(path.join(__dirname, '../views/html/edit-customers.html'))
+})
 module.exports = router

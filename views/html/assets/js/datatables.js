@@ -260,6 +260,13 @@
 		$(`#customerInfoBtn`).click()
 	}
 	function generateCustomerDetailTable(customer) {
+		let access = localStorage.getItem('location')
+		let printBtn = ''
+		if (access.toLowerCase() === 'all') {
+			$(`#editLink`).remove()
+			let editBtn = `<a class="pull-right" id="editLink" href="/edit"><button class="btn btn-primary btn-sm" id="editCustomerBtn">Edit</button></a>`
+			$(editBtn).insertBefore(`#detailedTable`)
+		}
 		let tr = ''
 		for (const property in customer) {
 			const updatedProp = property.replace(/([A-Z])/g, ' $1')

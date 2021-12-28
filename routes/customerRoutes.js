@@ -123,4 +123,8 @@ function saveImage(customer, encodedImage) {
 	return customer
 }
 
+// Edit permissions
+
+
+
 module.exports = router
