@@ -246,25 +246,26 @@
 		$(`#errors`).empty()
 	}
 	$(document).on('click', '#tableWithSearch > tbody > tr', function () {
+		let customerID = $(this).attr('id')
 		axios
-			.get(`/api/customer/${$(this).attr('id')}`)
-			.then((res) => showCustomerInfoModal(res.data))
+			.get(`/api/customer/${customerID}`)
+			.then((res) => showCustomerInfoModal(res.data, customerID))
 			.catch((err) => {
 				console.log(err)
 			})
 	})
 
-	function showCustomerInfoModal(customer) {
+	function showCustomerInfoModal(customer, customerID) {
 		let newObj = cleanMongooseObject(customer)
-		generateCustomerDetailTable(newObj)
+		generateCustomerDetailTable(newObj, customerID)
 		$(`#customerInfoBtn`).click()
 	}
-	function generateCustomerDetailTable(customer) {
+	function generateCustomerDetailTable(customer, customerID) {
 		let access = localStorage.getItem('location')
 		let printBtn = ''
 		if (access.toLowerCase() === 'all') {
 			$(`#editLink`).remove()
-			let editBtn = `<a class="pull-right" id="editLink" href="/edit"><button class="btn btn-primary btn-sm" id="editCustomerBtn">Edit</button></a>`
+			let editBtn = `<a class="pull-right" id="editLink" href="/edit-customer?${customerID}"><button class="btn btn-primary btn-sm" id="editCustomerBtn">Edit</button></a>`
 			$(editBtn).insertBefore(`#detailedTable`)
 		}
 		let tr = ''

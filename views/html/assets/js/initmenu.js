@@ -2,7 +2,7 @@ $(document).ready(function () {
 	let cookieLocation = localStorage.getItem('location')
 	let uploadOption = `
         <li class="">
-            <a href="/edit-customers" class="detailed">
+            <a href="/edit-customer" class="detailed">
               <span class="title">Upload</span>
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">upload</i></span>
