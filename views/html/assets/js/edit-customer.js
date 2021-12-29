@@ -83,7 +83,7 @@ $(document).ready(function () {
     basicInfoEl.append(basicInfoContent);
     mainInfoEl.append(mainInfoContent);
     let existingAssetContent = customer.testResults.map((asset) => {
-      return `<a class="m-1" href="/${asset.path}" download>${asset.name}</a>`;
+      return `<a class="m-1" href="${asset.path}" download>${asset.name}</a>`;
     });
     if (existingAssetContent.length > 0) {
       existingAssetEl.append(existingAssetContent);

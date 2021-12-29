@@ -8,6 +8,7 @@ const isValidMongoID = require('../helpers/isValidMongoID');
 const multer = require('multer');
 const uuid = require('uuid').v4;
 
+//  Local uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
@@ -18,6 +19,29 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+// AWS uploads
+const aws = require('aws-sdk');
+const multerS3 = require('multer-s3');
+const path = require('path');
+
+const s3 = new aws.S3({
+  apiVersion: '2006-03-01',
+});
+
+const awsUpload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'cov-lab-bucket', // name of the bucket on aws
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, `${uuid()}-${file.originalname}`);
+    },
+    acl: 'public-read',
+  }),
+});
 
 router.post('/api/customer', ({ body }, res) => {
   let customer = {
@@ -110,21 +134,20 @@ router.put('/api/customer/:id', (req, res) => {
 });
 
 // handle file uploads
-router.put('/api/customer/upload/:id', upload.array('testResults'), (req, res) => {
+router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res) => {
   let customerID = req.params.id;
   let assets = req.files.map((file) => {
+	  console.log(file);
     return {
       name: file.originalname,
       assetType: file.mimetype,
-      path: file.path,
+      path: file.location,
     };
   });
-  //   console.log(filesPath);
-  //console.log(assets);
+
   customerDB
     .findOneAndUpdate({ _id: customerID }, { $push: { testResults: { $each: assets } } }, { new: true })
     .then((customer) => {
-      console.log(customer);
       return res.json(customer);
     })
     .catch((err) => {
