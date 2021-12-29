@@ -1,9 +1,9 @@
-/* ============================================================
+/* ===============
  * DataTables
  * Generate advanced tables with sorting, export options using
  * jQuery DataTables plugin
  * For DEMO purposes only. Extract what you need.
- * ============================================================ */
+ * =============== */
 (function ($) {
   'use strict';
 

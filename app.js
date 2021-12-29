@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const authRoutes = require('./routes/authRoutes')
 const customerRoutes = require('./routes/customerRoutes')
+const nonCmsRoutes = require('./routes/nonCmsRoutes')
 const cookieParser = require('cookie-parser')
 const { requireAuth, checkUser } = require('./middleware/authMiddleware')
 require('dotenv').config()
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 app.use("/uploads", express.static('uploads'))
+app.use(express.static('views/front-end-pages'));
 
 // database connection
 mongoose
@@ -34,6 +36,7 @@ app.get('*', checkUser)
 app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
 app.use(authRoutes)
 app.use(customerRoutes)
+app.use(nonCmsRoutes)
 
 app.listen(PORT, () => {
 	console.log(`App running on port ${PORT}!`)

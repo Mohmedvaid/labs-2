@@ -1,71 +1,75 @@
-
 // Chart design based on the recommendations of Stephen Few. Implementation
 // based on the work of Clint Ivy, Jamie Love, and Jason Davies.
 // http://projects.instantcognition.com/protovis/bulletchart/
 
-nv.models.bullet = function() {
-  "use strict";
-  //============================================================
+nv.models.bullet = function () {
+  'use strict';
+  //===============
   // Public Variables with Default Settings
   //------------------------------------------------------------
 
-  var margin = {top: 0, right: 0, bottom: 0, left: 0}
-    , orient = 'left' // TODO top & bottom
-    , reverse = false
-    , ranges = function(d) { return d.ranges }
-    , markers = function(d) { return d.markers }
-    , measures = function(d) { return d.measures }
-    , rangeLabels = function(d) { return d.rangeLabels ? d.rangeLabels : [] }
-    , markerLabels = function(d) { return d.markerLabels ? d.markerLabels : []  }
-    , measureLabels = function(d) { return d.measureLabels ? d.measureLabels : []  }
-    , forceX = [0] // List of numbers to Force into the X scale (ie. 0, or a max / min, etc.)
-    , width = 380
-    , height = 30
-    , tickFormat = null
-    , color = nv.utils.getColor(['#1f77b4'])
-    , dispatch = d3.dispatch('elementMouseover', 'elementMouseout')
-    ;
-
-  //============================================================
-
+  var margin = { top: 0, right: 0, bottom: 0, left: 0 },
+    orient = 'left', // TODO top & bottom
+    reverse = false,
+    ranges = function (d) {
+      return d.ranges;
+    },
+    markers = function (d) {
+      return d.markers;
+    },
+    measures = function (d) {
+      return d.measures;
+    },
+    rangeLabels = function (d) {
+      return d.rangeLabels ? d.rangeLabels : [];
+    },
+    markerLabels = function (d) {
+      return d.markerLabels ? d.markerLabels : [];
+    },
+    measureLabels = function (d) {
+      return d.measureLabels ? d.measureLabels : [];
+    },
+    forceX = [0], // List of numbers to Force into the X scale (ie. 0, or a max / min, etc.)
+    width = 380,
+    height = 30,
+    tickFormat = null,
+    color = nv.utils.getColor(['#1f77b4']),
+    dispatch = d3.dispatch('elementMouseover', 'elementMouseout');
+  //===============
 
   function chart(selection) {
-    selection.each(function(d, i) {
+    selection.each(function (d, i) {
       var availableWidth = width - margin.left - margin.right,
-          availableHeight = height - margin.top - margin.bottom,
-          container = d3.select(this);
+        availableHeight = height - margin.top - margin.bottom,
+        container = d3.select(this);
 
       var rangez = ranges.call(this, d, i).slice().sort(d3.descending),
-          markerz = markers.call(this, d, i).slice().sort(d3.descending),
-          measurez = measures.call(this, d, i).slice().sort(d3.descending),
-          rangeLabelz = rangeLabels.call(this, d, i).slice(),
-          markerLabelz = markerLabels.call(this, d, i).slice(),
-          measureLabelz = measureLabels.call(this, d, i).slice();
-
+        markerz = markers.call(this, d, i).slice().sort(d3.descending),
+        measurez = measures.call(this, d, i).slice().sort(d3.descending),
+        rangeLabelz = rangeLabels.call(this, d, i).slice(),
+        markerLabelz = markerLabels.call(this, d, i).slice(),
+        measureLabelz = measureLabels.call(this, d, i).slice();
 
       //------------------------------------------------------------
       // Setup Scales
 
       // Compute the new x-scale.
-      var x1 = d3.scale.linear()
-          .domain( d3.extent(d3.merge([forceX, rangez])) )
-          .range(reverse ? [availableWidth, 0] : [0, availableWidth]);
+      var x1 = d3.scale
+        .linear()
+        .domain(d3.extent(d3.merge([forceX, rangez])))
+        .range(reverse ? [availableWidth, 0] : [0, availableWidth]);
 
       // Retrieve the old x-scale, if this is an update.
-      var x0 = this.__chart__ || d3.scale.linear()
-          .domain([0, Infinity])
-          .range(x1.range());
+      var x0 = this.__chart__ || d3.scale.linear().domain([0, Infinity]).range(x1.range());
 
       // Stash the new scale.
       this.__chart__ = x1;
 
-
       var rangeMin = d3.min(rangez), //rangez[2]
-          rangeMax = d3.max(rangez), //rangez[0]
-          rangeAvg = rangez[1];
+        rangeMax = d3.max(rangez), //rangez[0]
+        rangeAvg = rangez[1];
 
       //------------------------------------------------------------
-
 
       //------------------------------------------------------------
       // Setup containers and skeleton of chart
@@ -85,20 +89,25 @@ nv.models.bullet = function() {
 
       //------------------------------------------------------------
 
-
-
-      var w0 = function(d) { return Math.abs(x0(d) - x0(0)) }, // TODO: could optimize by precalculating x0(0) and x1(0)
-          w1 = function(d) { return Math.abs(x1(d) - x1(0)) };
-      var xp0 = function(d) { return d < 0 ? x0(d) : x0(0) },
-          xp1 = function(d) { return d < 0 ? x1(d) : x1(0) };
-
+      var w0 = function (d) {
+          return Math.abs(x0(d) - x0(0));
+        }, // TODO: could optimize by precalculating x0(0) and x1(0)
+        w1 = function (d) {
+          return Math.abs(x1(d) - x1(0));
+        };
+      var xp0 = function (d) {
+          return d < 0 ? x0(d) : x0(0);
+        },
+        xp1 = function (d) {
+          return d < 0 ? x1(d) : x1(0);
+        };
 
       g.select('rect.nv-rangeMax')
-          .attr('height', availableHeight)
-          .attr('width', w1(rangeMax > 0 ? rangeMax : rangeMin))
-          .attr('x', xp1(rangeMax > 0 ? rangeMax : rangeMin))
-          .datum(rangeMax > 0 ? rangeMax : rangeMin)
-          /*
+        .attr('height', availableHeight)
+        .attr('width', w1(rangeMax > 0 ? rangeMax : rangeMin))
+        .attr('x', xp1(rangeMax > 0 ? rangeMax : rangeMin))
+        .datum(rangeMax > 0 ? rangeMax : rangeMin);
+      /*
           .attr('x', rangeMin < 0 ?
                          rangeMax > 0 ?
                              x1(rangeMin)
@@ -106,12 +115,8 @@ nv.models.bullet = function() {
                        : x1(0))
                       */
 
-      g.select('rect.nv-rangeAvg')
-          .attr('height', availableHeight)
-          .attr('width', w1(rangeAvg))
-          .attr('x', xp1(rangeAvg))
-          .datum(rangeAvg)
-          /*
+      g.select('rect.nv-rangeAvg').attr('height', availableHeight).attr('width', w1(rangeAvg)).attr('x', xp1(rangeAvg)).datum(rangeAvg);
+      /*
           .attr('width', rangeMax <= 0 ?
                              x1(rangeMax) - x1(rangeAvg)
                            : x1(rangeAvg) - x1(rangeMin))
@@ -121,13 +126,13 @@ nv.models.bullet = function() {
                       */
 
       g.select('rect.nv-rangeMin')
-          .attr('height', availableHeight)
-          .attr('width', w1(rangeMax))
-          .attr('x', xp1(rangeMax))
-          .attr('width', w1(rangeMax > 0 ? rangeMin : rangeMax))
-          .attr('x', xp1(rangeMax > 0 ? rangeMin : rangeMax))
-          .datum(rangeMax > 0 ? rangeMin : rangeMax)
-          /*
+        .attr('height', availableHeight)
+        .attr('width', w1(rangeMax))
+        .attr('x', xp1(rangeMax))
+        .attr('width', w1(rangeMax > 0 ? rangeMin : rangeMax))
+        .attr('x', xp1(rangeMax > 0 ? rangeMin : rangeMax))
+        .datum(rangeMax > 0 ? rangeMin : rangeMax);
+      /*
           .attr('width', rangeMax <= 0 ?
                              x1(rangeAvg) - x1(rangeMin)
                            : x1(rangeMax) - x1(rangeAvg))
@@ -137,70 +142,70 @@ nv.models.bullet = function() {
                       */
 
       g.select('rect.nv-measure')
-          .style('fill', color)
-          .attr('height', availableHeight / 3)
-          .attr('y', availableHeight / 3)
-          .attr('width', measurez < 0 ?
-                             x1(0) - x1(measurez[0])
-                           : x1(measurez[0]) - x1(0))
-          .attr('x', xp1(measurez))
-          .on('mouseover', function() {
-              dispatch.elementMouseover({
-                value: measurez[0],
-                label: measureLabelz[0] || 'Current',
-                pos: [x1(measurez[0]), availableHeight/2]
-              })
-          })
-          .on('mouseout', function() {
-              dispatch.elementMouseout({
-                value: measurez[0],
-                label: measureLabelz[0] || 'Current'
-              })
-          })
+        .style('fill', color)
+        .attr('height', availableHeight / 3)
+        .attr('y', availableHeight / 3)
+        .attr('width', measurez < 0 ? x1(0) - x1(measurez[0]) : x1(measurez[0]) - x1(0))
+        .attr('x', xp1(measurez))
+        .on('mouseover', function () {
+          dispatch.elementMouseover({
+            value: measurez[0],
+            label: measureLabelz[0] || 'Current',
+            pos: [x1(measurez[0]), availableHeight / 2],
+          });
+        })
+        .on('mouseout', function () {
+          dispatch.elementMouseout({
+            value: measurez[0],
+            label: measureLabelz[0] || 'Current',
+          });
+        });
 
-      var h3 =  availableHeight / 6;
+      var h3 = availableHeight / 6;
       if (markerz[0]) {
         g.selectAll('path.nv-markerTriangle')
-            .attr('transform', function(d) { return 'translate(' + x1(markerz[0]) + ',' + (availableHeight / 2) + ')' })
-            .attr('d', 'M0,' + h3 + 'L' + h3 + ',' + (-h3) + ' ' + (-h3) + ',' + (-h3) + 'Z')
-            .on('mouseover', function() {
-              dispatch.elementMouseover({
-                value: markerz[0],
-                label: markerLabelz[0] || 'Previous',
-                pos: [x1(markerz[0]), availableHeight/2]
-              })
-            })
-            .on('mouseout', function() {
-              dispatch.elementMouseout({
-                value: markerz[0],
-                label: markerLabelz[0] || 'Previous'
-              })
+          .attr('transform', function (d) {
+            return 'translate(' + x1(markerz[0]) + ',' + availableHeight / 2 + ')';
+          })
+          .attr('d', 'M0,' + h3 + 'L' + h3 + ',' + -h3 + ' ' + -h3 + ',' + -h3 + 'Z')
+          .on('mouseover', function () {
+            dispatch.elementMouseover({
+              value: markerz[0],
+              label: markerLabelz[0] || 'Previous',
+              pos: [x1(markerz[0]), availableHeight / 2],
             });
+          })
+          .on('mouseout', function () {
+            dispatch.elementMouseout({
+              value: markerz[0],
+              label: markerLabelz[0] || 'Previous',
+            });
+          });
       } else {
         g.selectAll('path.nv-markerTriangle').remove();
       }
 
+      wrap
+        .selectAll('.nv-range')
+        .on('mouseover', function (d, i) {
+          var label = rangeLabelz[i] || (!i ? 'Maximum' : i == 1 ? 'Mean' : 'Minimum');
 
-      wrap.selectAll('.nv-range')
-          .on('mouseover', function(d,i) {
-            var label = rangeLabelz[i] || (!i ? "Maximum" : i == 1 ? "Mean" : "Minimum");
+          dispatch.elementMouseover({
+            value: d,
+            label: label,
+            pos: [x1(d), availableHeight / 2],
+          });
+        })
+        .on('mouseout', function (d, i) {
+          var label = rangeLabelz[i] || (!i ? 'Maximum' : i == 1 ? 'Mean' : 'Minimum');
 
-            dispatch.elementMouseover({
-              value: d,
-              label: label,
-              pos: [x1(d), availableHeight/2]
-            })
-          })
-          .on('mouseout', function(d,i) {
-            var label = rangeLabelz[i] || (!i ? "Maximum" : i == 1 ? "Mean" : "Minimum");
+          dispatch.elementMouseout({
+            value: d,
+            label: label,
+          });
+        });
 
-            dispatch.elementMouseout({
-              value: d,
-              label: label
-            })
-          })
-
-/* // THIS IS THE PREVIOUS BULLET IMPLEMENTATION, WILL REMOVE SHORTLY
+      /* // THIS IS THE PREVIOUS BULLET IMPLEMENTATION, WILL REMOVE SHORTLY
       // Update the range rects.
       var range = g.selectAll('rect.nv-range')
           .data(rangez);
@@ -291,7 +296,6 @@ nv.models.bullet = function() {
 
       marker.exit().remove();
 */
-
     });
 
     // d3.timer.flush();  // Not needed?
@@ -299,17 +303,16 @@ nv.models.bullet = function() {
     return chart;
   }
 
-
-  //============================================================
+  //===============
   // Expose Public Variables
   //------------------------------------------------------------
 
   chart.dispatch = dispatch;
 
   chart.options = nv.utils.optionsFunc.bind(chart);
-  
+
   // left, right, top, bottom
-  chart.orient = function(_) {
+  chart.orient = function (_) {
     if (!arguments.length) return orient;
     orient = _;
     reverse = orient == 'right' || orient == 'bottom';
@@ -317,69 +320,66 @@ nv.models.bullet = function() {
   };
 
   // ranges (bad, satisfactory, good)
-  chart.ranges = function(_) {
+  chart.ranges = function (_) {
     if (!arguments.length) return ranges;
     ranges = _;
     return chart;
   };
 
   // markers (previous, goal)
-  chart.markers = function(_) {
+  chart.markers = function (_) {
     if (!arguments.length) return markers;
     markers = _;
     return chart;
   };
 
   // measures (actual, forecast)
-  chart.measures = function(_) {
+  chart.measures = function (_) {
     if (!arguments.length) return measures;
     measures = _;
     return chart;
   };
 
-  chart.forceX = function(_) {
+  chart.forceX = function (_) {
     if (!arguments.length) return forceX;
     forceX = _;
     return chart;
   };
 
-  chart.width = function(_) {
+  chart.width = function (_) {
     if (!arguments.length) return width;
     width = _;
     return chart;
   };
 
-  chart.height = function(_) {
+  chart.height = function (_) {
     if (!arguments.length) return height;
     height = _;
     return chart;
   };
 
-  chart.margin = function(_) {
+  chart.margin = function (_) {
     if (!arguments.length) return margin;
-    margin.top    = typeof _.top    != 'undefined' ? _.top    : margin.top;
-    margin.right  = typeof _.right  != 'undefined' ? _.right  : margin.right;
+    margin.top = typeof _.top != 'undefined' ? _.top : margin.top;
+    margin.right = typeof _.right != 'undefined' ? _.right : margin.right;
     margin.bottom = typeof _.bottom != 'undefined' ? _.bottom : margin.bottom;
-    margin.left   = typeof _.left   != 'undefined' ? _.left   : margin.left;
+    margin.left = typeof _.left != 'undefined' ? _.left : margin.left;
     return chart;
   };
 
-  chart.tickFormat = function(_) {
+  chart.tickFormat = function (_) {
     if (!arguments.length) return tickFormat;
     tickFormat = _;
     return chart;
   };
 
-  chart.color = function(_) {
+  chart.color = function (_) {
     if (!arguments.length) return color;
     color = nv.utils.getColor(_);
     return chart;
   };
 
-  //============================================================
-
+  //===============
 
   return chart;
 };
-
-

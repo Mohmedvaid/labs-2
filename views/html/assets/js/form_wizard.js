@@ -1,70 +1,65 @@
-/* ============================================================
+/* ===============
  * Form Wizard
  * Multistep form wizard using Bootstrap Wizard Plugin
  * For DEMO purposes only. Extract what you need.
- * ============================================================ */
-(function($) {
+ * =============== */
+(function ($) {
+  'use strict';
 
-	'use strict';
+  $(document).ready(function () {
+    $('#rootwizard').bootstrapWizard({
+      onTabShow: function (tab, navigation, index) {
+        var $total = navigation.find('li').length;
+        var $current = index + 1;
 
-	$(document).ready(function() {
+        // If it's the last tab then hide the last button and show the finish instead
+        if ($current >= $total) {
+          $('#rootwizard').find('.pager .next').hide();
+          $('#rootwizard').find('.pager .finish').show().removeClass('disabled hidden');
+        } else {
+          $('#rootwizard').find('.pager .next').show();
+          $('#rootwizard').find('.pager .finish').hide();
+        }
 
-			$('#rootwizard').bootstrapWizard({
-					onTabShow: function(tab, navigation, index) {
-							var $total = navigation.find('li').length;
-							var $current = index + 1;
+        var li = navigation.find('li a.active').parent();
 
-							// If it's the last tab then hide the last button and show the finish instead
-							if ($current >= $total) {
-									$('#rootwizard').find('.pager .next').hide();
-									$('#rootwizard').find('.pager .finish').show().removeClass('disabled hidden');
-							} else {
-									$('#rootwizard').find('.pager .next').show();
-									$('#rootwizard').find('.pager .finish').hide();
-							}
+        var btnNext = $('#rootwizard').find('.pager .next').find('button');
+        var btnPrev = $('#rootwizard').find('.pager .previous').find('button');
 
-							var li = navigation.find('li a.active').parent();
+        if ($current < $total) {
+          var nextIcon = li.next().find('.material-icons');
+          var nextIconClass = nextIcon.text();
 
-							var btnNext = $('#rootwizard').find('.pager .next').find('button');
-							var btnPrev = $('#rootwizard').find('.pager .previous').find('button');	
+          btnNext.find('.material-icons').html(nextIconClass);
 
-							if ($current < $total) {
+          var prevIcon = li.prev().find('.material-icons');
+          var prevIconClass = prevIcon.html();
+          btnPrev.addClass('btn-animated');
+          btnPrev.find('.hidden-block').show();
+          btnPrev.find('.material-icons').html(prevIconClass);
+        }
+        if ($current == 1) {
+          btnPrev.find('.hidden-block').hide();
+          btnPrev.removeClass('btn-animated');
+        }
+      },
+      onNext: function (tab, navigation, index) {
+        console.log('Showing next tab');
+      },
+      onPrevious: function (tab, navigation, index) {
+        console.log('Showing previous tab');
+      },
+      onInit: function () {
+        $('#rootwizard ul').removeClass('nav-pills');
+      },
+    });
 
-									var nextIcon = li.next().find('.material-icons');
-									var nextIconClass = nextIcon.text();
-
-									btnNext.find('.material-icons').html(nextIconClass)
-
-									var prevIcon = li.prev().find('.material-icons');
-									var prevIconClass = prevIcon.html()
-									btnPrev.addClass('btn-animated');
-									btnPrev.find('.hidden-block').show();
-									btnPrev.find('.material-icons').html(prevIconClass);
-									
-							}
-							if($current == 1){
-								btnPrev.find('.hidden-block').hide();
-								btnPrev.removeClass('btn-animated');
-							} 
-					},
-					onNext: function(tab, navigation, index) {
-							console.log("Showing next tab");
-					},
-					onPrevious: function(tab, navigation, index) {
-							console.log("Showing previous tab");
-					},
-					onInit: function() {
-							$('#rootwizard ul').removeClass('nav-pills');
-					}
-
-			});
-
-			$('.remove-item').click(function() {
-					$(this).parents('tr').fadeOut(function() {
-							$(this).remove();
-					});
-			});
-
-	});
-
+    $('.remove-item').click(function () {
+      $(this)
+        .parents('tr')
+        .fadeOut(function () {
+          $(this).remove();
+        });
+    });
+  });
 })(window.jQuery);
