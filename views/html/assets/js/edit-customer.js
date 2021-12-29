@@ -113,11 +113,20 @@ $(document).ready(function () {
   function hideSpinner() {
     $(`#addCustomerSpinner`).css('display', 'none');
   }
+  function showError(error) {
+    $(`#mainCustomerInfo`).append(`<div id="errors"><p style="color:red">${error}</p></div>`);
+  }
+  function clearErrors() {
+    $(`#errors`).remove();
+  }
+
   $(document).on('submit', '#customerAssets', function (e) {
     e.preventDefault();
     let customerID = window.location.search.substring(1);
-    showSpinner();
     let file = $(`input[name="testResults"`).prop('files');
+    clearErrors();
+    if (file.length === 0) return showError('Please select a file');
+    showSpinner();
     let formData = new FormData();
     for (let i = 0; i < file.length; i++) {
       formData.append('testResults', file[i]);
@@ -128,7 +137,7 @@ $(document).ready(function () {
       .then(hideSpinner)
       .catch((err) => console.log(err));
   });
-  hideSpinner()
+  hideSpinner();
 
   // Ready ends
 });
