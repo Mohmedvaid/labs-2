@@ -53,6 +53,9 @@ const customerSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+    testResults: [{
+      type:String,
+    }]
 	},
 	{
 		toJSON: {
@@ -65,6 +68,12 @@ function convertBufferToBase64(buffer) {
 	if (buffer != null && this.imageType != null) {
 		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
 	}
+}
+
+function convertToAsset(data){
+  if(data){
+		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
+  }
 }
 
 function formatDOB(dob) {

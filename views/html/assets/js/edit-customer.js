@@ -1,13 +1,13 @@
 $(document).ready(function () {
+  //   FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginFileEncode);
+  //   FilePond.parse(document.body);
   let customerID = window.location.search.substring(1);
   if (!customerID) return;
   else {
     axios.get(`/api/customer/${customerID}`).then((response) => {
       console.log(response.data);
       appendCustomerInfo(response.data);
-      FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginFileEncode);
-      FilePond.parse(document.body);
-	  return 
+      return;
     });
   }
   // Ready ends
@@ -23,7 +23,7 @@ $(document).ready(function () {
 			src="${customerImg}" alt="Contact"></div>
 	<h3 class="m0 text-bold">${customer.firstName} ${customer.lastName}</h3>`;
     let mainInfoContent = `
-		<form id="updateCustomerForm" role="form" action="/api/customer" method="POST">
+		<form id="updateCustomerForm" role="form" action="/" method="POST">
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="form-group form-group-default">
@@ -73,10 +73,6 @@ $(document).ready(function () {
 						</div>
 					</div>
 				</div>
-				<div>
-					<label for="testResults">Test Results/Documents</label>
-					<input type="file" name="testResults" class="filepond">
-				</div>
 				<div class="modal-footer">
 					<button aria-label="" id="updateCustomer" class="btn btn-primary  btn-cons" type="submit">Save Customer</button>
 					<button aria-label="" type="button" class="btn btn-cons" >Discard Changes</button>
@@ -85,4 +81,35 @@ $(document).ready(function () {
     basicInfoEl.append(basicInfoContent);
     mainInfoEl.append(mainInfoContent);
   }
+
+  //   Handle form submit
+  $(document).on('submit', '#updateCustomerForm', function (e) {
+    e.preventDefault();
+    let customerID = window.location.search.substring(1);
+    let formData = $(this).serialize();
+    axios
+      .put(`/api/customer/${customerID}`, formData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  $(document).on('submit', '#customerAssets', function (e) {
+    let customerID = window.location.search.substring(1);
+    e.preventDefault();
+    let file = $(`input[name="testResults"`).prop('files');
+    let formData = new FormData();
+    for (let i = 0; i < file.length; i++) {
+      formData.append('testResults', file[i]);
+    }
+    console.log(formData);
+    axios.put(`/api/customer/upload/${customerID}`, formData).then((res) => {
+      console.log(res.data);
+    });
+  });
+
+  // Ready ends
 });
