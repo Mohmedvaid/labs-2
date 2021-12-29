@@ -26,9 +26,15 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please enter a last name'],
     },
+    phone:{
+      type: String,
+      required: [true, 'Please enter a phone number'],
+    },
     image: {
-      type: Buffer,
-      get: convertBufferToBase64,
+      name: String,
+      assetType: String,
+      path: String,
+      awsData: mongoose.Schema.Types.Mixed,
     },
     imageType: {
       type: String,
@@ -72,7 +78,6 @@ const customerSchema = new mongoose.Schema(
 function convertBufferToBase64(buffer) {
   //console.log("Image!!!", this.imageType);
   if (buffer != null && this.imageType != null) {
-    console.log('Image2222222222!!!!');
     return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`;
   }
 }

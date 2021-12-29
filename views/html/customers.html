@@ -165,7 +165,7 @@
                 </div>
                 <div class="modal-body">
                   <p id="errors" class="small-text"></p>
-                  <form id="addCustomerForm"role="form" action="/api/customer" method="POST">
+                  <form id="addCustomerForm"role="form" action="/api/customer" method="POST" enctype="multipart/form-data">
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group form-group-default">
@@ -213,6 +213,14 @@
                           </div>
                         </div>
                       </div>
+                                            <div class="row">
+                                              <div class="col-sm-12">
+                                                <div class="form-group form-group-default">
+                                                  <label for="phone">Phone</label>
+                                                  <input required name="phone" id="phone" type="text" class="form-control" placeholder="(999) 999-999">
+                                                </div>
+                                              </div>
+                                            </div>
                                         <!-- Signature -->
                                           <div class="container">
                                             <div class="row">
@@ -245,10 +253,9 @@
                           <label for="customerSignature">Date of Birth</label>
                           <input id="sig-dataUrl" required name="customerSignature" id="customerSignature" type="text" class="form-control" placeholder="">
                         </div>
-
                     <div>
                       <label for="idImage">Upload ID Picture</label>
-                      <input type="file" name="idImage" class="filepond"  accept="image/*">
+                      <input type="file" name="idImage" class=""  accept="image/*">
                     </div >
                     <div class="modal-footer">
                       <button aria-label="" id="add-app" class="btn btn-primary  btn-cons" type="submit">Save Customer</button>
@@ -348,7 +355,6 @@
                       <th>Address</th>
                       <th>Testing Location</th>
                       <th>ID Picture</th>
-                      <th>Results</th>
                     </tr>
                   </thead>
                   <tbody id="allCustomers">

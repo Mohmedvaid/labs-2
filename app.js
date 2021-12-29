@@ -33,7 +33,7 @@ mongoose
 // routes
 app.get('*', checkUser)
 
-app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
+//app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
 app.use(authRoutes)
 app.use(customerRoutes)
 app.use(nonCmsRoutes)

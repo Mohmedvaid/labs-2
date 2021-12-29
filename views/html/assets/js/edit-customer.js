@@ -19,7 +19,7 @@ $(document).ready(function () {
     basicInfoEl.empty();
     mainInfoEl.empty();
     existingAssetEl.empty();
-    let customerImg = `${customer.image ? customer.image : 'https://via.placeholder.com/150'}`;
+    let customerImg = `${customer.image ? customer.image.path : 'https://via.placeholder.com/150'}`;
     let basicInfoContent = `                                        
 	  <div class="pv-lg"><img class="center-block img-responsive img-circle img-thumbnail thumb96"
 			src="${customerImg}" alt="Contact"></div>
@@ -77,6 +77,15 @@ $(document).ready(function () {
 						</div>
 					</div>
 				</div>
+        <div class="row">
+					<div class="col-sm-12">
+						<div class="form-group form-group-default">
+							<label for="phone">Phone</label>
+							<input required name="phone" id="phone" type="text" class="form-control" value="${customer.phone}">
+						</div>
+					</div>
+				</div>
+
 				<div class="modal-footer">
 					<button aria-label="" id="updateCustomer" class="btn btn-primary  btn-cons" type="submit">Save Customer</button>
 					<button aria-label="" type="button" class="btn btn-cons" >Discard Changes</button>

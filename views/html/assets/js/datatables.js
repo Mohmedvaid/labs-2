@@ -13,11 +13,11 @@
     phone: 480,
   };
   let customerSignature = '';
-  FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginFileEncode, FilePondPluginFileValidateType);
+  FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize);
   FilePond.parse(document.body);
-  FilePond.create(document.querySelector('.filepond'), {
-    acceptedFileTypes: ['image/*'],
-  });
+  //   FilePond.create(document.querySelector('.filepond'), {
+  //     acceptedFileTypes: ['image/*'],
+  //   });
   // Customer Spinner
   hideNewCustomerSpinner();
   function showNewCustomerSpinner() {
@@ -28,7 +28,7 @@
   }
 
   // Initialize datatable showing a search box at the top right corner
-  var initTableWithSearch = function () {
+  var initTableWithSearch = async function () {
     var table = $('#tableWithSearch');
 
     var settings = {
@@ -40,33 +40,47 @@
         sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
       },
       iDisplayLength: 5,
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', aData[6]);
+      },
     };
 
     table.dataTable(settings);
 
+    let customers = await getCustomers();
+    customers.forEach((customer) => {
+      table.fnAddData([
+        customer.firstName,
+        customer.lastName,
+        customer.email,
+        customer.address,
+        customer.location,
+        `${
+          customer.image
+            ? `<a href="${customer.image.path}" data-lightbox="${customer.image.path}">
+							<img style="width:100%" src="${customer.image.path}">
+						</a>`
+            : '<p>No ID Found</p>'
+        }`,
+        customer._id,
+      ]);
+    });
+
+    $(`#tableWithSearch td`).addClass('v-align-middle');
     // search box for table
     $('#search-table').keyup(function () {
       table.fnFilter($(this).val());
     });
+    initAddNewCustomer(table);
   };
+  function getCustomers() {
+    return axios.get('/api/customer').then((response) => {
+      return response.data;
+    });
+  }
 
   // Initialize datatable with ability to add rows dynamically
-  var initTableWithDynamicRows = function () {
-    var table = $('#tableWithDynamicRows');
-
-    var settings = {
-      sDom: "<t><'row'<p i>>",
-      destroy: true,
-      scrollCollapse: true,
-      oLanguage: {
-        sLengthMenu: '_MENU_ ',
-        sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
-      },
-      iDisplayLength: 5,
-    };
-
-    table.dataTable(settings);
-
+  var initAddNewCustomer = function (table) {
     $('#show-modal').click(function () {
       $('#addNewAppModal').modal('show');
     });
@@ -75,46 +89,70 @@
     $('#addCustomerForm').submit(function (e) {
       e.preventDefault();
       let form = $(this);
-      console.log(form);
-      let payload = form.serialize();
+      let file = $(`input[name="idImage"`).prop('files');
+      let formData = new FormData();
+      for (let i = 0; i < file.length; i++) {
+        formData.append('idImage', file[i]);
+      }
+	  let initialFormData = form.serializeArray();
+	  initialFormData.forEach((data) => {
+		formData.append(data.name, data.value);
+	  })
+
       showNewCustomerSpinner();
       axios
-        .post('/api/customer', payload)
-        .then(({ data }) => {
-          let td = ` <tr id=${data._id}>
-		              <td class="v-align-middle semi-bold">
-		                <p>${data.firstName}</p>
-		              </td>
-		              <td class="v-align-middle">
-		                <p>${data.lastName}</p>
-		              </td>
-		              <td class="v-align-middle">
-		                <p>${data.email}</p>
-		              </td>
-		              <td class="v-align-middle">
-		                <p>${data.address}</p>
-		              </td>
-		             <td class="v-align-middle">
-		                <p>${data.location}</p>
-		              </td>
-					  					  <td class="v-align-middle">
-					  ${
-              data.image
-                ? `<a href="${data.image}" data-lightbox="${data.image}">
-									<img style="width:100%" src="${data.image}">
-								</a>`
+        .post('/api/customer', formData)
+        .then(({ data: customer }) => {
+          console.log(customer);
+          table.fnAddData([
+            customer.firstName,
+            customer.lastName,
+            customer.email,
+            customer.address,
+            customer.location,
+            `${
+              customer.image
+                ? `<a href="${customer.image.path}" data-lightbox="${customer.image.path}">
+							<img style="width:100%" src="${customer.image.path}">
+						</a>`
                 : '<p>No ID Found</p>'
-            }
-                      </td>
-					   <td class="v-align-middle">
-                        <p>${data.result ? data.result : '<p>Pending</p>'}</p>
-                      </td>
-		            </tr>`;
-          $('tbody').append(td);
+            }`,
+            customer._id,
+          ]);
+          //   let td = ` <tr id=${data._id}>
+          //               <td class="v-align-middle semi-bold">
+          //                 <p>${data.firstName}</p>
+          //               </td>
+          //               <td class="v-align-middle">
+          //                 <p>${data.lastName}</p>
+          //               </td>
+          //               <td class="v-align-middle">
+          //                 <p>${data.email}</p>
+          //               </td>
+          //               <td class="v-align-middle">
+          //                 <p>${data.address}</p>
+          //               </td>
+          //              <td class="v-align-middle">
+          //                 <p>${data.location}</p>
+          //               </td>
+          // 			  					  <td class="v-align-middle">
+          // 			  ${
+          //       data.image
+          //         ? `<a href="${data.image}" data-lightbox="${data.image}">
+          // 							<img style="width:100%" src="${data.image}">
+          // 						</a>`
+          //         : '<p>No ID Found</p>'
+          //     }
+          //               </td>
+          // 			   <td class="v-align-middle">
+          //                 <p>${data.result ? data.result : '<p>Pending</p>'}</p>
+          //               </td>
+          //             </tr>`;
+          //   $('tbody').append(td);
         })
         .then(() => hideNewCustomerSpinner())
         .then(() => $('#addNewAppModal').modal('hide'))
-        .thne(removeEmptyTableMessage)
+        .then(removeEmptyTableMessage)
         .catch(handleError);
     });
   };
@@ -134,114 +172,50 @@
     }
   }
 
-  // Initialize datatable showing export options
-  var initTableWithExportOptions = function () {
-    var table = $('#tableWithExportOptions');
-
-    var settings = {
-      sDom: "<'exportOptions'T><'table-responsive sm-m-b-15't><'row'<p i>>",
-      destroy: true,
-      scrollCollapse: true,
-      oLanguage: {
-        sLengthMenu: '_MENU_ ',
-        sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
-      },
-      iDisplayLength: 5,
-      oTableTools: {
-        sSwfPath: 'assets/plugins/jquery-datatable/extensions/TableTools/swf/copy_csv_xls_pdf.swf',
-        aButtons: [
-          {
-            sExtends: 'csv',
-            sButtonText: "<i class='pg-grid'></i>",
-          },
-          {
-            sExtends: 'xls',
-            sButtonText: "<i class='fa fa-file-excel-o'></i>",
-          },
-          {
-            sExtends: 'pdf',
-            sButtonText: "<i class='fa fa-file-pdf-o'></i>",
-          },
-          {
-            sExtends: 'copy',
-            sButtonText: "<i class='fa fa-copy'></i>",
-          },
-        ],
-      },
-      fnDrawCallback: function (oSettings) {
-        $('.export-options-container').append($('.exportOptions'));
-
-        $('#ToolTables_tableWithExportOptions_0').tooltip({
-          title: 'Export as CSV',
-          container: 'body',
-        });
-
-        $('#ToolTables_tableWithExportOptions_1').tooltip({
-          title: 'Export as Excel',
-          container: 'body',
-        });
-
-        $('#ToolTables_tableWithExportOptions_2').tooltip({
-          title: 'Export as PDF',
-          container: 'body',
-        });
-
-        $('#ToolTables_tableWithExportOptions_3').tooltip({
-          title: 'Copy data',
-          container: 'body',
-        });
-      },
-    };
-
-    table.dataTable(settings);
-  };
-
-  function initTableData() {
-    let temp = '';
-    showNewCustomerSpinner();
-    axios
-      .get('/api/customer')
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.length > 0) {
-          return res.data.forEach((customer) => {
-            temp += ` <tr id="${customer._id}">
-                      <td class="v-align-middle semi-bold">
-                        <p>${customer.firstName}</p>
-                      </td>
-                      <td class="v-align-middle">
-                        <p>${customer.lastName}</p>
-                      </td>
-                      <td class="v-align-middle">
-                        <p>${customer.email}</p>
-                      </td>
-                      <td class="v-align-middle">
-                        <p>${customer.address}</p>
-                      </td>
-                     <td class="v-align-middle">
-                        <p>${customer.location}</p>
-                      </td>
-					  <td class="v-align-middle">
-					  ${
-              customer.image
-                ? `<a href="${customer.image}" data-lightbox="${customer.image}">
-							<img style="width:100%" src="${customer.image}">
-						</a>`
-                : '<p>No ID Found</p>'
-            }
-                      </td>
-					 <td class="v-align-middle">
-                        <p>${customer.result ? customer.result : '<p>Pending</p>'}</p>
-                      </td>
-                    </tr>`;
-          });
-        }
-        temp = `<tr id="noTableDataMessage"class="odd"><td valign="top" colspan="7" class="dataTables_empty">No data available in table</td></tr>`;
-        return;
-      })
-      .then(() => $('#allCustomers').append(temp))
-      .then(() => hideNewCustomerSpinner());
-  }
+  //   function initTableData() {
+  //     let temp = '';
+  //     showNewCustomerSpinner();
+  //     axios
+  //       .get('/api/customer')
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         $('#tableWithSearch').row.add(['test', 'test2']);
+  //         if (res.data.length > 0) {
+  //           return res.data.forEach((customer) => {
+  //             temp += ` <tr id="${customer._id}">
+  //                       <td class="v-align-middle semi-bold">
+  //                         <p>${customer.firstName}</p>
+  //                       </td>
+  //                       <td class="v-align-middle">
+  //                         <p>${customer.lastName}</p>
+  //                       </td>
+  //                       <td class="v-align-middle">
+  //                         <p>${customer.email}</p>
+  //                       </td>
+  //                       <td class="v-align-middle">
+  //                         <p>${customer.address}</p>
+  //                       </td>
+  //                      <td class="v-align-middle">
+  //                         <p>${customer.location}</p>
+  //                       </td>
+  // 					  <td class="v-align-middle ">
+  // 					  ${
+  //               customer.image
+  //                 ? `<a href="${customer.image}" data-lightbox="${customer.image}">
+  // 							<img style="width:100%" src="${customer.image}">
+  // 						</a>`
+  //                 : '<p>No ID Found</p>'
+  //             }
+  //                       </td>
+  //                     </tr>`;
+  //           });
+  //         }
+  //         temp = `<tr id="noTableDataMessage"class="odd"><td valign="top" colspan="7" class="dataTables_empty">No data available in table</td></tr>`;
+  //         return;
+  //       })
+  //       .then(() => $('#allCustomers').append(temp))
+  //       .then(() => hideNewCustomerSpinner());
+  //   }
 
   function clearErrors() {
     $(`#errors`).empty();
@@ -289,7 +263,11 @@
 				<td class="v-align-middle semi-bold">${finalResult}</td>
 				<td class="v-align-middle">
 							  ${
-                  propName === 'image' || propName === 'customersignature' || propName === 'qrcodeurl'
+                  propName === 'image'
+                    ? `<a href="${customer[property].path}" data-lightbox="${customer[property].path}">
+							<img style="width:50%" src="${customer[property].path}">
+						</a>`
+                    : propName === 'customersignature' || propName === 'qrcodeurl'
                     ? `<a href="${customer[property]}" data-lightbox="${customer[property]}">
 							<img style="width:50%" src="${customer[property]}">
 						</a>`
@@ -490,7 +468,4 @@
   })();
 
   initTableWithSearch();
-  initTableWithDynamicRows();
-  initTableWithExportOptions();
-  initTableData();
 })(window.jQuery);

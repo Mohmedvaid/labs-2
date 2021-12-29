@@ -42,18 +42,27 @@ const awsUpload = multer({
   }),
 });
 
-router.post('/api/customer', ({ body }, res) => {
+router.post('/api/customer', awsUpload.single('idImage'), (req, res) => {
+  let body = req.body;
+  //console.log(req.file);
+  console.log(req.body);
+  let idImage = {
+    name: req.file.originalname,
+    assetType: req.file.mimetype,
+    path: req.file.location,
+    awsData: req.file,
+  };
   let customer = {
     firstName: body.firstname,
     lastName: body.lastname,
     email: body.email,
     address: body.address,
     location: body.location,
-    image: body.idImage,
+    image: idImage,
     dob: body.dob,
     customerSignature: body.customerSignature,
+    phone: body.phone,
   };
-  //console.log(JSON.parse(customer.image).type);
 
   return customerDB
     .find({ email: customer.email })
@@ -62,9 +71,13 @@ router.post('/api/customer', ({ body }, res) => {
       return;
     })
     .then(() => new customerDB(customer))
-    .then((newCustomer) => {
-      return saveImage(newCustomer, customer.image);
-    })
+    // .then((newCustomer) => {
+    //   let updatedCustomer = saveImage(newCustomer, customer.image);
+    //   if (!updatedCustomer) {
+    //     return newCustomer;
+    //   }
+    //   return updatedCustomer;
+    // })
     .then(generateAndSaveQRCode)
     .then((newCustomer) => newCustomer.save())
     .then((newCustomer) => res.json(newCustomer))
