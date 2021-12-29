@@ -25,6 +25,8 @@ $(document).ready(function () {
 			src="${customerImg}" alt="Contact"></div>
 	<h3 class="m0 text-bold">${customer.firstName} ${customer.lastName}</h3>`;
     let mainInfoContent = `
+    <div class="m-2 card-heading bold">Details
+   </div>
 		<form id="updateCustomerForm" role="form" action="/" method="POST">
 				<div class="row">
 					<div class="col-sm-6">

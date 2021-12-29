@@ -13,8 +13,11 @@
     phone: 480,
   };
   let customerSignature = '';
-  FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginFileEncode);
+  FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginFileEncode, FilePondPluginFileValidateType);
   FilePond.parse(document.body);
+  FilePond.create(document.querySelector('.filepond'), {
+    acceptedFileTypes: ['image/*'],
+  });
   // Customer Spinner
   hideNewCustomerSpinner();
   function showNewCustomerSpinner() {
@@ -470,7 +473,7 @@
         e.preventDefault();
         clearCanvas();
         sigText.innerHTML = 'Data URL for your signature will go here!';
-        sigImage.setAttribute('src', '');
+        sigImage.setAttribute('src', '/assets/img/sign-required.png');
       },
       false
     );

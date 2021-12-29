@@ -237,7 +237,7 @@
                                             <br />
                                             <div class="row">
                                               <div class="col-md-12">
-                                                <img style="width: 75%;" id="sig-image" src="/assets/img/signature-sample.jpeg" alt="Your signature will go here!" />
+                                                <img style="width: 75%;" id="sig-image" src="/assets/img/sign-required.png" alt="Your signature will go here!" />
                                               </div>
                                             </div>
                                           </div>
@@ -248,7 +248,7 @@
 
                     <div>
                       <label for="idImage">Upload ID Picture</label>
-                      <input type="file" name="idImage" class="filepond">
+                      <input type="file" name="idImage" class="filepond"  accept="image/*">
                     </div >
                     <div class="modal-footer">
                       <button aria-label="" id="add-app" class="btn btn-primary  btn-cons" type="submit">Save Customer</button>
@@ -1586,6 +1586,7 @@
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
     <!-- END VENDOR JS -->
   <!-- File pond js -->
+  <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
   <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
   <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
   <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
