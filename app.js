@@ -18,6 +18,7 @@ app.use(express.static('views/html'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true, limit: '50mb' }))
+app.use("/uploads", express.static('uploads'))
 
 // database connection
 mongoose

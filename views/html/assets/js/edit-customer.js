@@ -15,8 +15,10 @@ $(document).ready(function () {
   function appendCustomerInfo(customer) {
     let basicInfoEl = $(`#basicustomerInfo`);
     let mainInfoEl = $(`#mainCustomerInfo`);
+    let existingAssetEl = $(`#existingAssets`);
     basicInfoEl.empty();
     mainInfoEl.empty();
+    existingAssetEl.empty();
     let customerImg = `${customer.image ? customer.image : 'https://via.placeholder.com/150'}`;
     let basicInfoContent = `                                        
 	  <div class="pv-lg"><img class="center-block img-responsive img-circle img-thumbnail thumb96"
@@ -80,6 +82,14 @@ $(document).ready(function () {
 			</form>	`;
     basicInfoEl.append(basicInfoContent);
     mainInfoEl.append(mainInfoContent);
+    let existingAssetContent = customer.testResults.map((asset) => {
+      return `<a class="m-1" href="/${asset.path}" download>${asset.name}</a>`;
+    });
+    if (existingAssetContent.length > 0) {
+      existingAssetEl.append(existingAssetContent);
+    } else {
+      existingAssetEl.append(`<p>No files found</p>`);
+    }
   }
 
   //   Handle form submit
@@ -105,10 +115,10 @@ $(document).ready(function () {
     for (let i = 0; i < file.length; i++) {
       formData.append('testResults', file[i]);
     }
-    console.log(formData);
-    axios.put(`/api/customer/upload/${customerID}`, formData).then((res) => {
-      console.log(res.data);
-    });
+    axios
+      .put(`/api/customer/upload/${customerID}`, formData)
+      .then((res) => appendCustomerInfo(res.data))
+      .catch((err) => console.log(err));
   });
 
   // Ready ends

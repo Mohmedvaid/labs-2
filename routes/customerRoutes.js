@@ -112,16 +112,25 @@ router.put('/api/customer/:id', (req, res) => {
 // handle file uploads
 router.put('/api/customer/upload/:id', upload.array('testResults'), (req, res) => {
   let customerID = req.params.id;
-  let filesPath = req.files.map((file) => file.path);
-//   console.log(filesPath);
-  console.log(req.files);
-//   customerDB
-//     .findOneAndUpdate({ _id: customerID }, { $push: { testResults: { $each: filesPath } } }, { new: true })
-//     .then((customer) => res.json(customer))
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(400).json(err);
-//     });
+  let assets = req.files.map((file) => {
+    return {
+      name: file.originalname,
+      assetType: file.mimetype,
+      path: file.path,
+    };
+  });
+  //   console.log(filesPath);
+  //console.log(assets);
+  customerDB
+    .findOneAndUpdate({ _id: customerID }, { $push: { testResults: { $each: assets } } }, { new: true })
+    .then((customer) => {
+      console.log(customer);
+      return res.json(customer);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 });
 
 function saveImage(customer, encodedImage) {

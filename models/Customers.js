@@ -54,7 +54,9 @@ const customerSchema = new mongoose.Schema(
 			required: true,
 		},
     testResults: [{
-      type:String,
+      name:String,
+      assetType:String,
+      path:String,
     }]
 	},
 	{
