@@ -107,9 +107,16 @@ $(document).ready(function () {
       });
   });
 
+  function showSpinner() {
+    $(`#addCustomerSpinner`).show();
+  }
+  function hideSpinner() {
+    $(`#addCustomerSpinner`).css('display', 'none');
+  }
   $(document).on('submit', '#customerAssets', function (e) {
-    let customerID = window.location.search.substring(1);
     e.preventDefault();
+    let customerID = window.location.search.substring(1);
+    showSpinner();
     let file = $(`input[name="testResults"`).prop('files');
     let formData = new FormData();
     for (let i = 0; i < file.length; i++) {
@@ -118,8 +125,10 @@ $(document).ready(function () {
     axios
       .put(`/api/customer/upload/${customerID}`, formData)
       .then((res) => appendCustomerInfo(res.data))
+      .then(hideSpinner)
       .catch((err) => console.log(err));
   });
+  hideSpinner()
 
   // Ready ends
 });

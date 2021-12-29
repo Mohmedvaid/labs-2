@@ -38,7 +38,7 @@ const awsUpload = multer({
     },
     key: function (req, file, cb) {
       cb(null, `${uuid()}-${file.originalname}`);
-    }
+    },
   }),
 });
 
@@ -53,6 +53,7 @@ router.post('/api/customer', ({ body }, res) => {
     dob: body.dob,
     customerSignature: body.customerSignature,
   };
+  //console.log(JSON.parse(customer.image).type);
 
   return customerDB
     .find({ email: customer.email })
@@ -62,8 +63,7 @@ router.post('/api/customer', ({ body }, res) => {
     })
     .then(() => new customerDB(customer))
     .then((newCustomer) => {
-      if (newCustomer.image) return saveImage(newCustomer, customer.image);
-      return newCustomer;
+      return saveImage(newCustomer, customer.image);
     })
     .then(generateAndSaveQRCode)
     .then((newCustomer) => newCustomer.save())
@@ -136,12 +136,12 @@ router.put('/api/customer/:id', (req, res) => {
 router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res) => {
   let customerID = req.params.id;
   let assets = req.files.map((file) => {
-	  console.log(file);
+    console.log(file);
     return {
       name: file.originalname,
       assetType: file.mimetype,
       path: file.location,
-      awsData: file
+      awsData: file,
     };
   });
 
@@ -158,11 +158,11 @@ router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res
 
 function saveImage(customer, encodedImage) {
   if (encodedImage === undefined || encodedImage === null) {
-    throw { error: 'Image is required' };
+    return null;
   }
   const image = JSON.parse(encodedImage);
-  if (image != null || imageMimeTypes.includes(image.type)) {
-  }
+  // if (image != null || imageMimeTypes.includes(image.type)) {
+  // }
   customer.image = new Buffer.from(image.data, 'base64');
   customer.imageType = image.type;
   return customer;

@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { isEmail } = require('validator')
+const mongoose = require('mongoose');
+const { isEmail } = require('validator');
 
 const customerSchema = new mongoose.Schema(
   {
@@ -70,21 +70,23 @@ const customerSchema = new mongoose.Schema(
 );
 
 function convertBufferToBase64(buffer) {
-	if (buffer != null && this.imageType != null) {
-		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
-	}
+  //console.log("Image!!!", this.imageType);
+  if (buffer != null && this.imageType != null) {
+    console.log('Image2222222222!!!!');
+    return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`;
+  }
 }
 
-function convertToAsset(data){
-  if(data){
-		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
+function convertToAsset(data) {
+  if (data) {
+    return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`;
   }
 }
 
 function formatDOB(dob) {
-	return dob.toLocaleDateString('en-us')
+  return dob.toLocaleDateString('en-us');
 }
 
-const Customer = mongoose.model('customer', customerSchema)
+const Customer = mongoose.model('customer', customerSchema);
 
-module.exports = Customer
+module.exports = Customer;
