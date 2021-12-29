@@ -9,16 +9,16 @@ const multer = require('multer');
 const uuid = require('uuid').v4;
 
 //  Local uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${uuid()}-${file.originalname}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads/');
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, `${uuid()}-${file.originalname}`);
+//   },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 // AWS uploads
 const aws = require('aws-sdk');
@@ -38,8 +38,7 @@ const awsUpload = multer({
     },
     key: function (req, file, cb) {
       cb(null, `${uuid()}-${file.originalname}`);
-    },
-    acl: 'public-read',
+    }
   }),
 });
 
@@ -142,6 +141,7 @@ router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res
       name: file.originalname,
       assetType: file.mimetype,
       path: file.location,
+      awsData: file
     };
   });
 
