@@ -43,6 +43,10 @@ app.use(adminRoutes);
 app.listen(PORT, () => {
 	console.log(`App running on port ${PORT}!`)
 })
+process.on('uncaughtException', function (err) {
+	console.error(err.stack)
+	console.log('Node NOT Exiting...')
+})
 
 // const path = require('path');
 // const nodeExternals = require('webpack-node-externals');

@@ -21,6 +21,7 @@ const requireAuth = (req, res, next) => {
 
 const isLoggedIn = (req, res, next) => {
   const token = req.cookies.jwt;
+  console.log('token', token)
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
       if (err) {
@@ -29,9 +30,11 @@ const isLoggedIn = (req, res, next) => {
       } else {
         console.log(decodedToken);
         res.redirect('/dashboard');
+        next()
       }
     });
   }
+  next()
 };
 
 // check current user
