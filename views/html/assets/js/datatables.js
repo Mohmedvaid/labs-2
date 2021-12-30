@@ -91,13 +91,19 @@
       let form = $(this);
       let file = $(`input[name="idImage"`).prop('files');
       let formData = new FormData();
+      if (file.length === 0) {
+        clearErrors();
+        $(`#errors`).append(`<div id="main-err" style="color:red;">Please upload an image of a valid ID</div>`);
+        return;
+      }
+      clearErrors();
       for (let i = 0; i < file.length; i++) {
         formData.append('idImage', file[i]);
       }
-	  let initialFormData = form.serializeArray();
-	  initialFormData.forEach((data) => {
-		formData.append(data.name, data.value);
-	  })
+      let initialFormData = form.serializeArray();
+      initialFormData.forEach((data) => {
+        formData.append(data.name, data.value);
+      });
 
       showNewCustomerSpinner();
       axios
@@ -119,36 +125,6 @@
             }`,
             customer._id,
           ]);
-          //   let td = ` <tr id=${data._id}>
-          //               <td class="v-align-middle semi-bold">
-          //                 <p>${data.firstName}</p>
-          //               </td>
-          //               <td class="v-align-middle">
-          //                 <p>${data.lastName}</p>
-          //               </td>
-          //               <td class="v-align-middle">
-          //                 <p>${data.email}</p>
-          //               </td>
-          //               <td class="v-align-middle">
-          //                 <p>${data.address}</p>
-          //               </td>
-          //              <td class="v-align-middle">
-          //                 <p>${data.location}</p>
-          //               </td>
-          // 			  					  <td class="v-align-middle">
-          // 			  ${
-          //       data.image
-          //         ? `<a href="${data.image}" data-lightbox="${data.image}">
-          // 							<img style="width:100%" src="${data.image}">
-          // 						</a>`
-          //         : '<p>No ID Found</p>'
-          //     }
-          //               </td>
-          // 			   <td class="v-align-middle">
-          //                 <p>${data.result ? data.result : '<p>Pending</p>'}</p>
-          //               </td>
-          //             </tr>`;
-          //   $('tbody').append(td);
         })
         .then(() => hideNewCustomerSpinner())
         .then(() => $('#addNewAppModal').modal('hide'))
@@ -171,51 +147,6 @@
       $(`#errors`).append(`<div id="main-err" style="color:red;">Hmmm, somethingn went wrong...</div>`);
     }
   }
-
-  //   function initTableData() {
-  //     let temp = '';
-  //     showNewCustomerSpinner();
-  //     axios
-  //       .get('/api/customer')
-  //       .then((res) => {
-  //         console.log(res.data);
-  //         $('#tableWithSearch').row.add(['test', 'test2']);
-  //         if (res.data.length > 0) {
-  //           return res.data.forEach((customer) => {
-  //             temp += ` <tr id="${customer._id}">
-  //                       <td class="v-align-middle semi-bold">
-  //                         <p>${customer.firstName}</p>
-  //                       </td>
-  //                       <td class="v-align-middle">
-  //                         <p>${customer.lastName}</p>
-  //                       </td>
-  //                       <td class="v-align-middle">
-  //                         <p>${customer.email}</p>
-  //                       </td>
-  //                       <td class="v-align-middle">
-  //                         <p>${customer.address}</p>
-  //                       </td>
-  //                      <td class="v-align-middle">
-  //                         <p>${customer.location}</p>
-  //                       </td>
-  // 					  <td class="v-align-middle ">
-  // 					  ${
-  //               customer.image
-  //                 ? `<a href="${customer.image}" data-lightbox="${customer.image}">
-  // 							<img style="width:100%" src="${customer.image}">
-  // 						</a>`
-  //                 : '<p>No ID Found</p>'
-  //             }
-  //                       </td>
-  //                     </tr>`;
-  //           });
-  //         }
-  //         temp = `<tr id="noTableDataMessage"class="odd"><td valign="top" colspan="7" class="dataTables_empty">No data available in table</td></tr>`;
-  //         return;
-  //       })
-  //       .then(() => $('#allCustomers').append(temp))
-  //       .then(() => hideNewCustomerSpinner());
-  //   }
 
   function clearErrors() {
     $(`#errors`).empty();
