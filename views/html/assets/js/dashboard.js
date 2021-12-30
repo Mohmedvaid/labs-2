@@ -34,14 +34,14 @@
 						firstName,
 						lastName,
 					}
-          console.log(data)
+					console.log(data)
 					axios
 						.post('/signup', data)
 						.then((res) => {
 							console.log(res)
-              clearErrors()
+							clearErrors()
 							$(`#signupMessage`).text('User created successfully')
-              setTimeout(function () {
+							setTimeout(function () {
 								$('#signupMessage').text('')
 							}, 5000)
 						})

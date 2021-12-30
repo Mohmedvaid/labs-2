@@ -9,37 +9,51 @@ $(document).ready(function () {
 		var password = $(`input[name='pass']`).val()
 		// var _username = $(`input[name='uname']`).val()
 		let accesslocation = $('.form-select option:selected').text()
-		var _fname = $(`input[name='fname']`).val()
-		var _lname = $(`input[name='lname']`).val()
+		var firstName = $(`input[name='fname']`).val()
+		var lastName = $(`input[name='lname']`).val()
+		if (!email || !password || !firstName || !lastName) {
+			clearErrors()
+			return $(`#error`).append(
+				`<div id="main-err" class="text-danger">All fields are required!<div>`
+			)
+		}
 		if (accesslocation === 'Select a Location') {
 			clearErrors()
-			$(`#error`).append(`<div id="main-err" style="color:red;">Please select a location!<div>`)
+			$(`#error`).append(`<div id="main-err" class="text-danger">Please select a location!<div>`)
 			return
 		}
 		try {
-			const res = await fetch('/signup', {
-				method: 'POST',
-				body: JSON.stringify({ email, password, location: accesslocation }),
-				headers: { 'Content-Type': 'application/json' },
-			})
-			const data = await res.json()
-			if (data.errors) {
-				clearErrors()
-				if (data.errors.email)
-					$(`#error`).append(`<div id="main-err" style="color:red;">${data.errors.email}<div>`)
-				if (data.errors.password)
-					$(`#error`).append(`<div id="main-err" style="color:red;">${data.errors.password}<div>`)
-				if (data.errors.location)
-					$(`#error`).append(`<div id="main-err" style="color:red;">${data.errors.location}<div>`)
+			let data = {
+				email,
+				password,
+				location: accesslocation,
+				firstName,
+				lastName,
 			}
-			if (data.user) {
-				localStorage.setItem('location', data.location)
-				location.assign('/dashboard')
-			}
+			axios
+				.post('/signup', data)
+				.then((res) => {
+					console.log(res.data)
+					localStorage.setItem('location', res.data.location)
+					location.assign('/dashboard')
+				})
+				.catch((err) => handleSignUpErrors(err.response.data.errors))
 		} catch (err) {
 			console.log(err)
 		}
 	})
+	function handleSignUpErrors(errors) {
+		clearErrors()
+		console.log(errors)
+		let errorEl = $(`#error`)
+		let div = ``
+		for (const prop in errors) {
+			if (errors[prop]) {
+				div += `<p class="text-danger">${errors[prop]}</p>`
+			}
+		}
+		errorEl.append(div)
+	}
 	function clearErrors() {
 		$('#error').empty()
 	}
