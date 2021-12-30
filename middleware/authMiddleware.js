@@ -21,20 +21,18 @@ const requireAuth = (req, res, next) => {
 
 const isLoggedIn = (req, res, next) => {
   const token = req.cookies.jwt;
-  console.log('token', token)
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        next();
-      } else {
-        console.log(decodedToken);
-        res.redirect('/dashboard');
-        next()
-      }
-    });
-  }
-  next()
+  console.log('token', token);
+  if (!token) return next();
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    if (err) {
+      console.log(err.message);
+      return next();
+    } else {
+      console.log(decodedToken);
+      res.redirect('/dashboard');
+      return next();
+    }
+  });
 };
 
 // check current user
