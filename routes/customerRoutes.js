@@ -44,8 +44,6 @@ const awsUpload = multer({
 
 router.post('/api/customer', awsUpload.single('idImage'), (req, res) => {
   let body = req.body;
-  //console.log(req.file);
-  console.log(req.body);
   let idImage = {
     name: req.file.originalname,
     assetType: req.file.mimetype,
@@ -71,13 +69,6 @@ router.post('/api/customer', awsUpload.single('idImage'), (req, res) => {
       return;
     })
     .then(() => new customerDB(customer))
-    // .then((newCustomer) => {
-    //   let updatedCustomer = saveImage(newCustomer, customer.image);
-    //   if (!updatedCustomer) {
-    //     return newCustomer;
-    //   }
-    //   return updatedCustomer;
-    // })
     .then(generateAndSaveQRCode)
     .then((newCustomer) => newCustomer.save())
     .then((newCustomer) => res.json(newCustomer))
@@ -116,6 +107,8 @@ router.get('/api/customer', (req, res) => {
       return res.status(400).json(err);
     });
 });
+
+// GET specific customer
 router.get('/api/customer/:id', (req, res) => {
   let location = req.cookies.location;
   if (location.toLowerCase() === 'all' && isValidMongoID(req.params.id)) {
@@ -130,6 +123,7 @@ router.get('/api/customer/:id', (req, res) => {
   return res.status(401).json({ error: 'Unauthorized' });
 });
 
+// UPDATE customer
 router.put('/api/customer/:id', (req, res) => {
   let id = req.params.id,
     customerInfo = req.body;
@@ -145,11 +139,10 @@ router.put('/api/customer/:id', (req, res) => {
     });
 });
 
-// handle file uploads
+// handle file uploads for customer (test results)
 router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res) => {
   let customerID = req.params.id;
   let assets = req.files.map((file) => {
-    console.log(file);
     return {
       name: file.originalname,
       assetType: file.mimetype,
@@ -169,17 +162,17 @@ router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res
     });
 });
 
-function saveImage(customer, encodedImage) {
-  if (encodedImage === undefined || encodedImage === null) {
-    return null;
-  }
-  const image = JSON.parse(encodedImage);
-  // if (image != null || imageMimeTypes.includes(image.type)) {
-  // }
-  customer.image = new Buffer.from(image.data, 'base64');
-  customer.imageType = image.type;
-  return customer;
-}
+// function saveImage(customer, encodedImage) {
+//   if (encodedImage === undefined || encodedImage === null) {
+//     return null;
+//   }
+//   const image = JSON.parse(encodedImage);
+//   // if (image != null || imageMimeTypes.includes(image.type)) {
+//   // }
+//   customer.image = new Buffer.from(image.data, 'base64');
+//   customer.imageType = image.type;
+//   return customer;
+// }
 
 // Edit permissions
 

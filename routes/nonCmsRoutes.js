@@ -3,7 +3,7 @@ const path = require('path');
 
 const router = Router();
 
-router.get('/main', (req, res) => {
+router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../views/front-end-pages/covid-care.html'));
 });
 router.get('/about', (req, res) => {

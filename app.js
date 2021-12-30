@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const authRoutes = require('./routes/authRoutes')
 const customerRoutes = require('./routes/customerRoutes')
 const nonCmsRoutes = require('./routes/nonCmsRoutes')
+const adminRoutes = require('./routes/adminRoutes')
 const cookieParser = require('cookie-parser')
 const { requireAuth, checkUser } = require('./middleware/authMiddleware')
 require('dotenv').config()
@@ -37,6 +38,7 @@ app.get('*', checkUser)
 app.use(authRoutes)
 app.use(customerRoutes)
 app.use(nonCmsRoutes)
+app.use(adminRoutes);
 
 app.listen(PORT, () => {
 	console.log(`App running on port ${PORT}!`)

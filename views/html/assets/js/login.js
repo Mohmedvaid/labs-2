@@ -17,7 +17,6 @@ $(document).ready(function () {
 				password: _password,
 			})
 			.then((res) => {
-				console.log('RES DATA=====>>>', res.data)
 				localStorage.setItem('location', res.data.location)
 				location.assign('/dashboard')
 			})
