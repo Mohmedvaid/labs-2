@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes')
 const customerRoutes = require('./routes/customerRoutes')
 const nonCmsRoutes = require('./routes/nonCmsRoutes')
 const adminRoutes = require('./routes/adminRoutes')
+const locationRoutes = require('./routes/locationRoutes')
 const cookieParser = require('cookie-parser')
 const { requireAuth, checkUser } = require('./middleware/authMiddleware')
 require('dotenv').config()
@@ -39,6 +40,7 @@ app.use(authRoutes)
 app.use(customerRoutes)
 app.use(nonCmsRoutes)
 app.use(adminRoutes);
+app.use(locationRoutes);
 
 app.listen(PORT, () => {
 	console.log(`App running on port ${PORT}!`)

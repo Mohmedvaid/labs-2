@@ -29,8 +29,8 @@ const isLoggedIn = (req, res, next) => {
       return next();
     } else {
       console.log(decodedToken);
-      res.redirect('/dashboard');
-      return next();
+      return res.redirect('/dashboard');
+      //return next();
     }
   });
 };

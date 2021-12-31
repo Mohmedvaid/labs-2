@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
-const { isEmail } = require('validator')
 
-const customerSchema = new mongoose.Schema(
+const locationSchema = new mongoose.Schema(
 	{
-		location: {
+		name: {
 			type: String,
 			required: [true, 'Please enter an location'],
 			unique: true,

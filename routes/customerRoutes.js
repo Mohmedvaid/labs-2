@@ -1,12 +1,12 @@
-const router = require('express').Router();
-const customerDB = require('../models/Customers');
-const Monoose = require('mongoose');
-const imageMimeTypes = ['image/jpeg', 'image/png', 'images'];
-const QRCode = require('qrcode');
-const domainName = 'http://localhost:3000';
-const isValidMongoID = require('../helpers/isValidMongoID');
-const multer = require('multer');
-const uuid = require('uuid').v4;
+const router = require('express').Router()
+const customerDB = require('../models/Customers')
+const Monoose = require('mongoose')
+const imageMimeTypes = ['image/jpeg', 'image/png', 'images']
+const QRCode = require('qrcode')
+const domainName = 'http://localhost:3000'
+const isValidMongoID = require('../helpers/isValidMongoID')
+const multer = require('multer')
+const uuid = require('uuid').v4
 
 //  Local uploads
 // const storage = multer.diskStorage({
@@ -21,146 +21,150 @@ const uuid = require('uuid').v4;
 // const upload = multer({ storage: storage });
 
 // AWS uploads
-const aws = require('aws-sdk');
-const multerS3 = require('multer-s3');
-const path = require('path');
+const aws = require('aws-sdk')
+const multerS3 = require('multer-s3')
+const path = require('path')
 
 const s3 = new aws.S3({
-  apiVersion: '2006-03-01',
-});
+	apiVersion: '2006-03-01',
+})
 
 const awsUpload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: 'cov-lab-bucket', // name of the bucket on aws
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-      cb(null, `${uuid()}-${file.originalname}`);
-    },
-  }),
-});
+	storage: multerS3({
+		s3: s3,
+		bucket: 'cov-lab-bucket', // name of the bucket on aws
+		metadata: function (req, file, cb) {
+			cb(null, { fieldName: file.fieldname })
+		},
+		key: function (req, file, cb) {
+			cb(null, `${uuid()}-${file.originalname}`)
+		},
+	}),
+})
 
 router.post('/api/customer', awsUpload.single('idImage'), (req, res) => {
-  let body = req.body;
-  let idImage = {
-    name: req.file.originalname,
-    assetType: req.file.mimetype,
-    path: req.file.location,
-    awsData: req.file,
-  };
-  let customer = {
-    firstName: body.firstname,
-    lastName: body.lastname,
-    email: body.email,
-    address: body.address,
-    location: body.location,
-    image: idImage,
-    dob: body.dob,
-    customerSignature: body.customerSignature,
-    phone: body.phone,
-  };
+	let body = req.body
+	let idImage = {
+		name: req.file.originalname,
+		assetType: req.file.mimetype,
+		path: req.file.location,
+		awsData: req.file,
+	}
+	let customer = {
+		firstName: body.firstname,
+		lastName: body.lastname,
+		email: body.email,
+		address: body.address,
+		location: body.location.toLowerCase(),
+		image: idImage,
+		dob: body.dob,
+		customerSignature: body.customerSignature,
+		phone: body.phone,
+	}
 
-  return customerDB
-    .find({ email: customer.email })
-    .then((dup_key) => {
-      if (dup_key.length !== 0) throw { error: 'Duplicate email', message: 'Email already added' };
-      return;
-    })
-    .then(() => new customerDB(customer))
-    .then(generateAndSaveQRCode)
-    .then((newCustomer) => newCustomer.save())
-    .then((newCustomer) => res.json(newCustomer))
-    .catch((err) => {
-      console.log(err);
-      return res.status(400).json(err);
-    });
-});
+	return customerDB
+		.find({ email: customer.email })
+		.then((dup_key) => {
+			if (dup_key.length !== 0) throw { error: 'Duplicate email', message: 'Email already added' }
+			return
+		})
+		.then(() => new customerDB(customer))
+		.then(generateAndSaveQRCode)
+		.then((newCustomer) => newCustomer.save())
+		.then((newCustomer) => res.json(newCustomer))
+		.catch((err) => {
+			console.log(err)
+			return res.status(400).json(err)
+		})
+})
 
 function generateAndSaveQRCode(customer) {
-  let qrCodeUrl = `${domainName}/myinfo/${customer._id}`;
-  if (!qrCodeUrl) throw { error: 'Public url is required' };
-  return QRCode.toDataURL(qrCodeUrl).then((url) => {
-    customer.qrCodeUrl = url;
-    return customer;
-  });
+	let qrCodeUrl = `${domainName}/myinfo/${customer._id}`
+	if (!qrCodeUrl) throw { error: 'Public url is required' }
+	return QRCode.toDataURL(qrCodeUrl).then((url) => {
+		customer.qrCodeUrl = url
+		return customer
+	})
 }
 
 router.get('/api/customer', (req, res) => {
-  let location = req.cookies.location;
-  if (location === undefined) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  if (location.toLowerCase() === 'all') {
-    location = {};
-  } else {
-    location = { location: location.toLowerCase() };
-  }
-  customerDB
-    .find(location)
-    .then((customer) => {
-      return res.json(customer);
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(400).json(err);
-    });
-});
+	let location = req.cookies.location
+	if (location === undefined) {
+		return res.status(401).json({ error: 'Unauthorized' })
+	}
+	if (location.toLowerCase() === 'all') {
+		location = {}
+	} else {
+		location = { location: location.toLowerCase() }
+	}
+	customerDB
+		.find(location)
+		.then((customer) => {
+			return res.json(customer)
+		})
+		.catch((err) => {
+			console.log(err)
+			return res.status(400).json(err)
+		})
+})
 
 // GET specific customer
 router.get('/api/customer/:id', (req, res) => {
-  let location = req.cookies.location;
-  if (location.toLowerCase() === 'all' && isValidMongoID(req.params.id)) {
-    return customerDB
-      .findOne({ _id: req.params.id })
-      .then((customer) => res.json(customer))
-      .catch((err) => {
-        console.log(err);
-        return res.status(400).json(err);
-      });
-  }
-  return res.status(401).json({ error: 'Unauthorized' });
-});
+	let location = req.cookies.location
+	if (isValidMongoID(req.params.id)) {
+		return customerDB
+			.findOne({ _id: req.params.id })
+			.then((customer) => res.json(customer))
+			.catch((err) => {
+				console.log(err)
+				return res.status(400).json(err)
+			})
+	}
+	return res.status(401).json({ error: 'Unauthorized' })
+})
 
 // UPDATE customer
 router.put('/api/customer/:id', (req, res) => {
-  let id = req.params.id,
-    customerInfo = req.body;
-  console.log(req.file);
-  res.json('success');
-  customerDB
-    .findOneAndUpdate({ _id: id }, customerInfo, { new: true })
-    .then((customer) => {
-      return res.json(customer);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
+	let id = req.params.id,
+		customerInfo = req.body
+	console.log(req.file)
+	res.json('success')
+	customerDB
+		.findOneAndUpdate({ _id: id }, customerInfo, { new: true })
+		.then((customer) => {
+			return res.json(customer)
+		})
+		.catch((err) => {
+			res.json(err)
+		})
+})
 
 // handle file uploads for customer (test results)
 router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res) => {
-  let customerID = req.params.id;
-  let assets = req.files.map((file) => {
-    return {
-      name: file.originalname,
-      assetType: file.mimetype,
-      path: file.location,
-      awsData: file,
-    };
-  });
+	let customerID = req.params.id
+	let assets = req.files.map((file) => {
+		return {
+			name: file.originalname,
+			assetType: file.mimetype,
+			path: file.location,
+			awsData: file,
+		}
+	})
 
-  customerDB
-    .findOneAndUpdate({ _id: customerID }, { $push: { testResults: { $each: assets } } }, { new: true })
-    .then((customer) => {
-      return res.json(customer);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
-    });
-});
+	customerDB
+		.findOneAndUpdate(
+			{ _id: customerID },
+			{ $push: { testResults: { $each: assets } } },
+			{ new: true }
+		)
+		.then((customer) => {
+			return res.json(customer)
+		})
+		.catch((err) => {
+			console.log(err)
+			res.status(400).json(err)
+		})
+})
 
 // function saveImage(customer, encodedImage) {
 //   if (encodedImage === undefined || encodedImage === null) {
@@ -176,4 +180,4 @@ router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res
 
 // Edit permissions
 
-module.exports = router;
+module.exports = router

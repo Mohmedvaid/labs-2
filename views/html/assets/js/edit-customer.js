@@ -1,6 +1,6 @@
 $(document).ready(function () {
-  //   FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginFileEncode);
-  //   FilePond.parse(document.body);
+    //FilePond.registerPlugin(FilePondPluginImagePreview);
+    //FilePond.parse(document.body);
   let customerID = window.location.search.substring(1);
   if (!customerID) return;
   else {

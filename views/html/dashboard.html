@@ -190,61 +190,61 @@
                     <h2 class="mw-80">Add New User</h2>
                     <div id="signupMessage" class="text-success"></div>
                     <div id="error" class=""></div>
-                                <form id="signUpForm" class="p-t-15">
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      <div class="form-group form-group-default">
-                                        <label>First Name</label>
-                                        <input type="text" name="fname" placeholder="John" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <div class="form-group form-group-default">
-                                        <label>Last Names</label>
-                                        <input type="text" name="lname" placeholder="Smith" class="form-control" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- DDL -->
-                                  <div class="row">
-                                    <div class="col-md-8">
-                                      <select class="form-select form-group form-group-default" aria-label="Default select example">
-                                        <option selected>Select a Location</option>
-                                        <option value="Chicago">Chicago</option>
-                                        <option value="Skokie">Skokie</option>
-                                        <option value="Super">All</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <!-- DDL end -->
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      <div class="form-group form-group-default">
-                                        <label>Password</label>
-                                        <input type="password" name="pass" placeholder="Minimum of 6 Charactors" class="form-control" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      <div class="form-group form-group-default">
-                                        <label>Email</label>
-                                        <input type="email" name="email" placeholder="We will send loging details to you" class="form-control" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row m-t-10">
-                                    <div class="col-lg-6">
-                                      <p><small>I agree to the <a href="#" class="text-info">Pages Terms</a> and <a href="#"
-                                            class="text-info">Privacy</a>.</small></p>
-                                    </div>
-                                    <div class="col-lg-6 text-right">
-                                      <a href="#" class="text-info small">Help? Contact Support</a>
-                                    </div>
-                                  </div>
-                                  <button id="createUser" aria-label="" class="btn btn-primary btn-cons m-t-10">Create a new
-                                    account</button>
-                                </form>
+                      <form id="signUpForm" class="p-t-15">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group form-group-default">
+                              <label>First Name</label>
+                              <input type="text" name="fname" placeholder="John" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group form-group-default">
+                              <label>Last Names</label>
+                              <input type="text" name="lname" placeholder="Smith" class="form-control" required>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- DDL -->
+                        <div class="row">
+                          <div class="col-md-8">
+                            <select class="testingLocation form-select form-group form-group-default" aria-label="Default select example">
+                              <option selected>Select a Location</option>
+                              <option value="Chicago">Chicago</option>
+                              <option value="Skokie">Skokie</option>
+                              <option value="Super">All</option>
+                            </select>
+                          </div>
+                        </div>
+                        <!-- DDL end -->
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group form-group-default">
+                              <label>Password</label>
+                              <input type="password" name="pass" placeholder="Minimum of 6 Charactors" class="form-control" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group form-group-default">
+                              <label>Email</label>
+                              <input type="email" name="email" placeholder="We will send loging details to you" class="form-control" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row m-t-10">
+                          <div class="col-lg-6">
+                            <p><small>I agree to the <a href="#" class="text-info">Pages Terms</a> and <a href="#"
+                                  class="text-info">Privacy</a>.</small></p>
+                          </div>
+                          <div class="col-lg-6 text-right">
+                            <a href="#" class="text-info small">Help? Contact Support</a>
+                          </div>
+                        </div>
+                        <button id="createUser" aria-label="" class="btn btn-primary btn-cons m-t-10">Create a new
+                          account</button>
+                      </form>
                   </div>
                 </div>
                 <!-- END card -->
@@ -262,7 +262,8 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form id="form-personal" role="form" autocomplete="off">
+                  <div id="addLocationForm" autocomplete="off">
+                    <div id="locationErrors"></div>
                     <div class="row clearfix">
                       <div class="col-xl-6">
                         <div class="form-group form-group-default required">
@@ -274,6 +275,9 @@
                         <div class="form-group form-group-default required">
                           <label>Confirm Location</label>
                           <input type="text" class="form-control" name="newTestingLocation2" required>
+                          <div class="invalid-feedback">
+                            Location does not match.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -283,11 +287,11 @@
                         <p class="small-text hint-text">Location will appear on the signup page when users register</p>
                       </div>
                       <div class="col-xl-6">
-                        <button aria-label="" class="btn btn-primary pull-right btn-lg btn-block" type="submit">Add Location
+                        <button id="addLocationBtn" aria-label="" class="btn btn-primary pull-right btn-lg btn-block">Add Location
                         </button>
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
               <!-- END card -->
