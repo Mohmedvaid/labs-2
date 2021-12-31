@@ -93,6 +93,7 @@
 			let testingLocation = $('select#addCustomerLocationSelector option:selected').val()
 
 			let formData = new FormData()
+			console.log(testingLocation)
 			if (file.length === 0) {
 				clearErrors()
 				$(`#errors`).append(
@@ -100,7 +101,7 @@
 				)
 				return
 			}
-			if (!testingLocation) {
+			if (!testingLocation || testingLocation === 'Select a Location') {
 				clearErrors()
 				$(`#errors`).append(`<div id="main-err" style="color:red;">Please select a location</div>`)
 				return
@@ -186,7 +187,7 @@
 		let printBtn = ''
 		if (access.toLowerCase() === 'all') {
 			$(`#editLink`).remove()
-			let editBtn = `<a class="pull-right" id="editLink" href="/edit-customer?${customerID}"><button class="btn btn-primary btn-sm" id="editCustomerBtn">Edit</button></a>`
+			let editBtn = `<a class="pull-right" id="editLink" href="/edit-customer.html?${customerID}"><button class="btn btn-primary btn-sm" id="editCustomerBtn">Edit</button></a>`
 			$(editBtn).insertBefore(`#detailedTable`)
 		}
 		let tr = ''
@@ -422,6 +423,8 @@
 
 	$('#clearNewCustomerForm').click(function () {
 		$('#addCustomerForm').trigger('reset')
+    $('#sig-image').attr('src', '/assets/img/sign-required.png')
+    $('#sig-clearBtn').trigger('click')
 	})
 	// add locations
 	function addLocationToSelect() {

@@ -29,11 +29,11 @@ $(document).ready(function () {
         lastName,
       };
       axios
-        .post('/signup', data)
+        .post('/register', data)
         .then((res) => {
           console.log(res.data);
           localStorage.setItem('location', res.data.location);
-          location.assign('/dashboard');
+          location.assign('/dashboard.html');
         })
         .catch((err) => handleSignUpErrors(err.response.data.error));
     } catch (err) {

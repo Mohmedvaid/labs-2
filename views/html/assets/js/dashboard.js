@@ -35,7 +35,7 @@
 				}
 				console.log(data)
 				axios
-					.post('/signup', data)
+					.post('/register', data)
 					.then((res) => {
 						console.log(res)
 						clearErrors()
