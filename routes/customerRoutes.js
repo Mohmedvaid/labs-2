@@ -88,18 +88,23 @@ function generateAndSaveQRCode(customer) {
 }
 
 router.get('/api/customer', (req, res) => {
-	let location = req.cookies.location
-	if (location === undefined) {
+	const location = req.cookies.location
+	const userType = req.cookies.userType
+	let query
+	console.log(location)
+	if (location === undefined || userType === undefined) {
 		return res.status(401).json({ error: 'Unauthorized' })
 	}
-	if (location.toLowerCase() === 'all') {
-		location = {}
+	// FIX THIS BECAUSE LOCATION IS NOT A STRING BUT AN ARRAY
+	if (userType.toLowerCase() === 'admin') {
+		query = {}
 	} else {
-		location = { location: location.toLowerCase() }
+		query = { location: { $in: location } }
 	}
 	customerDB
-		.find(location)
+		.find(query)
 		.then((customer) => {
+			console.log(customer)
 			return res.json(customer)
 		})
 		.catch((err) => {

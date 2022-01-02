@@ -24,9 +24,10 @@ router.post('/api/location', (req, res) => {
 })
 
 router.get('/api/location', (req, res) => {
-	let location = req.body.location
-	if (!location)
-		return res.status(400).json({ error: 'No Location found', message: 'Location is required' })
+	let userType = req.cookies.userType
+	if(!userType || userType.toLowerCase() !== 'admin'){
+		return res.status(401).json({ error: 'Unauthorized' })
+	}
 	return locationDB
 		.find({})
 		.then((locations) => {
@@ -38,19 +39,5 @@ router.get('/api/location', (req, res) => {
 		})
 })
 
-// GET specific customer
-router.get('/api/customer/:id', (req, res) => {
-	let location = req.cookies.location
-	if (location.toLowerCase() === 'all' && isValidMongoID(req.params.id)) {
-		return locationDB
-			.findOne({ _id: req.params.id })
-			.then((customer) => res.json(customer))
-			.catch((err) => {
-				console.log(err)
-				return res.status(400).json(err)
-			})
-	}
-	return res.status(401).json({ error: 'Unauthorized' })
-})
 
 module.exports = router

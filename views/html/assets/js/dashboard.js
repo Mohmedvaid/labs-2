@@ -16,22 +16,53 @@
 			event.preventDefault()
 			var email = $(`input[name='email']`).val()
 			var password = $(`input[name='pass']`).val()
-			// var _username = $(`input[name='uname']`).val()
-			let accesslocation = $('.form-select option:selected').text()
+			let accesslocationArr = []
+			$(`input:checkbox[name='userLocations']:checked`).each(function () {
+				console.log($(this))
+				accesslocationArr.push($(this).val())
+			})
 			var firstName = $(`input[name='fname']`).val()
 			var lastName = $(`input[name='lname']`).val()
-			if (accesslocation === 'Select a Location') {
+			let userType = $(`#userType option:selected`).val()
+			if (!firstName || !lastName) {
 				clearErrors()
-				$(`#error`).append(`<div id="main-err" style="color:red;">Please select a location!<div>`)
-				return
+				return $(`#error`).append(
+					`<div id="main-err" class="text-danger">Please enter your first and last name!<div>`
+				)
 			}
+			if (accesslocationArr.length === 0) {
+				clearErrors()
+				return $(`#error`).append(
+					`<div id="main-err" class="text-danger">Please select at least one location!<div>`
+				)
+			}
+			if (userType === 'Select a user type') {
+				clearErrors()
+				return $(`#error`).append(
+					`<div id="main-err" class="text-danger">Please select a user type!<div>`
+				)
+			}
+			if (!password) {
+				clearErrors()
+				return $(`#error`).append(
+					`<div id="main-err" class="text-danger">Please enter a password!<div>`
+				)
+			}
+			if (!email) {
+				clearErrors()
+				return $(`#error`).append(
+					`<div id="main-err" class="text-danger">Please enter an email!<div>`
+				)
+			}
+
 			try {
 				let data = {
 					email,
 					password,
-					location: accesslocation,
+					location: accesslocationArr,
 					firstName,
 					lastName,
+					userType,
 				}
 				console.log(data)
 				axios
@@ -40,17 +71,18 @@
 						console.log(res)
 						clearErrors()
 						$(`#signupMessage`).text('User created successfully')
+						$(`#signUpForm`).trigger('reset')
 						setTimeout(function () {
 							$('#signupMessage').text('')
 						}, 5000)
 					})
-					.catch((err) => handleSignUpErrors(err.response.data.errors))
+					.catch((err) => handleSignUpErrors(err.response.data))
 				if (data.user) {
 					$(`#signupMessage`).text('')
 					$(`#signupMessage`).text('User created successfully')
 				}
 			} catch (err) {
-				console.log(err)
+				console.log('error', err)
 			}
 		})
 		function clearErrors() {
@@ -60,6 +92,10 @@
 		function handleSignUpErrors(errors) {
 			clearErrors()
 			console.log(errors)
+			if (errors.message) {
+				$(`#error`).append(`<div id="main-err" class="text-danger">${errors.message}<div>`)
+				return
+			}
 			let errorEl = $(`#error`)
 			let div = ``
 			for (const prop in errors) {
@@ -116,15 +152,20 @@
 		})
 		// ready ends
 	})
-	function initLocations(){
-		axios.get('/api/location').then(res => {
+	function initLocations() {
+		axios.get('/api/location').then((res) => {
 			let locations = res.data
-			let locationSelect = $('.form-select')
-			let locationOptions = ''
-			for (let i = 0; i < locations.length; i++) {
-				locationOptions += `<option value="${locations[i]._id}">${locations[i].name}</option>`
-			}
-			locationSelect.append(locationOptions)
+			console.log(locations)
+			let checkBoxDiv = $(`#locationCheckboxes`)
+			checkBoxDiv.empty()
+			if (locations.length === 0) return checkBoxDiv.append(`<p>No locations added yet</p>`)
+			locations.forEach((location) => {
+				checkBoxDiv.append(`
+				<input name="userLocations" type="checkbox" id="${location.name}" value=${location.name}>
+				<label for="${location.name}">${location.name}</label>
+			`)
+			})
 		})
 	}
+	initLocations()
 })(window.jQuery)

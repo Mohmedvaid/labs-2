@@ -32,8 +32,8 @@ $(document).ready(function () {
         .post('/register', data)
         .then((res) => {
           console.log(res.data);
-          localStorage.setItem('location', res.data.location);
-          location.assign('/dashboard.html');
+          localStorage.setItem('location', JSON.stringify(res.data.location));
+          location.assign('/dashboard');
         })
         .catch((err) => handleSignUpErrors(err.response.data.error));
     } catch (err) {

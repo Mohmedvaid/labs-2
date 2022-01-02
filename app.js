@@ -17,12 +17,19 @@ const PORT = process.env.PORT || 3000
 app.use(bodyParser.json())
 
 // middleware
+app.use(function (req, res, next) {
+	if (req.path.indexOf('.html') >= 0) {
+		return res.redirect('/login')
+	}
+	return next()
+})
 app.use(express.static('views/html'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true, limit: '50mb' }))
-app.use("/uploads", express.static('uploads'))
-app.use(express.static('views/front-end-pages'));
+app.use('/uploads', express.static('uploads'))
+app.use(express.static('views/front-end-pages'))
+app.get('*', checkUser)
 
 // database connection
 mongoose
@@ -33,14 +40,13 @@ mongoose
 	.then((res) => console.log('Connected to db!'))
 
 // routes
-app.get('*', checkUser)
 
 //app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
 app.use(authRoutes)
 app.use(customerRoutes)
 app.use(nonCmsRoutes)
-app.use(adminRoutes);
-app.use(locationRoutes);
+app.use(adminRoutes)
+app.use(locationRoutes)
 
 app.listen(PORT, () => {
 	console.log(`App running on port ${PORT}!`)
@@ -77,4 +83,3 @@ process.on('uncaughtException', function (err) {
 //     port: 9000,
 //   },
 // };
-

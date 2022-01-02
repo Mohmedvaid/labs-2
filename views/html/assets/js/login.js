@@ -17,8 +17,12 @@ $(document).ready(function () {
         password: _password,
       })
       .then((res) => {
-        localStorage.setItem('location', res.data.location);
-        location.assign('/dashboard');
+        localStorage.setItem('location', JSON.stringify(res.data.location));
+        localStorage.setItem('userType', JSON.stringify(res.data.userType));
+        //localStorage.setItem('jwt', res.data.jwt)
+        console.log(res.data.userType)
+        if(res.data.userType === 'admin') location.assign('/dashboard');
+        else location.assign('/customers');
       })
       .catch(handleError);
   });
