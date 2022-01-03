@@ -175,10 +175,24 @@
     });
   }
 
-  function getCustomersByUser(user, dateRange) {
-    axios.get(`/api/customers?fromDate=${dateRange.fromDate}&toDate=${dateRange.toDate}`).then(function (response) {
-      console.log(response.data);
+  $(`#getLeadsByUsers`).click(function (e) {
+	  e.preventDefault();
+	  let date = $(`#daterangepicker`).val();
+	  let fromDate = date.split('-')[0].trim()
+	  let toDate = date.split('-')[1].trim()
+	  let user = $(`#allUsersSelect option:selected`).val();
+	  console.log(date, user);
+	  axios.get(`/api/customers/byUser?fromDate=${fromDate}&toDate=${toDate}`)
+	  .then((customerData) => {
+      console.log(customerData);
     });
+  });
+
+  function appendLeads(customers) {
+	  $(`#userByLeadsInfo`).empty()
+	  customers.forEach((customer) => {
+		  
+	  })
   }
 
   

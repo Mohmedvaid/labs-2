@@ -124,6 +124,35 @@ router.get('/api/customer', requireAuth, (req, res) => {
     });
 });
 
+// GET customers by users
+router.get('/api/customers/byUser', requireAuth, isAdmin, (req, res) => {
+  const userType = req.cookies.userType;
+  const fromDate = req.query.fromDate;
+  const toDate = req.query.toDate;
+  const user = req.user;
+  let query;
+  if(!fromDate) return res.status(400).json({error: 'fromDate is required'})
+  if(!toDate) return res.status(400).json({error: 'toDate is required'})
+  if(userType.toLowerCase() !== 'admin') return res.status(401).json({error: 'Unauthorized'})
+  query = {
+	createdBy: user.id,
+	createdAt: {
+		$gte: fromDate,
+		$lte: toDate
+	}
+  }
+  customerDB
+    .find(query)
+    .then((customer) => {
+      console.log(customer);
+      return res.json(customer);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
+
 // GET specific customer
 router.get('/api/customer/:id', (req, res) => {
 	let location = req.cookies.location

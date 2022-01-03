@@ -29,8 +29,8 @@
     rel="stylesheet" type="text/css" />
   <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css"
     media="screen" />
-    <link href="assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"
-      media="screen">
+  <link href="assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"
+    media="screen">
   <!-- File pond  -->
   <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
   <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
@@ -51,31 +51,32 @@
   <nav class="page-sidebar" data-pages="sidebar">
     <!-- BEGIN SIDEBAR MENU TOP TRAY CONTENT-->
     <div class="sidebar-overlay-slide from-top" id="appMenu">
-      <p class="text-white">You can freeze and unfreeze the side menu by toggling the circle on the top right corner of this menu</p>
+      <p class="text-white">You can freeze and unfreeze the side menu by toggling the circle on the top right corner of
+        this menu</p>
     </div>
     <!-- END SIDEBAR MENU TOP TRAY CONTENT-->
     <!-- BEGIN SIDEBAR MENU HEADER-->
-          <div class="sidebar-header">
-            <img src="assets/img/logo_white.png" alt="logo" class="brand" data-src="assets/img/logo_white.png"
-              data-src-retina="assets/img/logo_white_2x.png" width="78" height="22">
-            <div class="sidebar-header-controls">
-              <button aria-label="Toggle Drawer" type="button" class="btn btn-icon-link invert sidebar-slide-toggle m-l-20 m-r-10"
-                data-pages-toggle="#appMenu">
-                <i class="pg-icon">chevron_down</i>
-              </button>
-              <button aria-label="Pin Menu" type="button"
-                class="btn btn-icon-link invert d-lg-inline-block d-xlg-inline-block d-md-inline-block d-sm-none d-none"
-                data-toggle-pin="sidebar">
-                <i class="pg-icon"></i>
-              </button>
-            </div>
-          </div>
+    <div class="sidebar-header">
+      <img src="assets/img/logo_white.png" alt="logo" class="brand" data-src="assets/img/logo_white.png"
+        data-src-retina="assets/img/logo_white_2x.png" width="78" height="22">
+      <div class="sidebar-header-controls">
+        <button aria-label="Toggle Drawer" type="button"
+          class="btn btn-icon-link invert sidebar-slide-toggle m-l-20 m-r-10" data-pages-toggle="#appMenu">
+          <i class="pg-icon">chevron_down</i>
+        </button>
+        <button aria-label="Pin Menu" type="button"
+          class="btn btn-icon-link invert d-lg-inline-block d-xlg-inline-block d-md-inline-block d-sm-none d-none"
+          data-toggle-pin="sidebar">
+          <i class="pg-icon"></i>
+        </button>
+      </div>
+    </div>
     <!-- END SIDEBAR MENU HEADER-->
     <!-- START SIDEBAR MENU -->
     <div class="sidebar-menu">
       <!-- BEGIN SIDEBAR MENU ITEMS-->
       <ul class="menu-items">
-            <li id="sideBarDashboardLink" class="m-t-20">
+        <li id="sideBarDashboardLink" class="m-t-20">
           <a href="dashboard" class="detailed">
             <span class="title">Dashboard</span>
           </a>
@@ -89,13 +90,13 @@
           </a>
           <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
         </li>
-          <li class="">
-            <a href="/" class="detailed" target="_blank">
-              <span class="title">Front End</span>
-              <!-- <span class="details">234 New Emails</span> -->
-            </a>
-            <span class="icon-thumbnail"><i class="pg-icon">effects</i></span>
-          </li>
+        <li class="">
+          <a href="/" class="detailed" target="_blank">
+            <span class="title">Front End</span>
+            <!-- <span class="details">234 New Emails</span> -->
+          </a>
+          <span class="icon-thumbnail"><i class="pg-icon">effects</i></span>
+        </li>
       </ul>
       <div class="clearfix"></div>
     </div>
@@ -167,10 +168,10 @@
         <!-- START CONTAINER FLUID -->
         <div class=" container-fluid container-fixed-lg">
           <!-- First Row -->
-            <div class="row">
-              <div class="col-xl-6 col-lg-6 ">
-                <!-- Add testing locations -->
-                <div class="row">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 ">
+              <!-- Add testing locations -->
+              <div class="row">
                 <div class="card card-transparent">
                   <div class="card-header">
                     <div class="card-title">
@@ -182,201 +183,225 @@
                     </p>
                   </div>
                 </div>
-                </div>
-                <!-- Add users -->
-                <div class="row">
-                  <div class="col-lg-12">
-              <!-- START card -->
-              <div class="card">
-                <div class="card-header ">
-                  <div class="card-title"><h3>Add New Testing Location</h3>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div id="addLocationForm" autocomplete="off">
-                    <div id="locationErrors"></div>
-                    <div class="row clearfix">
-                      <div class="col-xl-6">
-                        <div class="form-group form-group-default required">
-                          <label>New Location Name</label>
-                          <input type="text" class="form-control" name="newTestingLocation" required>
-                        </div>
+              </div>
+              <!-- Add users -->
+              <div class="row">
+                <div class="col-lg-12">
+                  <!-- START card -->
+                  <div class="card">
+                    <div class="card-header ">
+                      <div class="card-title">
+                        <h3>Add New Testing Location</h3>
                       </div>
-                      <div class="col-xl-6">
-                        <div class="form-group form-group-default required">
-                          <label>Confirm Location</label>
-                          <input type="text" class="form-control" name="newTestingLocation2" required>
-                          <div class="invalid-feedback">
-                            Location does not match.
+                    </div>
+                    <div class="card-body">
+                      <div id="addLocationForm" autocomplete="off">
+                        <div id="locationErrors"></div>
+                        <div class="row clearfix">
+                          <div class="col-xl-6">
+                            <div class="form-group form-group-default required">
+                              <label>New Location Name</label>
+                              <input type="text" class="form-control" name="newTestingLocation" required>
+                            </div>
+                          </div>
+                          <div class="col-xl-6">
+                            <div class="form-group form-group-default required">
+                              <label>Confirm Location</label>
+                              <input type="text" class="form-control" name="newTestingLocation2" required>
+                              <div class="invalid-feedback">
+                                Location does not match.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="row m-t-25">
+                          <div class="col-xl-6 p-b-10">
+                            <p class="small-text hint-text">Location will appear on the signup page when users register
+                            </p>
+                          </div>
+                          <div class="col-xl-6">
+                            <button id="addLocationBtn" aria-label=""
+                              class="btn btn-primary pull-right btn-lg btn-block">Add Location
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="row m-t-25">
-                      <div class="col-xl-6 p-b-10">
-                        <p class="small-text hint-text">Location will appear on the signup page when users register</p>
+                  </div>
+                  <!-- END card -->
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 ">
+              <!-- START card -->
+              <div class="card">
+                <div class="card-header ">
+                  <div class="card-title">User Form
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h2 class="mw-80">Add New User</h2>
+                  <div id="signupMessage" class="text-success"></div>
+                  <div id="error" class=""></div>
+                  <form id="signUpForm" class="p-t-15">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>First Name</label>
+                          <input type="text" name="fname" placeholder="John" class="form-control" required>
+                        </div>
                       </div>
-                      <div class="col-xl-6">
-                        <button id="addLocationBtn" aria-label="" class="btn btn-primary pull-right btn-lg btn-block">Add Location
-                        </button>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Last Names</label>
+                          <input type="text" name="lname" placeholder="Smith" class="form-control" required>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                    <!-- Checkboxes -->
+                    <div class="row">
+                      <div class="col-md-8">
+                        <div class="location-info m-t-5 m-b-5">Please select locations for the user</div>
+                        <div id="locationCheckboxes" class="form-check complete">
+                        </div>
+                      </div>
+                    </div>
+                    <!-- DDL -->
+                    <div class="row">
+                      <div class="col-md-8">
+                        <select id="userType" class="form-select form-group form-group-default"
+                          aria-label="Default select example">
+                          <option selected>Select a user type</option>
+                          <option value="admin">Super User</option>
+                          <option value="user">Regular User</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- DDL end -->
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                          <label>Password</label>
+                          <input type="password" name="pass" placeholder="Minimum of 6 Charactors" class="form-control"
+                            required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                          <label>Email</label>
+                          <input type="email" name="email" placeholder="We will send loging details to you"
+                            class="form-control" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row m-t-10">
+                      <div class="col-lg-6">
+                        <p><small>I agree to the <a href="#" class="text-info">Pages Terms</a> and <a href="#"
+                              class="text-info">Privacy</a>.</small></p>
+                      </div>
+                      <div class="col-lg-6 text-right">
+                        <a href="#" class="text-info small">Help? Contact Support</a>
+                      </div>
+                    </div>
+                    <button id="createUser" aria-label="" class="btn btn-primary btn-cons m-t-10">Create a new
+                      account</button>
+                  </form>
                 </div>
               </div>
               <!-- END card -->
             </div>
-                </div>
-              </div>
-              <div class="col-xl-6 col-lg-6 ">
-                <!-- START card -->
-                <div class="card">
-                  <div class="card-header ">
-                    <div class="card-title">User Form
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <h2 class="mw-80">Add New User</h2>
-                    <div id="signupMessage" class="text-success"></div>
-                    <div id="error" class=""></div>
-                      <form id="signUpForm" class="p-t-15">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group form-group-default">
-                              <label>First Name</label>
-                              <input type="text" name="fname" placeholder="John" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group form-group-default">
-                              <label>Last Names</label>
-                              <input type="text" name="lname" placeholder="Smith" class="form-control" required>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Checkboxes -->
-                        <div class="row">
-                          <div class="col-md-8">
-                            <div class="location-info m-t-5 m-b-5">Please select locations for the user</div>
-                            <div id="locationCheckboxes"class="form-check complete">
-                            </div>
-                          </div>
-                        </div>
-                        <!-- DDL -->
-                        <div class="row">
-                          <div class="col-md-8">
-                              <select id="userType" class="form-select form-group form-group-default" aria-label="Default select example">
-                                <option selected>Select a user type</option>
-                                <option value="admin">Super User</option>
-                                <option value="user">Regular User</option>
-                              </select>
-                          </div>
-                        </div>
-                        <!-- DDL end -->
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="form-group form-group-default">
-                              <label>Password</label>
-                              <input type="password" name="pass" placeholder="Minimum of 6 Charactors" class="form-control" required>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="form-group form-group-default">
-                              <label>Email</label>
-                              <input type="email" name="email" placeholder="We will send loging details to you" class="form-control" required>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row m-t-10">
-                          <div class="col-lg-6">
-                            <p><small>I agree to the <a href="#" class="text-info">Pages Terms</a> and <a href="#"
-                                  class="text-info">Privacy</a>.</small></p>
-                          </div>
-                          <div class="col-lg-6 text-right">
-                            <a href="#" class="text-info small">Help? Contact Support</a>
-                          </div>
-                        </div>
-                        <button id="createUser" aria-label="" class="btn btn-primary btn-cons m-t-10">Create a new
-                          account</button>
-                      </form>
+          </div>
+          <!-- Second Row -->
+          <div class="row bg-white">
+            <div class="col-xl-4 col-lg-4">
+              <!-- User details about customer -->
+              <div class="card">
+                <div class="card-header ">
+                  <div class="card-title">Leads by users
                   </div>
                 </div>
-                <!-- END card -->
-              </div>
-            </div>
-        <!-- Second Row -->
-            <div class="row">
-              <div class="col-xl-12 col-lg-12">
-                <!-- User details about customer -->
-                <div class="card">
-                  <div class="card-header ">
-                    <div class="card-title">Leads by users
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <h2 class="mw-80">Find out who is working hard.</h2>
-                    <div class="col-xl-6">
-                    <form id="userByLeadsForm" role="form" autocomplete="off">
-                      <div class="row clearfix">
-                        <div class="col-xl-7">
+                <div class="card-body">
+                  <h2 class="mw-80">Find out who is working hard.</h2>
+                      <form id="userByLeadsForm" role="form" autocomplete="off">
                             <p>User Name</p>
-                            <select id="allUsersSelect" class="form-select form-group form-group-default" aria-label="Default select example">
+                            <select id="allUsersSelect" class="form-select form-group form-group-default"
+                              aria-label="Default select example">
                               <option selected>Select a user type</option>
                             </select>
-                        </div>
-                        <div class="col-xl-7">
-                          <!-- DATE RANGE PICKER -->
+                            <!-- DATE RANGE PICKER -->
                             <p>Date Range</p>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="pg-icon">calendar</i></span>
                               </div>
-                              <input type="text" name="reservation" id="daterangepicker" class="form-control" value="08/01/2013 - 08/01/2013" />
+                              <input type="text" name="reservation" id="daterangepicker" class="form-control"
+                                value="01/01/2022 - 01/03/2022" />
                             </div>
                             <br>
                             <!-- DATE RANGE PICKER ENDS -->
-                        </div>
-                      </div>
-                      <div class="row m-t-25">
-                        <div class="col-xl-4 p-b-10">
-                          <p class="small-text hint-text">View all user details</p>
-                        </div>
-                        <div class="col-xl-3">
-                          <button id="getLeadsByUsers" aria-label="" class="btn btn-primary pull-right btn-lg btn-block">Get Info
-                          </button>
-                        </div>                    
-                        
-                      </div>
-                    </form>
+                            <p class="small-text hint-text">View all user details</p>
+                            <button id="getLeadsByUsers" aria-label=""
+                              class="btn btn-primary pull-right btn-lg btn-block">Get Info
+                            </button>
+                      </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-8">
+              <div class="card card-transparent ">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-tabs-fillup" data-init-reponsive-tabs="dropdownfx">
+                  <li class="nav-item">
+                    <a href="#" class="active" data-toggle="tab" data-target="#slide1"><span>Results</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" data-toggle="tab" data-target="#slide2"><span>Duplicate customers</span></a>
+                  </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div class="tab-pane slide-left active" id="slide1">
+                    <div class="row column-seperation">
+                      Select User Name and a Date Range in the LEADS BY USERS Form to view details
                     </div>
                   </div>
+                  <div class="tab-pane slide-left" id="slide2">
+                    <div class="row">
+                      <div class="col-lg-12">
+                      Select User Name and a Date Range in the LEADS BY USERS Form to view details
+                      </div>
+                    </div>
                   </div>
                 </div>
+              </div>
+              <!-- <div id="userByLeadsInfo" class="m-t-10">
+                                      </div> -->
             </div>
-          
           </div>
-        </div>
 
-      </div>
-      <div class=" container-fluid  container-fixed-lg footer">
-        <div class="copyright sm-text-center">
-          <p class="small-text no-margin pull-left sm-pull-reset">
-            ©2014-2020 All Rights Reserved. Pages® and/or its subsidiaries or affiliates are registered trademark of
-            Revox Ltd.
-            <span class="hint-text m-l-15">Pages v05.23 20201105.r.190</span>
-          </p>
-          <p class="small no-margin pull-right sm-pull-reset">
-            Hand-crafted <span class="hint-text">&amp; made with Love</span>
-          </p>
-          <div class="clearfix"></div>
         </div>
       </div>
-      <!-- END COPYRIGHT -->
+
     </div>
-    <!-- END PAGE CONTENT WRAPPER -->
+    <div class=" container-fluid  container-fixed-lg footer">
+      <div class="copyright sm-text-center">
+        <p class="small-text no-margin pull-left sm-pull-reset">
+          ©2014-2020 All Rights Reserved. Pages® and/or its subsidiaries or affiliates are registered trademark of
+          Revox Ltd.
+          <span class="hint-text m-l-15">Pages v05.23 20201105.r.190</span>
+        </p>
+        <p class="small no-margin pull-right sm-pull-reset">
+          Hand-crafted <span class="hint-text">&amp; made with Love</span>
+        </p>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <!-- END COPYRIGHT -->
+  </div>
+  <!-- END PAGE CONTENT WRAPPER -->
   </div>
   <!-- END PAGE CONTAINER -->
   <!--START QUICKVIEW -->
@@ -1682,23 +1707,23 @@
   <script type="text/javascript" src="assets/plugins/classie/classie.js"></script>
   <script src="assets/plugins/jquery-datatable/media/js/jquery.dataTables.js" type="text/javascript"></script>
   <script src="assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js"
-  type="text/javascript"></script>
+    type="text/javascript"></script>
   <script src="assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
   <script src="assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js"
-  type="text/javascript"></script>
+    type="text/javascript"></script>
   <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
   <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-  
-  
+
+
   <!-- END VENDOR JS -->
   <!-- File pond js -->
   <script
-  src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
   <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
   <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
   <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
   <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-  
+
   <!-- Image preview js -->
   <script src="assets/plugins/image-preview/js/lightbox.min.js"></script>
   <!-- Date range picker -->
@@ -1720,17 +1745,17 @@
   <script defer src="assets/js/isAdmin.js" type="text/javascript"></script>
 
   <script>
-    	$(function () {
-        		//$('#datepicker-range, #datepicker-component, #datepicker-component2').datepicker();
+    $(function () {
+      //$('#datepicker-range, #datepicker-component, #datepicker-component2').datepicker();
 
-          $('#daterangepicker').daterangepicker({
-          timePicker: false,
-          timePickerIncrement: 30,
-          format: 'MM/DD/YYYY'
-        }, function (start, end, label) {
-          console.log(start.toISOString(), end.toISOString(), label);
-        });
-        })
+      $('#daterangepicker').daterangepicker({
+        timePicker: false,
+        timePickerIncrement: 30,
+        format: 'MM/DD/YYYY'
+      }, function (start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+      });
+    })
   </script>
 
   <!-- END PAGE LEVEL JS -->
