@@ -71,6 +71,10 @@ const customerSchema = new mongoose.Schema(
 				awsData: mongoose.Schema.Types.Mixed,
 			},
 		],
+		createdBy: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+		},
 	},
 	{
 		toJSON: {

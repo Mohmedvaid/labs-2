@@ -7,6 +7,7 @@ const domainName = 'http://localhost:3000'
 const isValidMongoID = require('../helpers/isValidMongoID')
 const multer = require('multer')
 const uuid = require('uuid').v4
+const { checkUser, isAdmin, requireAuth } = require('../middleware/authMiddleware')
 
 //  Local uploads
 // const storage = multer.diskStorage({
@@ -42,8 +43,10 @@ const awsUpload = multer({
 	}),
 })
 
-router.post('/api/customer', awsUpload.single('idImage'), (req, res) => {
+router.post('/api/customer',requireAuth ,awsUpload.single('idImage'), (req, res) => {
 	let body = req.body
+	let user = req.user
+	console.log(req.user)
 	let idImage = {
 		name: req.file.originalname,
 		assetType: req.file.mimetype,
@@ -60,6 +63,7 @@ router.post('/api/customer', awsUpload.single('idImage'), (req, res) => {
 		dob: body.dob,
 		customerSignature: body.customerSignature,
 		phone: body.phone,
+		createdBy: user.id,
 	}
 
 	return customerDB

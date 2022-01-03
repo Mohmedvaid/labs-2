@@ -29,6 +29,8 @@
     rel="stylesheet" type="text/css" />
   <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css"
     media="screen" />
+    <link href="assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css"
+      media="screen">
   <!-- File pond  -->
   <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
   <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
@@ -36,6 +38,7 @@
 
   <!-- Image preview -->
   <link href="assets/plugins/image-preview/css/lightbox.min.css" rel="stylesheet" />
+
   <!-- <link type="text/css" rel="stylesheet" href="assets/plugins/dropzone/css/dropzone.css"> -->
   <!-- File uploads -->
   <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
@@ -163,20 +166,67 @@
         <!-- END JUMBOTRON -->
         <!-- START CONTAINER FLUID -->
         <div class=" container-fluid   container-fixed-lg bg-white">
-          <!-- START card -->
+          <!-- First Row -->
             <div class="row">
               <div class="col-xl-6 col-lg-6 ">
+                <!-- Add testing locations -->
+                <div class="row">
                 <div class="card card-transparent">
                   <div class="card-header">
                     <div class="card-title">
-                      Validation
+                      Dashboard allows you to configure the system value, add users &amp; much more.
                     </div>
                   </div>
                   <div class="card-body">
-                    <h3>Dashboard allows you to configure the system value, add users &amp; much more.</h3>
-                    <p>You can create a normal user or a super user
+                    <h4>You can create new users, add locations, see new customers by members and more!</h4>
                     </p>
                   </div>
+                </div>
+                </div>
+                <!-- Add users -->
+                <div class="row">
+                  <div class="col-lg-12">
+              <!-- START card -->
+              <div class="card">
+                <div class="card-header ">
+                  <div class="card-title"><h3>Add New Testing Location</h3>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="addLocationForm" autocomplete="off">
+                    <div id="locationErrors"></div>
+                    <div class="row clearfix">
+                      <div class="col-xl-6">
+                        <div class="form-group form-group-default required">
+                          <label>New Location Name</label>
+                          <input type="text" class="form-control" name="newTestingLocation" required>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-group form-group-default required">
+                          <label>Confirm Location</label>
+                          <input type="text" class="form-control" name="newTestingLocation2" required>
+                          <div class="invalid-feedback">
+                            Location does not match.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row m-t-25">
+                      <div class="col-xl-6 p-b-10">
+                        <p class="small-text hint-text">Location will appear on the signup page when users register</p>
+                      </div>
+                      <div class="col-xl-6">
+                        <button id="addLocationBtn" aria-label="" class="btn btn-primary pull-right btn-lg btn-block">Add Location
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- END card -->
+            </div>
                 </div>
               </div>
               <div class="col-xl-6 col-lg-6 ">
@@ -257,153 +307,94 @@
                 <!-- END card -->
               </div>
             </div>
-          <!-- END card -->
-        </div>
-        <div class=" container-fluid   container-fixed-lg">
-          <div class="row m-t-10">
-            <div class="col-xl-6 col-lg-6">
-              <!-- START card -->
-              <div class="card">
-                <div class="card-header ">
-                  <div class="card-title">Add New Testing Location
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div id="addLocationForm" autocomplete="off">
-                    <div id="locationErrors"></div>
-                    <div class="row clearfix">
-                      <div class="col-xl-6">
-                        <div class="form-group form-group-default required">
-                          <label>New Location Name</label>
-                          <input type="text" class="form-control" name="newTestingLocation" required>
-                        </div>
-                      </div>
-                      <div class="col-xl-6">
-                        <div class="form-group form-group-default required">
-                          <label>Confirm Location</label>
-                          <input type="text" class="form-control" name="newTestingLocation2" required>
-                          <div class="invalid-feedback">
-                            Location does not match.
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="row m-t-25">
-                      <div class="col-xl-6 p-b-10">
-                        <p class="small-text hint-text">Location will appear on the signup page when users register</p>
-                      </div>
-                      <div class="col-xl-6">
-                        <button id="addLocationBtn" aria-label="" class="btn btn-primary pull-right btn-lg btn-block">Add Location
-                        </button>
-                      </div>
+        <!-- Second Row -->
+            <div class="row">
+              <div class="col-xl-6 col-lg-6 ">
+                <!-- User details about customer -->
+                <div class="card">
+                  <div class="card-header ">
+                    <div class="card-title">Leads by users
                     </div>
                   </div>
+                  <div class="card-body">
+                    <h2 class="mw-80">Find out who is working hard.</h2>
+                    <form id="form-personal" role="form" autocomplete="off">
+                      <div class="row clearfix">
+                        <div class="col-xl-4">
+                            <select class="cs-select cs-skin-slide" data-init-plugin="cs-select">
+                              <option value="sightseeing">Web-safe</option>
+                              <option value="business">Helvetica</option>
+                              <option value="honeymoon">SegeoUI</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-6">
+                          <!-- <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="pg-icon">calendar</i></span>
+                            </div>
+                            <input type="text" name="reservation" id="daterangepicker" class="form-control"
+                              value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM" />
+                          </div> -->
+                        </div>
+                      </div>
+
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="row m-t-25">
+                        <div class="col-xl-6 p-b-10">
+                          <p class="small-text hint-text">By clicking the "Get Started!" button, you are creating a Pages account, and
+                            you agree to Pages's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+                        </div>
+                        <div class="col-xl-6">
+                          <button aria-label="" class="btn btn-primary pull-right btn-lg btn-block" type="submit">Get Started
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-              </div>
-              <!-- END card -->
             </div>
-            <div class="col-md-6 col-xlg-6">
-              <!-- START card -->
-              <!-- <div class="card">
+            <div class="row">
+              <!-- DATE pickers---------------------------------------------------------------- -->
+              <div class="card card-default">
                 <div class="card-header ">
-                  <div class="card-title">Separated form layouts
+                  <div class="card-title">Date Controls
+                  </div>
+                  <div class="tools">
                   </div>
                 </div>
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-md-12">
-                      <h3 class="mw-80">Simple but not simpler, create a separate form layout. Best for settings pages.</h3>
-                      <p class="mw-80">Want it to be more Descriptive and User-Friendly, We Made it possible, Use Separated Form
-                        Layouts Structure to Presentation your Form Fields.
+                    
+                    <div class="col-lg-4">
+                      <h5>Date
+                        <span class="semi-bold">Range</span>
+                      </h5>
+                      <p>Date range can be set by the same plugin, this is use full when taking two dates at a time
                       </p>
                       <br>
-                      <form id="form-work" class="form-horizontal" role="form" autocomplete="off">
-                        <div class="form-group row">
-                          <label for="fname" class="required col-md-5 control-label">Metadata URL</label>
-                          <div class="col-md-7">
-                            <input type="text" class="form-control" id="fname" placeholder="https://..." name="name" required>
-                            <span class="help">The URL to your SAML Metadata XML file. It must be publicly accessible for Pages
-                              Framework to download and process.</span>
-                          </div>
+                      <br>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="pg-icon">calendar</i></span>
                         </div>
-                        <div class="form-group row">
-                          <label class="col-md-5 control-label">Formation</label>
-                          <div class="col-md-7 d-flex align-items-center">
-                            <div class="form-check form-check-inline success m-b-0">
-                              <input type="radio" value="male" name="optionyes" id="male">
-                              <label for="male">Clustered</label>
-                            </div>
-                            <div class="form-check form-check-inline success m-b-0">
-                              <input type="radio" checked="checked" value="female" name="optionyes" id="female">
-                              <label for="female">Stacked</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-md-5 control-label required">Referral</label>
-                          <div class="col-md-7">
-                            <div class="row">
-                              <div class="col-md-8">
-                                <input type="text" class="form-control" id="fname"
-                                  placeholder="http://kepler.app/?ref=companyname" name="name" required>
-                                <span class="help">Look for the referral person name in your account xm
-                                  <code>Entity_ref=""</code> and paste it above</span>
-                              </div>
-                              <div class="col-md-4 sm-m-t-10">
-                                <input type="text" placeholder="XXXX-XX" class="form-control">
-                                <span class="help">6 digit referral code provided</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="position" class="col-md-5 control-label">Test Configuration</label>
-                          <div class="col-md-7">
-                            <button aria-label="" class="btn btn-default m-b-10 m-t-5">Test with my project</button>
-                            <span class="help">Test if your pages UI framework works with your backend project correctly and
-                              adaptively</span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="name" class="col-md-5 control-label">Project SSL Scope</label>
-                          <div class="col-md-7">
-                            <textarea class="form-control" rows="4" id="name"
-                              placeholder="Briefly Describe your reports"></textarea>
-                            <span class="help">Add report descriptions and analysis data report to provide a SSL certificate
-                              function clearer</span>
-                          </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <p class="small-text hint-text">Note: changes may take some time to apply. Wait a day and then try
-                              to verify again </p>
-                          </div>
-                          <div class="col-md-6">
-                            <button aria-label="" class="btn btn-success pull-right" type="submit">Save Changes</button>
-                          </div>
-                        </div>
-                      </form>
+                        <input type="text" name="reservation" id="daterangepicker" class="form-control"
+                          value="08/01/2013 - 08/01/2013" />
+                      </div>
+                      <br>
+                   
                     </div>
+                    
                   </div>
                 </div>
-              </div> -->
-              <!-- END card -->
+              </div>
+              <!-- DATE pickers---------------------------------------------------------------- -->
+              
             </div>
           </div>
         </div>
-        <!-- END CONTAINER FLUID -->
-        <!-- START CONTAINER FLUID -->
 
-        <!-- END CONTAINER FLUID -->
-        <!-- START CONTAINER FLUID -->
-        <!-- END CONTAINER FLUID -->
       </div>
-      <!-- END PAGE CONTENT -->
-      <!-- START COPYRIGHT -->
-      <!-- START CONTAINER FLUID -->
-      <!-- START CONTAINER FLUID -->
       <div class=" container-fluid  container-fixed-lg footer">
         <div class="copyright sm-text-center">
           <p class="small-text no-margin pull-left sm-pull-reset">
@@ -1725,23 +1716,30 @@
   <script type="text/javascript" src="assets/plugins/classie/classie.js"></script>
   <script src="assets/plugins/jquery-datatable/media/js/jquery.dataTables.js" type="text/javascript"></script>
   <script src="assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js"
-    type="text/javascript"></script>
+  type="text/javascript"></script>
   <script src="assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
   <script src="assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js"
-    type="text/javascript"></script>
+  type="text/javascript"></script>
   <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
   <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+  
+  
   <!-- END VENDOR JS -->
   <!-- File pond js -->
   <script
-    src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+  src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
   <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
   <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
   <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
   <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-
+  
   <!-- Image preview js -->
   <script src="assets/plugins/image-preview/js/lightbox.min.js"></script>
+  <!-- Date range picker -->
+  <script src="assets/plugins/moment/moment.min.js"></script>
+  <script type="text/javascript" src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+  <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+
 
   <!-- BEGIN CORE TEMPLATE JS -->
   <script src="pages/js/pages.js"></script>
@@ -1754,6 +1752,20 @@
   <script src="assets/js/scripts.js" type="text/javascript"></script>
   <script src="assets/js/initmenu.js" type="text/javascript"></script>
   <script defer src="assets/js/isAdmin.js" type="text/javascript"></script>
+
+  <script>
+    	$(function () {
+        		//$('#datepicker-range, #datepicker-component, #datepicker-component2').datepicker();
+
+          $('#daterangepicker').daterangepicker({
+          timePicker: false,
+          timePickerIncrement: 30,
+          format: 'MM/DD/YYYY'
+        }, function (start, end, label) {
+          console.log(start.toISOString(), end.toISOString(), label);
+        });
+        })
+  </script>
 
   <!-- END PAGE LEVEL JS -->
 </body>

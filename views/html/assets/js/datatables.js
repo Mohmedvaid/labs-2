@@ -19,6 +19,8 @@
 	//     acceptedFileTypes: ['image/*'],
 	//   });
 	// Customer Spinner
+
+
 	hideNewCustomerSpinner()
 	function showNewCustomerSpinner() {
 		$(`#addCustomerSpinner`).show()
@@ -423,8 +425,8 @@
 
 	$('#clearNewCustomerForm').click(function () {
 		$('#addCustomerForm').trigger('reset')
-    $('#sig-image').attr('src', '/assets/img/sign-required.png')
-    $('#sig-clearBtn').trigger('click')
+		$('#sig-image').attr('src', '/assets/img/sign-required.png')
+		$('#sig-clearBtn').trigger('click')
 	})
 	// add locations
 	function addLocationToSelect() {
