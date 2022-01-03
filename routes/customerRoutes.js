@@ -91,31 +91,38 @@ function generateAndSaveQRCode(customer) {
 	})
 }
 
-router.get('/api/customer', (req, res) => {
-	const location = req.cookies.location
-	const userType = req.cookies.userType
-	let query
-	console.log(location)
-	if (location === undefined || userType === undefined) {
-		return res.status(401).json({ error: 'Unauthorized' })
+router.get('/api/customer', requireAuth, (req, res) => {
+  const location = req.cookies.location;
+  const userType = req.cookies.userType;
+  const fromDate = req.query.fromDate;
+  const toDate = req.query.toDate;
+  let query;
+  if (location === undefined || userType === undefined) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  // FIX THIS BECAUSE LOCATION IS NOT A STRING BUT AN ARRAY
+  if (userType.toLowerCase() === 'admin') {
+    query = {};
+  } else {
+    query = { location: { $in: location } };
+  }
+  if(fromDate && toDate){
+	query.createdAt = {
+	  $gte: fromDate,
+	  $lte: toDate
 	}
-	// FIX THIS BECAUSE LOCATION IS NOT A STRING BUT AN ARRAY
-	if (userType.toLowerCase() === 'admin') {
-		query = {}
-	} else {
-		query = { location: { $in: location } }
-	}
-	customerDB
-		.find(query)
-		.then((customer) => {
-			console.log(customer)
-			return res.json(customer)
-		})
-		.catch((err) => {
-			console.log(err)
-			return res.status(400).json(err)
-		})
-})
+  }
+  customerDB
+    .find(query)
+    .then((customer) => {
+      console.log(customer);
+      return res.json(customer);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
 
 // GET specific customer
 router.get('/api/customer/:id', (req, res) => {

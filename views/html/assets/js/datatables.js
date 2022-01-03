@@ -445,6 +445,7 @@
 		})
 	}
 
+
 	initTableWithSearch()
 	// addLocationToSelect()
 })(window.jQuery)

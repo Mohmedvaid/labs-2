@@ -165,7 +165,7 @@
         </div>
         <!-- END JUMBOTRON -->
         <!-- START CONTAINER FLUID -->
-        <div class=" container-fluid   container-fixed-lg bg-white">
+        <div class=" container-fluid container-fixed-lg">
           <!-- First Row -->
             <div class="row">
               <div class="col-xl-6 col-lg-6 ">
@@ -266,7 +266,7 @@
                         <!-- DDL -->
                         <div class="row">
                           <div class="col-md-8">
-                              <select id="userType"class="form-select form-group form-group-default" aria-label="Default select example">
+                              <select id="userType" class="form-select form-group form-group-default" aria-label="Default select example">
                                 <option selected>Select a user type</option>
                                 <option value="admin">Super User</option>
                                 <option value="user">Regular User</option>
@@ -309,7 +309,7 @@
             </div>
         <!-- Second Row -->
             <div class="row">
-              <div class="col-xl-6 col-lg-6 ">
+              <div class="col-xl-12 col-lg-12">
                 <!-- User details about customer -->
                 <div class="card">
                   <div class="card-header ">
@@ -318,79 +318,45 @@
                   </div>
                   <div class="card-body">
                     <h2 class="mw-80">Find out who is working hard.</h2>
-                    <form id="form-personal" role="form" autocomplete="off">
+                    <div class="col-xl-6">
+                    <form id="userByLeadsForm" role="form" autocomplete="off">
                       <div class="row clearfix">
-                        <div class="col-xl-4">
-                            <select class="cs-select cs-skin-slide" data-init-plugin="cs-select">
-                              <option value="sightseeing">Web-safe</option>
-                              <option value="business">Helvetica</option>
-                              <option value="honeymoon">SegeoUI</option>
+                        <div class="col-xl-7">
+                            <p>User Name</p>
+                            <select id="allUsersSelect" class="form-select form-group form-group-default" aria-label="Default select example">
+                              <option selected>Select a user type</option>
                             </select>
                         </div>
-                        <div class="col-xl-6">
-                          <!-- <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="pg-icon">calendar</i></span>
+                        <div class="col-xl-7">
+                          <!-- DATE RANGE PICKER -->
+                            <p>Date Range</p>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="pg-icon">calendar</i></span>
+                              </div>
+                              <input type="text" name="reservation" id="daterangepicker" class="form-control" value="08/01/2013 - 08/01/2013" />
                             </div>
-                            <input type="text" name="reservation" id="daterangepicker" class="form-control"
-                              value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM" />
-                          </div> -->
+                            <br>
+                            <!-- DATE RANGE PICKER ENDS -->
                         </div>
                       </div>
-
-                      </div>
-                      <div class="clearfix"></div>
                       <div class="row m-t-25">
-                        <div class="col-xl-6 p-b-10">
-                          <p class="small-text hint-text">By clicking the "Get Started!" button, you are creating a Pages account, and
-                            you agree to Pages's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+                        <div class="col-xl-4 p-b-10">
+                          <p class="small-text hint-text">View all user details</p>
                         </div>
-                        <div class="col-xl-6">
-                          <button aria-label="" class="btn btn-primary pull-right btn-lg btn-block" type="submit">Get Started
+                        <div class="col-xl-3">
+                          <button id="getLeadsByUsers" aria-label="" class="btn btn-primary pull-right btn-lg btn-block">Get Info
                           </button>
-                        </div>
+                        </div>                    
+                        
                       </div>
                     </form>
-                  </div>
-                </div>
-            </div>
-            <div class="row">
-              <!-- DATE pickers---------------------------------------------------------------- -->
-              <div class="card card-default">
-                <div class="card-header ">
-                  <div class="card-title">Date Controls
-                  </div>
-                  <div class="tools">
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    
-                    <div class="col-lg-4">
-                      <h5>Date
-                        <span class="semi-bold">Range</span>
-                      </h5>
-                      <p>Date range can be set by the same plugin, this is use full when taking two dates at a time
-                      </p>
-                      <br>
-                      <br>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="pg-icon">calendar</i></span>
-                        </div>
-                        <input type="text" name="reservation" id="daterangepicker" class="form-control"
-                          value="08/01/2013 - 08/01/2013" />
-                      </div>
-                      <br>
-                   
                     </div>
-                    
+                  </div>
                   </div>
                 </div>
-              </div>
-              <!-- DATE pickers---------------------------------------------------------------- -->
-              
             </div>
+          
           </div>
         </div>
 
