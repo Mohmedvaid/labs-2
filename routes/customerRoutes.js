@@ -8,6 +8,7 @@ const isValidMongoID = require('../helpers/isValidMongoID')
 const multer = require('multer')
 const uuid = require('uuid').v4
 const { checkUser, isAdmin, requireAuth } = require('../middleware/authMiddleware')
+const moment = require('moment-timezone')
 
 //  Local uploads
 // const storage = multer.diskStorage({
@@ -43,10 +44,9 @@ const awsUpload = multer({
 	}),
 })
 
-router.post('/api/customer',requireAuth ,awsUpload.single('idImage'), (req, res) => {
+router.post('/api/customer', requireAuth, awsUpload.single('idImage'), (req, res) => {
 	let body = req.body
 	let user = req.user
-	console.log(req.user)
 	let idImage = {
 		name: req.file.originalname,
 		assetType: req.file.mimetype,
@@ -65,11 +65,27 @@ router.post('/api/customer',requireAuth ,awsUpload.single('idImage'), (req, res)
 		phone: body.phone,
 		createdBy: user.id,
 	}
-
+	let query = {
+		$or: [
+			{ email: customer.email },
+			{ phone: customer.phone },
+			{ $and: [{ firstName: customer.firstName }, { lastName: customer.lastName }] },
+		],
+	}
 	return customerDB
-		.find({ email: customer.email })
+		.find(query)
+		.sort({ createdAt: -1 })
+		.exec()
 		.then((dup_key) => {
-			if (dup_key.length !== 0) throw { error: 'Duplicate email', message: 'Email already added' }
+			if (dup_key.length !== 0) {
+				let todaysDate = new Date()
+				let oldCustomerDate = new Date(dup_key[0].createdAt)
+				let diffInTime = todaysDate.getTime() - oldCustomerDate.getTime()
+				let diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24))
+				if (diffInDays <= 15) {
+					customer.isDuplicate = dup_key.length
+				}
+			}
 			return
 		})
 		.then(() => new customerDB(customer))
@@ -92,66 +108,58 @@ function generateAndSaveQRCode(customer) {
 }
 
 router.get('/api/customer', requireAuth, (req, res) => {
-  const location = req.cookies.location;
-  const userType = req.cookies.userType;
-  const fromDate = req.query.fromDate;
-  const toDate = req.query.toDate;
-  let query;
-  if (location === undefined || userType === undefined) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  // FIX THIS BECAUSE LOCATION IS NOT A STRING BUT AN ARRAY
-  if (userType.toLowerCase() === 'admin') {
-    query = {};
-  } else {
-    query = { location: { $in: location } };
-  }
-  if(fromDate && toDate){
-	query.createdAt = {
-	  $gte: fromDate,
-	  $lte: toDate
+	const location = req.cookies.location
+	const userType = req.cookies.userType
+	let query
+	if (location === undefined || userType === undefined) {
+		return res.status(401).json({ error: 'Unauthorized' })
 	}
-  }
-  customerDB
-    .find(query)
-    .then((customer) => {
-      console.log(customer);
-      return res.json(customer);
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(400).json(err);
-    });
-});
+	// FIX THIS BECAUSE LOCATION IS NOT A STRING BUT AN ARRAY
+	if (userType.toLowerCase() === 'admin') {
+		query = {}
+	} else {
+		query = { location: { $in: location } }
+	}
+	customerDB
+		.find(query)
+		.then((customer) => {
+			return res.json(customer)
+		})
+		.catch((err) => {
+			console.log(err)
+			return res.status(400).json(err)
+		})
+})
 
 // GET customers by users
-router.get('/api/customers/byUser', requireAuth, isAdmin, (req, res) => {
-  const userType = req.cookies.userType;
-  const fromDate = req.query.fromDate;
-  const toDate = req.query.toDate;
-  const user = req.user;
-  let query;
-  if(!fromDate) return res.status(400).json({error: 'fromDate is required'})
-  if(!toDate) return res.status(400).json({error: 'toDate is required'})
-  if(userType.toLowerCase() !== 'admin') return res.status(401).json({error: 'Unauthorized'})
-  query = {
-	createdBy: user.id,
-	createdAt: {
-		$gte: fromDate,
-		$lte: toDate
+router.get('/api/customers/byUser/:userID', requireAuth, isAdmin, (req, res) => {
+	const userType = req.cookies.userType
+	const fromDate = req.query.fromDate
+	const toDate = req.query.toDate
+	const userID = req.params.userID
+	let query
+	if (!fromDate) return res.status(400).json({ error: 'fromDate is required' })
+	if (!toDate) return res.status(400).json({ error: 'toDate is required' })
+	if (userType.toLowerCase() !== 'admin') return res.status(401).json({ error: 'Unauthorized' })
+	query = {
+		createdBy: userID,
+		createdAt: {
+			$gte: fromDate,
+			$lte: toDate,
+		},
 	}
-  }
-  customerDB
-    .find(query)
-    .then((customer) => {
-      console.log(customer);
-      return res.json(customer);
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(400).json(err);
-    });
-});
+	console.log('query', query)
+	customerDB
+		.find(query)
+		.then((customer) => {
+			console.log('customers', customer)
+			return res.json(customer)
+		})
+		.catch((err) => {
+			console.log(err)
+			return res.status(400).json(err)
+		})
+})
 
 // GET specific customer
 router.get('/api/customer/:id', (req, res) => {
@@ -172,7 +180,6 @@ router.get('/api/customer/:id', (req, res) => {
 router.put('/api/customer/:id', (req, res) => {
 	let id = req.params.id,
 		customerInfo = req.body
-	console.log(req.file)
 	res.json('success')
 	customerDB
 		.findOneAndUpdate({ _id: id }, customerInfo, { new: true })

@@ -1,15 +1,14 @@
 const mongoose = require('mongoose')
 const { isEmail } = require('validator')
 const { validateLocation, validateCustomerLocation } = require('./helper')
+const moment = require('moment-timezone')
 
 const customerSchema = new mongoose.Schema(
 	{
 		email: {
 			type: String,
 			required: [true, 'Please enter an email'],
-			unique: true,
 			lowercase: true,
-			unique: true,
 		},
 		address: {
 			type: String,
@@ -74,6 +73,10 @@ const customerSchema = new mongoose.Schema(
 		createdBy: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
+		},
+		isDuplicate: {
+			type: Number,
+			default: 0,
 		},
 	},
 	{

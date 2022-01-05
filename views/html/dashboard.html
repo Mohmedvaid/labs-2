@@ -316,7 +316,7 @@
           </div>
           <!-- Second Row -->
           <div class="row bg-white">
-            <div class="col-xl-4 col-lg-4">
+            <div class="col-xl-5 col-lg-5">
               <!-- User details about customer -->
               <div class="card">
                 <div class="card-header ">
@@ -338,7 +338,7 @@
                                 <span class="input-group-text"><i class="pg-icon">calendar</i></span>
                               </div>
                               <input type="text" name="reservation" id="daterangepicker" class="form-control"
-                                value="01/01/2022 - 01/03/2022" />
+                                value="01/01/2022 8:00 AM - 01/03/2022 11:00 PM" />
                             </div>
                             <br>
                             <!-- DATE RANGE PICKER ENDS -->
@@ -350,7 +350,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-8">
+            <div class="col-xl-7">
               <div class="card card-transparent ">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs nav-tabs-fillup" data-init-reponsive-tabs="dropdownfx">
@@ -370,7 +370,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                   <div class="tab-pane slide-left active" id="resultsAccordion">
-                      <table class="table table-hover demo-table-search table-responsive-block" id="userOverviewTable">
+                      <!-- <table class="table table-hover demo-table-search table-responsive-block" id="userOverviewTable">
                         <thead>
                           <tr>
                             <th>Field</th>
@@ -379,7 +379,7 @@
                         </thead>
                         <tbody id="userOverviewTableBody">
                         </tbody>
-                      </table>
+                      </table> -->
                   </div>
                   <div class="tab-pane slide-left" id="duplicateCustomers">
                     <div class="row">
@@ -1758,6 +1758,7 @@
   <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
   <!-- Image preview js -->
+    <script src="assets/js/date.js" type="text/javascript"></script>
   <script src="assets/plugins/image-preview/js/lightbox.min.js"></script>
   <!-- Date range picker -->
   <script src="assets/plugins/moment/moment.min.js"></script>
@@ -1782,11 +1783,14 @@
       //$('#datepicker-range, #datepicker-component, #datepicker-component2').datepicker();
 
       $('#daterangepicker').daterangepicker({
-        timePicker: false,
+        timePicker: true,
         timePickerIncrement: 30,
-        format: 'MM/DD/YYYY'
+        format: 'MM/DD/YYYY hh:mm A'
       }, function (start, end, label) {
-        console.log(start.toISOString(), end.toISOString(), label);
+        console.log(start.toISOString(), end.toISOString(), label, end);
+        dateRange.fromDate = start.toISOString();
+        dateRange.toDate = end.toISOString();
+
       });
     })
   </script>

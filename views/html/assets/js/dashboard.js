@@ -188,21 +188,28 @@
 	$(`#getLeadsByUsers`).click(function (e) {
 		e.preventDefault()
 		let date = $(`#daterangepicker`).val()
+		console.log(date)
 		let fromDate = date.split('-')[0].trim()
 		let toDate = date.split('-')[1].trim()
-		let user = $(`#allUsersSelect option:selected`).val()
-		console.log(date, user)
+		// dateRange objects are initialized in the script tags of dahboard.html
+		let fromDateUTC = dateRange.fromDate
+		let toDateUTC = dateRange.toDate
+		if(!fromDateUTC || !toDateUTC) {
+			alert('Please select a date range')
+			return
+		}
+		let userID = $(`#allUsersSelect option:selected`).val()
 		axios
-			.get(`/api/customers/byUser?fromDate=${fromDate}&toDate=${toDate}`)
+			.get(`/api/customers/byUser/${userID}?fromDate=${fromDateUTC}&toDate=${toDateUTC}`)
 			.then((customerData) => {
-				initTableWithUserInfo(customerData.data, { fromDate, toDate })
-        initInDateRangeCustomer(customerData.data)
+				clearAppendResults(customerData.data, { fromDate, toDate })
+				initInDateRangeCustomer(customerData.data)
 			})
 	})
 
-	function appendLeads(customers, dates) {
-		$(`#userByLeadsInfo`).empty()
+	function clearAppendResults(customers, dates) {
 		let resultAccordion = $(`#resultsAccordion`)
+		resultAccordion.empty()
 		let div = `
       <div class="row">
         <div class="col-md-4 d-flex justify-content-center align-items-center">
@@ -213,55 +220,13 @@
         </div>
       </div>
     `
-		let table = `
-                <table class="table table-hover demo-table-search table-responsive-block" id="userOverviewTable">
-                  <thead>
-                    <tr>
-                      <th>Field</th>
-                      <th>Data</th>
-                    </tr>
-                  </thead>
-                  <tbody id="userOverviewTableBody">
-                  </tbody>
-                </table>
-    `
-		resultAccordion.empty()
 		resultAccordion.append(div)
-		customers.forEach((customer) => {})
 	}
 
-	let initTableWithUserInfo = async function (customerData, { fromDate, toDate }) {
-		var table = $('#userOverviewTable')
-
-		var settings = {
-			sDom: "<t><'row'<p i>>",
-			destroy: true,
-			scrollCollapse: true,
-			oLanguage: {
-				sLengthMenu: '_MENU_ ',
-				sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
-			},
-			iDisplayLength: 5,
-			aoColumns: [{ sWidth: '60%' }, { sWidth: '40%' }],
-			// fnCreatedRow: function (nRow, aData, iDataIndex) {
-			// 	$(nRow).attr('id', aData[2])
-			//},
-		}
-
-		table.dataTable(settings)
-
-		let customers = customerData //await axios.get(`/api/customers/byUser?fromDate=${fromDate}&toDate=${toDate}`)
-		table.fnAddData([`Number of customers from ${fromDate} - ${toDate}`, `${customers.length}`])
-
-		// search box for table
-		table.keyup(function () {
-			table.fnFilter($(this).val())
-		})
-	}
-
+	
 	function initInDateRangeCustomer(customers) {
 		var table = $('#inRangeCustomersTable')
-
+		
 		var settings = {
 			sDom: "<t><'row'<p i>>",
 			destroy: true,
@@ -273,26 +238,55 @@
 			iDisplayLength: 5,
 			aoColumns: [{ sWidth: '20%' }, { sWidth: '40%' }, { sWidth: '40%' }],
 			// fnCreatedRow: function (nRow, aData, iDataIndex) {
-			// 	$(nRow).attr('id', aData[2])
-			//},
+				// 	$(nRow).attr('id', aData[2])
+				//},
+			}
+			
+			table.dataTable(settings)
+			customers.forEach((customer, index) => {
+				table.fnAddData([
+					`${index + 1}`,
+					`${customer.firstName} ${customer.lastName}`,
+					`${customer.email}`,
+				])
+			})
+			
+			// search box for table
+			table.keyup(function () {
+				table.fnFilter($(this).val())
+			})
 		}
+		
+		initLocations()
+		initAllUsers()
+		initTableWithUserInfo()
+	})(window.jQuery)
+	
+	// let initTableWithUserInfo = async function (customerData, { fromDate, toDate }) {
+	// 	var table = $('#userOverviewTable')
 
-		table.dataTable(settings)
-		customers.forEach((customer, index) => {
-			table.fnAddData([
-				`${index + 1}`,
-				`${customer.firstName} ${customer.lastName}`,
-				`${customer.email}`,
-			])
-		})
+	// 	var settings = {
+	// 		sDom: "<t><'row'<p i>>",
+	// 		destroy: true,
+	// 		scrollCollapse: true,
+	// 		oLanguage: {
+	// 			sLengthMenu: '_MENU_ ',
+	// 			sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
+	// 		},
+	// 		iDisplayLength: 5,
+	// 		aoColumns: [{ sWidth: '60%' }, { sWidth: '40%' }],
+	// 		// fnCreatedRow: function (nRow, aData, iDataIndex) {
+	// 		// 	$(nRow).attr('id', aData[2])
+	// 		//},
+	// 	}
 
-		// search box for table
-		table.keyup(function () {
-			table.fnFilter($(this).val())
-		})
-	}
+	// 	table.dataTable(settings)
 
-	initLocations()
-	initAllUsers()
-	initTableWithUserInfo()
-})(window.jQuery)
+	// 	let customers = customerData //await axios.get(`/api/customers/byUser?fromDate=${fromDate}&toDate=${toDate}`)
+	// 	table.fnAddData([`Number of customers from ${fromDate} - ${toDate}`, `${customers.length}`])
+
+	// 	// search box for table
+	// 	table.keyup(function () {
+	// 		table.fnFilter($(this).val())
+	// 	})
+	// }

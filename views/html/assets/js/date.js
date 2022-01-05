@@ -1,0 +1,4 @@
+let dateRange = {
+    fromDate:"",
+    toDate:""
+}

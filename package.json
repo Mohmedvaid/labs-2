@@ -14,6 +14,7 @@
     "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
+    "moment-timezone": "^0.5.34",
     "mongoose": "^5.9.23",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
@@ -29,7 +30,7 @@
     "start": "nodemon server.js",
     "watch": "nodemon server.js",
     "seed": "node seeders/seed.js",
-    "debug":"NODE_INSPECT_RESUME_ON_START=1 && node inspect app.js"
+    "debug": "NODE_INSPECT_RESUME_ON_START=1 && node inspect app.js"
   },
   "repository": {
     "type": "git",
