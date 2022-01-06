@@ -86,18 +86,18 @@ const customerSchema = new mongoose.Schema(
 	}
 )
 
-function convertBufferToBase64(buffer) {
-	//console.log("Image!!!", this.imageType);
-	if (buffer != null && this.imageType != null) {
-		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
-	}
-}
+// function convertBufferToBase64(buffer) {
+// 	//console.log("Image!!!", this.imageType);
+// 	if (buffer != null && this.imageType != null) {
+// 		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
+// 	}
+// }
 
-function convertToAsset(data) {
-	if (data) {
-		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
-	}
-}
+// function convertToAsset(data) {
+// 	if (data) {
+// 		return `data:${this.imageType};charset=utf-8;base64,${buffer.toString('base64')}`
+// 	}
+// }
 
 function formatDOB(dob) {
 	return dob.toLocaleDateString('en-us')

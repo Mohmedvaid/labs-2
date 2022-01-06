@@ -4,7 +4,6 @@ const Monoose = require('mongoose')
 
 router.post('/api/location', (req, res) => {
 	let location = req.body.name
-	console.log(req.body.name)
 	if (!location)
 		return res.status(400).json({ error: 'No Location found', message: 'Location is required' })
 	return locationDB

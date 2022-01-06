@@ -19,8 +19,6 @@ $(document).ready(function () {
       .then((res) => {
         localStorage.setItem('location', JSON.stringify(res.data.location));
         localStorage.setItem('userType', JSON.stringify(res.data.userType));
-        //localStorage.setItem('jwt', res.data.jwt)
-        console.log(res.data.userType)
         if(res.data.userType === 'admin') location.assign('/dashboard');
         else location.assign('/customers');
       })
@@ -31,7 +29,6 @@ $(document).ready(function () {
     let formErr,
       status = err.response.status,
 	  data= err.response.data;
-	  console.log(err.response)
     if (status === 400 || status === 401) {
       formErr = `<div id="main-err" style="color:red;">${data.error}<div>`;
     } else {

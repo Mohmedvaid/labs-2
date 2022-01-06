@@ -1,7 +1,6 @@
 let locationDB = require('./Locations')
 
 function validateUserLocation(userLocation) {
-	//console.log(location)
 	return locationDB
 		.find({ name: userLocation })
 		.then((dbLocations) => {
@@ -11,7 +10,6 @@ function validateUserLocation(userLocation) {
 				tempLocations.splice(tempLocations.indexOf(dbLocation.name), 1)
 			})
 
-			console.log('templocation', tempLocations)
 			if (tempLocations.length === 0) return true
 			return false
 		})
@@ -24,8 +22,6 @@ function validateCustomerLocation(customerLocation) {
 	return locationDB
 		.findOne({ name: customerLocation })
 		.then((dbLocations) => {
-            console.log('dbLocations', dbLocations)
-            console.log('customerLocation', customerLocation)
 			if (!dbLocations) return false
 			else if (dbLocations.name !== customerLocation) return false
 			return true

@@ -338,7 +338,7 @@
                                 <span class="input-group-text"><i class="pg-icon">calendar</i></span>
                               </div>
                               <input type="text" name="reservation" id="daterangepicker" class="form-control"
-                                value="01/01/2022 8:00 AM - 01/03/2022 11:00 PM" />
+                                value="Select a Date Range" />
                             </div>
                             <br>
                             <!-- DATE RANGE PICKER ENDS -->
@@ -382,11 +382,17 @@
                       </table> -->
                   </div>
                   <div class="tab-pane slide-left" id="duplicateCustomers">
-                    <div class="row">
-                      <div class="col-lg-12">
-                      Select User Name and a Date Range in the LEADS BY USERS Form to view details
-                      </div>
-                    </div>
+                      <table class="table table-hover demo-table-search table-responsive-block" id="duplicateCustomerTable">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                          </tr>
+                        </thead>
+                        <tbody id="duplicateCustomerTableBody">
+                        </tbody>
+                      </table>
                   </div>
                   <!-- <div class="tab-pane slide-left" id="allCustomersByUser">
                     <div class="row">
@@ -400,8 +406,8 @@
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Field</th>
-                            <th>Data</th>
+                            <th>Name</th>
+                            <th>Email</th>
                           </tr>
                         </thead>
                         <tbody id="inRangeCustomersBody">

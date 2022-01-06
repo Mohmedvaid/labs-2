@@ -126,7 +126,6 @@
 			axios
 				.post('/api/customer', formData)
 				.then(({ data: customer }) => {
-					console.log(customer)
 					table.fnAddData([
 						customer.firstName,
 						customer.lastName,

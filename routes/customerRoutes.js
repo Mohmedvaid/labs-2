@@ -152,7 +152,6 @@ router.get('/api/customers/byUser/:userID', requireAuth, isAdmin, (req, res) => 
 	customerDB
 		.find(query)
 		.then((customer) => {
-			console.log('customers', customer)
 			return res.json(customer)
 		})
 		.catch((err) => {

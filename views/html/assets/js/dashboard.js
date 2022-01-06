@@ -18,7 +18,6 @@
 			var password = $(`input[name='pass']`).val()
 			let accesslocationArr = []
 			$(`input:checkbox[name='userLocations']:checked`).each(function () {
-				console.log($(this))
 				accesslocationArr.push($(this).val())
 			})
 			var firstName = $(`input[name='fname']`).val()
@@ -64,11 +63,9 @@
 					lastName,
 					userType,
 				}
-				console.log(data)
 				axios
 					.post('/register', data)
 					.then((res) => {
-						console.log(res)
 						clearErrors()
 						$(`#signupMessage`).text('User created successfully')
 						$(`#signUpForm`).trigger('reset')
@@ -115,7 +112,6 @@
 		})
 
 		$(`#addLocationBtn`).click(function (e) {
-			console.log('add location button clicked')
 			let errorEl = $(`#locationErrors`)
 			errorEl.empty()
 			let location = $(`input[name='newTestingLocation']`).val()
@@ -132,7 +128,6 @@
 			axios
 				.post('/api/location', { name: location })
 				.then((res) => {
-					console.log(res)
 					errorEl.append(`<p class="text-success">Location added!</p>`)
 					setTimeout(function () {
 						errorEl.empty()
@@ -171,7 +166,6 @@
 		axios.get('/api/users').then(function (response) {
 			let users = response.data
 			let userSelect = $(`#allUsersSelect`)
-			console.log(users)
 			userSelect.empty()
 			if (users.length === 0) return userSelect.append(`<option>No users added yet</option>`)
 			users.forEach(function (user) {
@@ -188,13 +182,14 @@
 	$(`#getLeadsByUsers`).click(function (e) {
 		e.preventDefault()
 		let date = $(`#daterangepicker`).val()
-		console.log(date)
+
+		if (date.toLowerCase() === 'select a date range') return alert('Please select a date range')
 		let fromDate = date.split('-')[0].trim()
 		let toDate = date.split('-')[1].trim()
 		// dateRange objects are initialized in the script tags of dahboard.html
 		let fromDateUTC = dateRange.fromDate
 		let toDateUTC = dateRange.toDate
-		if(!fromDateUTC || !toDateUTC) {
+		if (!fromDateUTC || !toDateUTC) {
 			alert('Please select a date range')
 			return
 		}
@@ -204,9 +199,51 @@
 			.then((customerData) => {
 				clearAppendResults(customerData.data, { fromDate, toDate })
 				initInDateRangeCustomer(customerData.data)
+				initDuplicateCustomers(customerData.data)
 			})
 	})
 
+	function initDuplicateCustomers(customers) {
+		var table = $('#duplicateCustomerTable')
+		$(`#noDuplicateCustomer`).remove()
+
+		var settings = {
+			sDom: "<t><'row'<p i>>",
+			destroy: true,
+			scrollCollapse: true,
+			oLanguage: {
+				sLengthMenu: '_MENU_ ',
+				sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
+			},
+			iDisplayLength: 5,
+			aoColumns: [{ sWidth: '20%' }, { sWidth: '40%' }, { sWidth: '40%' }],
+			// fnCreatedRow: function (nRow, aData, iDataIndex) {
+			// 	$(nRow).attr('id', aData[2])
+			//},
+		}
+
+		table.dataTable(settings)
+		let duplicateCount = 0
+		let tableNumbers = 0
+		customers.forEach((customer) => {
+			if (customer.isDuplicate > 0) {
+				duplicateCount++
+				table.fnAddData([
+					`${tableNumbers + 1}`,
+					`${customer.firstName} ${customer.lastName}`,
+					`${customer.email}`,
+				])
+			}
+		})
+		if(duplicateCount === 0) {
+			table.append(`<p id="noDuplicateCustomer">No duplicate customers found</p>`)
+		}
+
+		// search box for table
+		table.keyup(function () {
+			table.fnFilter($(this).val())
+		})
+	}
 	function clearAppendResults(customers, dates) {
 		let resultAccordion = $(`#resultsAccordion`)
 		resultAccordion.empty()
@@ -223,10 +260,9 @@
 		resultAccordion.append(div)
 	}
 
-	
 	function initInDateRangeCustomer(customers) {
 		var table = $('#inRangeCustomersTable')
-		
+
 		var settings = {
 			sDom: "<t><'row'<p i>>",
 			destroy: true,
@@ -238,55 +274,57 @@
 			iDisplayLength: 5,
 			aoColumns: [{ sWidth: '20%' }, { sWidth: '40%' }, { sWidth: '40%' }],
 			// fnCreatedRow: function (nRow, aData, iDataIndex) {
-				// 	$(nRow).attr('id', aData[2])
-				//},
-			}
-			
-			table.dataTable(settings)
-			customers.forEach((customer, index) => {
-				table.fnAddData([
-					`${index + 1}`,
-					`${customer.firstName} ${customer.lastName}`,
-					`${customer.email}`,
-				])
-			})
-			
-			// search box for table
-			table.keyup(function () {
-				table.fnFilter($(this).val())
-			})
+			// 	$(nRow).attr('id', aData[2])
+			//},
 		}
-		
-		initLocations()
-		initAllUsers()
-		initTableWithUserInfo()
-	})(window.jQuery)
-	
-	// let initTableWithUserInfo = async function (customerData, { fromDate, toDate }) {
-	// 	var table = $('#userOverviewTable')
 
-	// 	var settings = {
-	// 		sDom: "<t><'row'<p i>>",
-	// 		destroy: true,
-	// 		scrollCollapse: true,
-	// 		oLanguage: {
-	// 			sLengthMenu: '_MENU_ ',
-	// 			sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
-	// 		},
-	// 		iDisplayLength: 5,
-	// 		aoColumns: [{ sWidth: '60%' }, { sWidth: '40%' }],
-	// 		// fnCreatedRow: function (nRow, aData, iDataIndex) {
-	// 		// 	$(nRow).attr('id', aData[2])
-	// 		//},
-	// 	}
+		table.dataTable(settings)
+		customers.forEach((customer, index) => {
+			table.fnAddData([
+				`${index + 1}`,
+				`${customer.firstName} ${customer.lastName}`,
+				`${customer.email}`,
+			])
+		})
 
-	// 	table.dataTable(settings)
+		// search box for table
+		table.keyup(function () {
+			table.fnFilter($(this).val())
+		})
+	}
 
-	// 	let customers = customerData //await axios.get(`/api/customers/byUser?fromDate=${fromDate}&toDate=${toDate}`)
-	// 	table.fnAddData([`Number of customers from ${fromDate} - ${toDate}`, `${customers.length}`])
+	$(``)
 
-	// 	// search box for table
-	// 	table.keyup(function () {
-	// 		table.fnFilter($(this).val())
-	// 	})
-	// }
+	initLocations()
+	initAllUsers()
+	initTableWithUserInfo()
+})(window.jQuery)
+
+// let initTableWithUserInfo = async function (customerData, { fromDate, toDate }) {
+// 	var table = $('#userOverviewTable')
+
+// 	var settings = {
+// 		sDom: "<t><'row'<p i>>",
+// 		destroy: true,
+// 		scrollCollapse: true,
+// 		oLanguage: {
+// 			sLengthMenu: '_MENU_ ',
+// 			sInfo: 'Showing <b>_START_ to _END_</b> of _TOTAL_ entries',
+// 		},
+// 		iDisplayLength: 5,
+// 		aoColumns: [{ sWidth: '60%' }, { sWidth: '40%' }],
+// 		// fnCreatedRow: function (nRow, aData, iDataIndex) {
+// 		// 	$(nRow).attr('id', aData[2])
+// 		//},
+// 	}
+
+// 	table.dataTable(settings)
+
+// 	let customers = customerData //await axios.get(`/api/customers/byUser?fromDate=${fromDate}&toDate=${toDate}`)
+// 	table.fnAddData([`Number of customers from ${fromDate} - ${toDate}`, `${customers.length}`])
+
+// 	// search box for table
+// 	table.keyup(function () {
+// 		table.fnFilter($(this).val())
+// 	})
+// }

@@ -31,7 +31,6 @@ $(document).ready(function () {
       axios
         .post('/register', data)
         .then((res) => {
-          console.log(res.data);
           localStorage.setItem('location', JSON.stringify(res.data.location));
           location.assign('/dashboard');
         })
