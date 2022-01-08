@@ -148,7 +148,6 @@ router.get('/api/customers/byUser/:userID', requireAuth, isAdmin, (req, res) => 
 			$lte: toDate,
 		},
 	}
-	console.log('query', query)
 	customerDB
 		.find(query)
 		.then((customer) => {
@@ -179,13 +178,13 @@ router.get('/api/customer/:id', (req, res) => {
 router.put('/api/customer/:id', (req, res) => {
 	let id = req.params.id,
 		customerInfo = req.body
-	res.json('success')
 	customerDB
 		.findOneAndUpdate({ _id: id }, customerInfo, { new: true })
 		.then((customer) => {
 			return res.json(customer)
 		})
 		.catch((err) => {
+			console.log(err)
 			res.json(err)
 		})
 })

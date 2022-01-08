@@ -150,7 +150,6 @@
 	function initLocations() {
 		axios.get('/api/location').then((res) => {
 			let locations = res.data
-			console.log(locations)
 			let checkBoxDiv = $(`#locationCheckboxes`)
 			checkBoxDiv.empty()
 			if (locations.length === 0) return checkBoxDiv.append(`<p>No locations added yet</p>`)
@@ -297,7 +296,6 @@
 
 	initLocations()
 	initAllUsers()
-	initTableWithUserInfo()
 })(window.jQuery)
 
 // let initTableWithUserInfo = async function (customerData, { fromDate, toDate }) {

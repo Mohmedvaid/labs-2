@@ -63,7 +63,7 @@ $(document).ready(function () {
 					<div class="col-sm-12">
 						<div class="form-group form-group-default">
 							<label for="location">Testing Location</label>
-							<input required name="location" id="customerLocation" type="text" class="form-control"
+							<input disabled required name="location" id="customerLocation" type="text" class="form-control"
 								value="${customer.location}">
 						</div>
 					</div>

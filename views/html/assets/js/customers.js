@@ -189,11 +189,10 @@
 		$(`#customerInfoBtn`).click()
 	}
 	function generateCustomerDetailTable(customer, customerID) {
-		let access = localStorage.getItem('location')
-		let printBtn = ''
-		if (access.toLowerCase() === 'all') {
+		let access = JSON.parse(localStorage.getItem('userType'))
+		if (access.toLowerCase() === 'admin') {
 			$(`#editLink`).remove()
-			let editBtn = `<a class="pull-right" id="editLink" href="/edit-customer.html?${customerID}"><button class="btn btn-primary btn-sm" id="editCustomerBtn">Edit</button></a>`
+			let editBtn = `<a class="pull-right" id="editLink" href="/edit-customer?${customerID}"><button class="btn btn-primary btn-sm" id="editCustomerBtn">Edit</button></a>`
 			$(editBtn).insertBefore(`#detailedTable`)
 		}
 		let tr = ''

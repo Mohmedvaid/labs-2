@@ -57,6 +57,7 @@ module.exports.signup_post = async (req, res) => {
 			user: user._id,
 			location: user.location,
 			firstName: user.firstName,
+			lastName: user.lastName,
 			userType: user.userType,
 		})
 	} catch (err) {
@@ -80,6 +81,7 @@ module.exports.login_post = async (req, res) => {
 			user: user._id,
 			location: user.location,
 			firstName: user.firstName,
+			lastName: user.lastName,
 			userType: user.userType,
 		})
 	} catch (err) {

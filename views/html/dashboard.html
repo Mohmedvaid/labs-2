@@ -133,12 +133,14 @@
             </span>
           </button>
           <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
-            <a href="#" class="dropdown-item"><span>Signed in as <br /><b>David Aunsberg</b></span></a>
+            <div class="dropdown-item">
+              <span>Signed in as <br /><b id="userNameTopRight">Username</b></span>
+            </div>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">Your Profile</a>
+            <!-- <a href="#" class="dropdown-item">Your Profile</a>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">Help</a>
-            <a href="/logout" class="dropdown-item">Logout</a>
+            <a href="#" class="dropdown-item">Help</a> -->
+            <a id="logoutBtn"href="/logout" class="dropdown-item">Logout</a>
           </div>
         </div>
         <!-- END User Info-->
@@ -167,23 +169,120 @@
         <!-- END JUMBOTRON -->
         <!-- START CONTAINER FLUID -->
         <div class=" container-fluid container-fixed-lg">
-          <!-- First Row -->
           <div class="row">
-            <div class="col-xl-6 col-lg-6 ">
-              <!-- Add testing locations -->
-              <div class="row">
-                <div class="card card-transparent">
-                  <div class="card-header">
-                    <div class="card-title">
-                      Dashboard allows you to configure the system value, add users &amp; much more.
-                    </div>
+            <div class="card card-transparent">
+              <div class="card-header">
+                <div class="card-title">
+                  Dashboard allows you to configure the system value, add users &amp; much more.
+                </div>
+              </div>
+              <div class="card-body">
+                <h4>You can create new users, add locations, see new customers by members and more!</h4>
+                <p></p>
+              </div>
+            </div>
+          </div>
+          <!-- First Row -->
+          <div class="row bg-white m-b-10">
+            <div class="col-xl-5 col-lg-5">
+              <!-- User details about customer -->
+              <div class="card">
+                <div class="card-header ">
+                  <div class="card-title">Leads by users
                   </div>
-                  <div class="card-body">
-                    <h4>You can create new users, add locations, see new customers by members and more!</h4>
-                    </p>
+                </div>
+                <div class="card-body">
+                  <h2 class="mw-80">Find out who is working hard.</h2>
+                  <form id="userByLeadsForm" role="form" autocomplete="off">
+                    <p>User Name</p>
+                    <select id="allUsersSelect" class="form-select form-group form-group-default"
+                      aria-label="Default select example">
+                      <option selected>Select a user type</option>
+                    </select>
+                    <!-- DATE RANGE PICKER -->
+                    <p>Date Range</p>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="pg-icon">calendar</i></span>
+                      </div>
+                      <input type="text" name="reservation" id="daterangepicker" class="form-control"
+                        value="Select a Date Range" />
+                    </div>
+                    <br>
+                    <!-- DATE RANGE PICKER ENDS -->
+                    <p class="small-text hint-text">View all user details</p>
+                    <button id="getLeadsByUsers" aria-label="" class="btn btn-primary pull-right btn-lg btn-block">Get Info
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-7">
+              <div class="card card-transparent ">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-tabs-fillup" data-init-reponsive-tabs="dropdownfx">
+                  <li class="nav-item">
+                    <a href="#" class="active" data-toggle="tab" data-target="#resultsAccordion"><span>Results</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" data-toggle="tab" data-target="#duplicateCustomers"><span>Duplicate customers</span></a>
+                  </li>
+                  <!-- <li class="nav-item">
+                              <a href="#" data-toggle="tab" data-target="#allCustomersByUser"><span>All Customers By User</span></a>
+                            </li> -->
+                  <li class="nav-item">
+                    <a href="#" data-toggle="tab" data-target="#dateRangeCustomerByUser"><span>Customers in Date Range</span></a>
+                  </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div class="tab-pane slide-left active" id="resultsAccordion">
+                <p class="m-t-50">Total customers by users will appear here</p>
+                  </div>
+                  <div class="tab-pane slide-left" id="duplicateCustomers">
+                    <table class="table table-hover demo-table-search table-responsive-block" id="duplicateCustomerTable">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                        </tr>
+                      </thead>
+                      <tbody id="duplicateCustomerTableBody">
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- <div class="tab-pane slide-left" id="allCustomersByUser">
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  Select User Name and a Date Range in the LEADS BY USERS Form to view details
+                                </div>
+                              </div>
+                            </div> -->
+                  <div class="tab-pane slide-left" id="dateRangeCustomerByUser">
+                    <table class="table table-hover demo-table-search table-responsive-block" id="inRangeCustomersTable">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                        </tr>
+                      </thead>
+                      <tbody id="inRangeCustomersBody">
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
+              <!-- <div id="userByLeadsInfo" class="m-t-10">
+                                                </div> -->
+            </div>
+          </div>
+          <!-- Second row -->
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 ">
+              <!-- Add testing locations -->
+
               <!-- Add users -->
               <div class="row">
                 <div class="col-lg-12">
@@ -312,112 +411,6 @@
                 </div>
               </div>
               <!-- END card -->
-            </div>
-          </div>
-          <!-- Second Row -->
-          <div class="row bg-white">
-            <div class="col-xl-5 col-lg-5">
-              <!-- User details about customer -->
-              <div class="card">
-                <div class="card-header ">
-                  <div class="card-title">Leads by users
-                  </div>
-                </div>
-                <div class="card-body">
-                  <h2 class="mw-80">Find out who is working hard.</h2>
-                      <form id="userByLeadsForm" role="form" autocomplete="off">
-                            <p>User Name</p>
-                            <select id="allUsersSelect" class="form-select form-group form-group-default"
-                              aria-label="Default select example">
-                              <option selected>Select a user type</option>
-                            </select>
-                            <!-- DATE RANGE PICKER -->
-                            <p>Date Range</p>
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="pg-icon">calendar</i></span>
-                              </div>
-                              <input type="text" name="reservation" id="daterangepicker" class="form-control"
-                                value="Select a Date Range" />
-                            </div>
-                            <br>
-                            <!-- DATE RANGE PICKER ENDS -->
-                            <p class="small-text hint-text">View all user details</p>
-                            <button id="getLeadsByUsers" aria-label=""
-                              class="btn btn-primary pull-right btn-lg btn-block">Get Info
-                            </button>
-                      </form>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-7">
-              <div class="card card-transparent ">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs nav-tabs-fillup" data-init-reponsive-tabs="dropdownfx">
-                  <li class="nav-item">
-                    <a href="#" class="active" data-toggle="tab" data-target="#resultsAccordion"><span>Results</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" data-toggle="tab" data-target="#duplicateCustomers"><span>Duplicate customers</span></a>
-                  </li>
-                  <!-- <li class="nav-item">
-                    <a href="#" data-toggle="tab" data-target="#allCustomersByUser"><span>All Customers By User</span></a>
-                  </li> -->
-                  <li class="nav-item">
-                    <a href="#" data-toggle="tab" data-target="#dateRangeCustomerByUser"><span>Customers in Date Range</span></a>
-                  </li>
-                </ul>
-                <!-- Tab panes -->
-                <div class="tab-content">
-                  <div class="tab-pane slide-left active" id="resultsAccordion">
-                      <!-- <table class="table table-hover demo-table-search table-responsive-block" id="userOverviewTable">
-                        <thead>
-                          <tr>
-                            <th>Field</th>
-                            <th>Data</th>
-                          </tr>
-                        </thead>
-                        <tbody id="userOverviewTableBody">
-                        </tbody>
-                      </table> -->
-                  </div>
-                  <div class="tab-pane slide-left" id="duplicateCustomers">
-                      <table class="table table-hover demo-table-search table-responsive-block" id="duplicateCustomerTable">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                          </tr>
-                        </thead>
-                        <tbody id="duplicateCustomerTableBody">
-                        </tbody>
-                      </table>
-                  </div>
-                  <!-- <div class="tab-pane slide-left" id="allCustomersByUser">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        Select User Name and a Date Range in the LEADS BY USERS Form to view details
-                      </div>
-                    </div>
-                  </div> -->
-                    <div class="tab-pane slide-left" id="dateRangeCustomerByUser">
-                      <table class="table table-hover demo-table-search table-responsive-block" id="inRangeCustomersTable">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                          </tr>
-                        </thead>
-                        <tbody id="inRangeCustomersBody">
-                        </tbody>
-                      </table>
-                    </div>
-                </div>
-              </div>
-              <!-- <div id="userByLeadsInfo" class="m-t-10">
-                                      </div> -->
             </div>
           </div>
 
@@ -1783,6 +1776,7 @@
   <script src="assets/js/scripts.js" type="text/javascript"></script>
   <script src="assets/js/initmenu.js" type="text/javascript"></script>
   <script defer src="assets/js/isAdmin.js" type="text/javascript"></script>
+  <script src="assets/js/setUserName.js" type="text/javascript"></script>
 
   <script>
     $(function () {

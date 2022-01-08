@@ -19,8 +19,8 @@ router.get('/edit-customer', requireAuth, (req, res) => {
 			return res.redirect('/login')
 		} else {
 			let user = await User.findById(decodedToken.id)
-			if (user.location.toLowerCase() === 'all') {
-				return res.sendFile(path.join(__dirname, '../views/html/edit-customer'))
+			if (user.userType.toLowerCase() === 'admin') {
+				return res.sendFile(path.join(__dirname, '../views/html/edit-customer.html'))
 			} else {
 				return res.redirect('/dashboard')
 			}
