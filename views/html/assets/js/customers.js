@@ -145,6 +145,7 @@
 				.then(() => hideNewCustomerSpinner())
 				.then(() => $('#addNewAppModal').modal('hide'))
 				.then(() => $('#addCustomerForm').trigger('reset'))
+				.then(() => $(`#sig-clearBtn`).trigger('click'))
 				.then(removeEmptyTableMessage)
 				.catch(handleError)
 		})
@@ -196,6 +197,7 @@
 			$(editBtn).insertBefore(`#detailedTable`)
 		}
 		let tr = ''
+		console.log(customer)
 		for (const property in customer) {
 			const updatedProp = property.replace(/([A-Z])/g, ' $1')
 			const finalResult = updatedProp.charAt(0).toUpperCase() + updatedProp.slice(1)
@@ -232,16 +234,17 @@
 		$('#customerDetailTable').empty().append(tr)
 	}
 	function cleanMongooseObject(obj) {
+		let extraItems = ['_id', '__v', 'createdAt', 'updatedAt', 'id', 'imageType', 'createdBy']
 		for (const property in obj) {
-			if (
-				property === '_id' ||
-				property === '__v' ||
-				property === 'createdAt' ||
-				property === 'updatedAt' ||
-				property === 'id' ||
-				property === 'imageType'
-			) {
+			if (extraItems.includes(property)) {
 				delete obj[property]
+			}
+			if (property === 'isDuplicate') {
+				if (obj[property] === 0) {
+					obj[property] = `No`
+				} else {
+					obj[property] = `Yes, ${obj[property]} duplicate(s)`
+				}
 			}
 		}
 		return obj
@@ -272,6 +275,20 @@
 			y: 0,
 		}
 		var lastPos = mousePos
+
+		// Disbale scrolling on canvas
+		// canvas.addEventListener('touchstart', function (event) {
+		// 	event.preventDefault()
+		// })
+		// canvas.addEventListener('touchmove', function (event) {
+		// 	event.preventDefault()
+		// })
+		// canvas.addEventListener('touchend', function (event) {
+		// 	event.preventDefault()
+		// })
+		canvas.addEventListener('touchcancel', function (event) {
+			event.preventDefault()
+		})
 
 		canvas.addEventListener(
 			'mousedown',
@@ -304,6 +321,7 @@
 		canvas.addEventListener(
 			'touchmove',
 			function (e) {
+				e.preventDefault()
 				var touch = e.touches[0]
 				var me = new MouseEvent('mousemove', {
 					clientX: touch.clientX,
@@ -317,6 +335,7 @@
 		canvas.addEventListener(
 			'touchstart',
 			function (e) {
+				e.preventDefault()
 				mousePos = getTouchPos(canvas, e)
 				var touch = e.touches[0]
 				var me = new MouseEvent('mousedown', {
@@ -331,6 +350,7 @@
 		canvas.addEventListener(
 			'touchend',
 			function (e) {
+				e.preventDefault()
 				var me = new MouseEvent('mouseup', {})
 				canvas.dispatchEvent(me)
 			},
