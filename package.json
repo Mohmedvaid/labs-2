@@ -1,6 +1,9 @@
 {
   "name": "testing-lab-cms",
-  "engines" : { "node" : ">=0.12" },
+    "engines": {
+    "npm": ">=6.0.0",
+    "node": ">=10.0.0"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
