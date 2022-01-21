@@ -7,6 +7,3 @@ backend:
     build:
       commands:
         - npm start
-    cache:
-      paths:
-        - node_modules/**/*
