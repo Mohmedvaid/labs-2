@@ -72,16 +72,15 @@ const isAdmin = (req, res, next) => {
 					return return401(res)
 				} else {
 					let user = await User.findById(decodedToken.id)
-					if (!user)
-						return res.status(401).send('<h1>Unauthorized</h1><br><p>Please <a href=/login> login</a> to continue</p>')
+					if (!user) return return401(res)
 					if (user.userType === 'admin') next()
 					else {
-						return res.status(401).send('Unauthorized')
+						return return401(res)
 					}
 				}
 			})
 		} else {
-			return res.status(401).send('<h1>Unauthorized</h1><br><p>Please <a href=/login> login</a> to continue</p>')
+			return return401(res)
 		}
 	} catch (err) {
 		console.log(err)

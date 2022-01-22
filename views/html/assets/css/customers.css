@@ -1,11 +1,11 @@
 /* Signature canvas styles */
 #sig-canvas {
-  border: 2px dotted #cccccc;
-  border-radius: 15px;
-  cursor: crosshair;
+	border: 2px dotted #cccccc;
+	border-radius: 15px;
+	cursor: crosshair;
 }
 
 /* customer detail popup table styles */
 #detailedTable > tbody > tr > td:first-child:before {
-  content: none;
+	content: none;
 }

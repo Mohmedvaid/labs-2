@@ -37,6 +37,8 @@ const userSchema = new mongoose.Schema({
 			message: () => 'One or many of the locations is not valid',
 		},
 	},
+	resetPasswordToken: String,
+	resetPasswordExpires: Date,
 })
 
 // fire a function before doc saved to db
@@ -57,6 +59,12 @@ userSchema.statics.login = async function (email, password) {
 		throw Error('Invalid Credentials')
 	}
 	throw Error('Invalid Credentials')
+}
+
+userSchema.methods.setPassword = async function (password) {
+	const salt = await bcrypt.genSalt()
+	this.password = await bcrypt.hash(password, salt)
+	return this.save()
 }
 
 const User = mongoose.model('user', userSchema)
