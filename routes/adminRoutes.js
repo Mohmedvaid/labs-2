@@ -12,7 +12,7 @@ router.get('/customers', requireAuth, (req, res) => {
 	res.sendFile(path.join(__dirname, '../views/html/customers.html'))
 })
 
-router.get('/edit-customer', requireAuth, (req, res) => {
+router.get('/edit-customer', requireAuth, isAdmin, (req, res) => {
 	const token = req.cookies.jwt
 	jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
 		if (err) {

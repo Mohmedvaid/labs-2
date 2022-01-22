@@ -1,6 +1,7 @@
 let locationDB = require('./Locations')
 
 function validateUserLocation(userLocation) {
+	if (this.userType === 'admin') return true
 	return locationDB
 		.find({ name: userLocation })
 		.then((dbLocations) => {
