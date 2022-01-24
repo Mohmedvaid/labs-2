@@ -1,14 +1,12 @@
+require('dotenv').config()
 const router = require('express').Router()
 const customerDB = require('../models/Customers')
-const Monoose = require('mongoose')
-const imageMimeTypes = ['image/jpeg', 'image/png', 'images']
 const QRCode = require('qrcode')
-const domainName = 'http://localhost:3000'
+const domainName = process.env.DOMAIN
 const isValidMongoID = require('../helpers/isValidMongoID')
 const multer = require('multer')
 const uuid = require('uuid').v4
-const { checkUser, isAdmin, requireAuth } = require('../middleware/authMiddleware')
-const moment = require('moment-timezone')
+const { isAdmin, requireAuth } = require('../middleware/authMiddleware')
 
 //  Local uploads
 // const storage = multer.diskStorage({
@@ -99,8 +97,9 @@ router.post('/api/customer', requireAuth, awsUpload.single('idImage'), (req, res
 })
 
 function generateAndSaveQRCode(customer) {
-	let qrCodeUrl = `${domainName}/myinfo/${customer._id}`
-	if (!qrCodeUrl) throw { error: 'Public url is required' }
+	let qrCodeUrl = `http://${domainName}/myinfo?id=${customer._id}`
+	if (!customer) throw { error: 'customer needed' }
+	console.log(qrCodeUrl)
 	return QRCode.toDataURL(qrCodeUrl).then((url) => {
 		customer.qrCodeUrl = url
 		return customer
@@ -202,11 +201,7 @@ router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res
 	})
 
 	customerDB
-		.findOneAndUpdate(
-			{ _id: customerID },
-			{ $push: { testResults: { $each: assets } } },
-			{ new: true }
-		)
+		.findOneAndUpdate({ _id: customerID }, { $push: { testResults: { $each: assets } } }, { new: true })
 		.then((customer) => {
 			return res.json(customer)
 		})
@@ -216,18 +211,30 @@ router.put('/api/customer/upload/:id', awsUpload.array('testResults'), (req, res
 		})
 })
 
-// function saveImage(customer, encodedImage) {
-//   if (encodedImage === undefined || encodedImage === null) {
-//     return null;
-//   }
-//   const image = JSON.parse(encodedImage);
-//   // if (image != null || imageMimeTypes.includes(image.type)) {
-//   // }
-//   customer.image = new Buffer.from(image.data, 'base64');
-//   customer.imageType = image.type;
-//   return customer;
-// }
+router.delete('/api/customer/:id', (req, res) => {
+	let id = req.params.id
+	customerDB
+		.findOneAndRemove({ _id: id })
+		.then((customer) => {
+			return res.json(customer)
+		})
+		.catch((err) => {
+			console.log(err)
+			res.status(400).json(err)
+		})
+})
 
-// Edit permissions
+router.get('/api/myinfo/:id', (req, res) => {
+	let id = req.params.id
+	customerDB
+		.findOne({ _id: id })
+		.then((customer) => {
+			return res.json(customer)
+		})
+		.catch((err) => {
+			console.log(err)
+			res.status(400).json(err)
+		})
+})
 
 module.exports = router

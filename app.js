@@ -8,7 +8,7 @@ const adminRoutes = require('./routes/adminRoutes')
 const locationRoutes = require('./routes/locationRoutes')
 const userRoutes = require('./routes/userRoutes')
 const cookieParser = require('cookie-parser')
-const { requireAuth, checkUser } = require('./middleware/authMiddleware')
+const { checkUser } = require('./middleware/authMiddleware')
 require('dotenv').config()
 const bodyParser = require('body-parser')
 
