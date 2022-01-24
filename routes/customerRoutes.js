@@ -220,7 +220,7 @@ router.delete('/api/customer/:id', (req, res) => {
 		})
 		.catch((err) => {
 			console.log(err)
-			res.status(400).json(err)
+			return res.status(400).json(err)
 		})
 })
 
@@ -229,6 +229,7 @@ router.get('/api/myinfo/:id', (req, res) => {
 	customerDB
 		.findOne({ _id: id })
 		.then((customer) => {
+			if (!customer) return res.status(400).json({ error: 'customer not found' })
 			return res.json(customer)
 		})
 		.catch((err) => {

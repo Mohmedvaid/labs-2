@@ -1,6 +1,11 @@
 $(document).ready(function () {
 	let customerID = window.location.search.split('=')[1]
-	axios.get(`/api/customer/${customerID}`).then((response) => createCustomerDetailsTable(response.data))
+	const displayError = () => $('#customerDetailsTable').append(`<tr><td colspan="2">No customer found</td></tr>`)
+
+	axios
+		.get(`/api/myinfo/${customerID}`)
+		.then((response) => createCustomerDetailsTable(response.data))
+		.catch(displayError)
 	const createCustomerDetailsTable = (customer) => {
 		let customerDetails = {
 			'First Name': customer.firstName,
@@ -13,7 +18,6 @@ $(document).ready(function () {
 			'Customer Signature': customer.customerSignature,
 			'Test Result': customer.testResults,
 		}
-		console.log(customerDetails)
 		let table = $('#customerDetailsTable')
 		table.empty()
 		table.append(`<thead><tr><th>Field</th><th>Value</th></tr></thead>`)
