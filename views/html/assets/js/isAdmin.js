@@ -6,6 +6,7 @@ $(document).ready(function () {
 		$(`#sideBarDashboardLink`).show()
 	} else {
 		$(`#sideBarDashboardLink`).hide()
+		$(`.breadcrumb`).hide()
 	}
 
 	// Ready ends

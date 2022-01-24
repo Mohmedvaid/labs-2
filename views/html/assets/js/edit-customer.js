@@ -85,7 +85,7 @@ $(document).ready(function () {
 					</div>
 				</div>
 
-				<div class="modal-footer">
+				<div class="modal-footer justify-content-center">
 					<button aria-label="" id="updateCustomer" class="btn btn-primary  btn-cons" type="submit">Save Customer</button>
 					<button aria-label="" type="button" class="btn btn-cons" >Discard Changes</button>
           <button id="deleteCustomer" aria-label="" type="button" class="btn btn-cons" >Delete Customer</button>

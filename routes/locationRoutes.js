@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const locationDB = require('../models/Locations')
-const Monoose = require('mongoose')
 
 router.post('/api/location', (req, res) => {
 	let location = req.body.name

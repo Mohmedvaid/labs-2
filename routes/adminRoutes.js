@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const path = require('path')
-const { requireAuth, checkUser, isAdmin } = require('../middleware/authMiddleware')
+const { requireAuth, isAdmin } = require('../middleware/authMiddleware')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const router = Router()

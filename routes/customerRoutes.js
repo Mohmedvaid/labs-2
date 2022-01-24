@@ -23,7 +23,6 @@ const { isAdmin, requireAuth } = require('../middleware/authMiddleware')
 // AWS uploads
 const aws = require('aws-sdk')
 const multerS3 = require('multer-s3')
-const path = require('path')
 
 const s3 = new aws.S3({
 	apiVersion: '2006-03-01',
