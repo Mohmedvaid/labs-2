@@ -340,7 +340,7 @@
                   <h2 class="mw-80">Add New User</h2>
                   <div id="signupMessage" class="text-success"></div>
                   <div id="error" class=""></div>
-                  <form id="signUpForm" class="p-t-15">
+                  <form id="signUpForm" class="p-t-15" autocomplete="off">
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group form-group-default">
@@ -379,8 +379,8 @@
                       <div class="col-md-12">
                         <div class="form-group form-group-default">
                           <label>Password</label>
-                          <input type="password" name="pass" placeholder="Minimum of 6 Charactors" class="form-control"
-                            required>
+                          <input autocomplete="one-time-code" type="password" name="pass" placeholder="Minimum of 6 Charactors"
+                            class="form-control" required>
                         </div>
                       </div>
                     </div>
@@ -388,7 +388,7 @@
                       <div class="col-md-12">
                         <div class="form-group form-group-default">
                           <label>Email</label>
-                          <input type="email" name="email" placeholder="We will send loging details to you"
+                          <input autocomplete="one-time-code" type="email" name="email" placeholder="We will send loging details to you"
                             class="form-control" required>
                         </div>
                       </div>
