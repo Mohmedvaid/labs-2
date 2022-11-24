@@ -19,7 +19,7 @@ module.exports = async function (sendTo, subject, body) {
 
 	// send mail with defined transport object
 	let info = await transporter.sendMail({
-		from: '"ZoomLabCare Support Team" <info@zoomlabcare.com>', // sender address
+		from: '"Zoom Lab Inc Support Team" <info@zoomlabcare.com>', // sender address
 		to: sendToString, // list of receivers
 		subject: subject, // Subject line
 		html: body, // html body
